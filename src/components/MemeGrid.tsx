@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { HiDownload } from 'react-icons/hi';
+import { Alert } from '@/components/ui/alert';
 
 interface MemeText {
   id: string;
@@ -45,6 +46,7 @@ export default function MemeGrid() {
   const [memes, setMemes] = useState<FilledMeme[]>([]);
   const [templates, setTemplates] = useState<Record<string, Template>>({});
   const [isLoading, setIsLoading] = useState(true);
+  const [showAlert, setShowAlert] = useState(false);
   const memeRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // Helper function to wrap text based on rough character count
@@ -472,23 +474,37 @@ export default function MemeGrid() {
                     </div>
                     <div className="relative p-5 text-white">
                       <h3 className="font-bold text-xl truncate mb-2">{meme.name}</h3>
-                      <div className="flex flex-wrap mt-3 gap-2 justify-between">
+                      <div className="flex flex-wrap mt-3 gap-2 justify-center">
                         <Link href={`/meme-creator?template=${meme.templateId}`}>
                           <Button
                             size="sm"
                             className="bg-white text-gray-800 hover:bg-yellow-300 hover:text-purple-800 font-medium transition-colors shadow-md text-sm md:text-base"
+                            title="Create your own version of this meme"
                           >
                             ✨ Create Similar
                           </Button>
                         </Link>
+
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="text-gray-800 hover:bg-green-600 hover:text-white border border-green-500 bg-white/90 font-medium transition-colors shadow-md text-sm md:text-base"
+                          onClick={() => {
+                            setShowAlert(true);
+                          }}
+                          title="Mint this meme as an NFT"
+                        >
+                          🖼️ Mint
+                        </Button>
+
                         <Button
                           size="sm"
                           variant="ghost"
                           className="text-white hover:bg-white/30 border border-white/80 text-sm md:text-base"
                           onClick={() => handleDownload(meme.id, meme.name)}
+                          title="Download this meme"
                         >
                           <HiDownload />
-                          <span className="hidden sm:inline ml-1">Download</span>
                         </Button>
                       </div>
                     </div>
@@ -507,6 +523,15 @@ export default function MemeGrid() {
           </Button>
         </Link>
       </div>
+
+      {/* Use the new Alert component */}
+      <Alert
+        title="Coming Soon"
+        message="Minting will be available in the next version"
+        show={showAlert}
+        onClose={() => setShowAlert(false)}
+        autoCloseDuration={3000}
+      />
     </div>
   );
 }
