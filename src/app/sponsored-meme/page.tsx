@@ -11,9 +11,7 @@ import { decodeBase64, isValidUrl } from '@/lib/utils';
  */
 export default function SponsoredMemePage() {
   return (
-    <Suspense
-      fallback={<div className="flex justify-center items-center min-h-[70vh]">Loading...</div>}
-    >
+    <Suspense fallback={<div className="flex justify-center items-center min-h-[70vh]">Loading...</div>}>
       <SponsoredMemeContent />
     </Suspense>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { toPng } from 'html-to-image';
 import { useSearchParams } from 'next/navigation';
@@ -8,7 +8,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface TextArea {
   id: string;
@@ -75,8 +75,6 @@ export default function MemeCreator() {
   const [addSponsorQR, setAddSponsorQR] = useState(false);
   const [sponsorUrl, setSponsorUrl] = useState('https://aptosfoundation.org/');
   const [sponsorLogo, setSponsorLogo] = useState('/sponsors/aptos.png');
-  const [_customSponsorImage, setCustomSponsorImage] = useState<File | null>(null);
-  const [customSponsorImageURL, setCustomSponsorImageURL] = useState<string | null>(null);
   const [urlError, setUrlError] = useState<string | null>(null);
   const [qrCodeStyle, setQrCodeStyle] = useState<string>('vibrant-orange');
 
@@ -238,108 +236,106 @@ export default function MemeCreator() {
   };
 
   /**
-   * Handles the actual movement calculations for dragging text
-   * @param clientX - X position of cursor or touch
-   * @param clientY - Y position of cursor or touch
-   */
-  const handleMove = useCallback(
-    (clientX: number, clientY: number) => {
-      if (!dragState.isDragging || !dragState.textId || !selectedTemplate) return;
-
-      // Get the canvas bounding rect
-      const canvasRect = containerRef.current?.getBoundingClientRect();
-      if (!canvasRect) return;
-
-      // Calculate new position
-      const scale = canvasRect.width / selectedTemplate.width;
-      const newX = (clientX - canvasRect.left) / scale;
-      const newY = (clientY - canvasRect.top) / scale;
-
-      // Calculate the offset from the initial position
-      const offsetX = newX - dragState.startX;
-      const offsetY = newY - dragState.startY;
-
-      // Update the text input position
-      setTextInputs((prev) =>
-        prev.map((input) => {
-          if (input.id === dragState.textId) {
-            // Calculate the updated position
-            const currentPos = input.position || { x: 0, y: 0 };
-            return {
-              ...input,
-              position: {
-                x: currentPos.x + offsetX,
-                y: currentPos.y + offsetY,
-              },
-            };
-          }
-          return input;
-        })
-      );
-
-      // Update the drag start position to the current position for the next move
-      setDragState({
-        ...dragState,
-        startX: newX,
-        startY: newY,
-      });
-    },
-    [dragState, selectedTemplate]
-  );
-
-  /**
-   * Handles touch move events for dragging text
+   * Handles dragging movement of a text element for touch devices
    * @param e - Touch event
    */
-  const handleTouchMove = useCallback(
-    (e: TouchEvent) => {
-      if (dragState.isDragging) {
-        e.preventDefault();
-        const touch = e.touches[0];
-        handleMove(touch.clientX, touch.clientY);
-      }
-    },
-    [dragState.isDragging, handleMove]
-  );
+  const handleTouchMove = (e: TouchEvent) => {
+    if (!activeDragRef.current || !e.touches[0]) return;
+    e.preventDefault(); // Prevent scrolling while dragging
+    const touch = e.touches[0];
+    handleMove(touch.clientX, touch.clientY);
+  };
 
   /**
-   * Handles mouse move events for dragging text
+   * Handles dragging movement of a text element
    * @param e - Mouse event
    */
-  const handleDragMove = useCallback(
-    (e: MouseEvent) => {
-      if (dragState.isDragging) {
-        handleMove(e.clientX, e.clientY);
-      }
-    },
-    [dragState.isDragging, handleMove]
-  );
+  const handleDragMove = (e: MouseEvent) => {
+    if (!activeDragRef.current) return;
+    e.preventDefault();
+    handleMove(e.clientX, e.clientY);
+  };
 
   /**
-   * Handles the end of drag operations (mouse up or touch end)
+   * Common handler for both mouse and touch movement
+   * @param clientX - Client X coordinate
+   * @param clientY - Client Y coordinate
    */
-  const handleDragEnd = useCallback(() => {
+  const handleMove = (clientX: number, clientY: number) => {
+    // Use the ref for immediate access to current drag state
+    const currentDrag = activeDragRef.current;
+    if (!containerRef.current || !selectedTemplate || !currentDrag || !currentDrag.textId) return;
+
+    // Get container dimensions
+    const containerRect = containerRef.current.getBoundingClientRect();
+
+    // Get scaling factor for responsive sizing
+    const scaleX = selectedTemplate.width / containerRect.width;
+    const scaleY = selectedTemplate.height / containerRect.height;
+
+    // Calculate position relative to container
+    const relativeX = clientX - containerRect.left + currentDrag.offsetX;
+    const relativeY = clientY - containerRect.top + currentDrag.offsetY;
+
+    // Convert to template coordinates, accounting for the scaling
+    const templateX = relativeX * scaleX;
+    const templateY = relativeY * scaleY;
+
+    // Clamp values to prevent text from moving off-screen
+    const clampedX = Math.max(50, Math.min(templateX, selectedTemplate.width - 50));
+    const clampedY = Math.max(50, Math.min(templateY, selectedTemplate.height - 50));
+
+    // Update the text positions
+    setTextInputs((prev) =>
+      prev.map((input) => {
+        if (input.id === currentDrag.textId) {
+          return {
+            ...input,
+            position: {
+              x: clampedX,
+              y: clampedY,
+            },
+          };
+        }
+        return input;
+      })
+    );
+  };
+
+  /**
+   * Handles the end of dragging a text element
+   */
+  const handleDragEnd = () => {
+    if (!activeDragRef.current) return;
+
+    // Reset the active drag ref
+    activeDragRef.current = null;
+
     setDragState({
-      ...dragState,
       isDragging: false,
       textId: null,
+      startX: 0,
+      startY: 0,
+      offsetX: 0,
+      offsetY: 0,
     });
-  }, [dragState]);
 
-  // Add drag event listeners to the document
+    // Remove event listeners
+    window.removeEventListener('mousemove', handleDragMove);
+    window.removeEventListener('mouseup', handleDragEnd);
+    window.removeEventListener('touchmove', handleTouchMove);
+    window.removeEventListener('touchend', handleDragEnd);
+  };
+
+  // Clean up event listeners when component unmounts
   useEffect(() => {
-    document.addEventListener('mousemove', handleDragMove);
-    document.addEventListener('mouseup', handleDragEnd);
-    document.addEventListener('touchmove', handleTouchMove, { passive: false });
-    document.addEventListener('touchend', handleDragEnd);
-
     return () => {
-      document.removeEventListener('mousemove', handleDragMove);
-      document.removeEventListener('mouseup', handleDragEnd);
-      document.removeEventListener('touchmove', handleTouchMove);
-      document.removeEventListener('touchend', handleDragEnd);
+      window.removeEventListener('mousemove', handleDragMove);
+      window.removeEventListener('mouseup', handleDragEnd);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleDragEnd);
     };
-  }, [handleDragMove, handleDragEnd, handleTouchMove]);
+  }, []);
 
   /**
    * Generate AI text for the meme based on template information
@@ -441,9 +437,7 @@ export default function MemeCreator() {
       const link = document.createElement('a');
       link.download = filename;
       link.href = dataUrl;
-      document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
 
       // Show success message
       setSaveSuccess(`Meme saved as "${filename}"`);
@@ -454,21 +448,6 @@ export default function MemeCreator() {
       }, 3000);
     } catch (error) {
       console.error('Failed to save meme:', error);
-      alert(`Failed to save meme: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
-  };
-
-  /**
-   * Encodes a string to base64 for URL use
-   * @param str - String to encode
-   * @returns Base64 encoded string
-   */
-  const encodeToBase64 = (str: string): string => {
-    try {
-      return window.btoa(encodeURIComponent(str));
-    } catch (error) {
-      console.error('Error encoding string to base64:', error);
-      return '';
     }
   };
 
@@ -478,8 +457,6 @@ export default function MemeCreator() {
    * @returns Boolean indicating if the URL is valid
    */
   const validateUrl = (url: string): boolean => {
-    if (!url || url.trim() === '') return false;
-
     try {
       new URL(url);
       return true;
@@ -504,6 +481,15 @@ export default function MemeCreator() {
   };
 
   /**
+   * Encodes a string to Base64
+   * @param str - String to encode
+   * @returns Base64 encoded string
+   */
+  const encodeToBase64 = (str: string): string => {
+    return btoa(str);
+  };
+
+  /**
    * Gets the encoded URL for the QR code
    * @returns Encoded URL for the QR code
    */
@@ -520,56 +506,6 @@ export default function MemeCreator() {
    */
   const getSelectedQRStyle = (): QRCodeStyle => {
     return qrCodeStyles.find((style) => style.id === qrCodeStyle) || qrCodeStyles[0];
-  };
-
-  /**
-   * Handles custom sponsor image upload
-   * @param e - Change event from file input
-   */
-  const handleCustomSponsorImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        setUrlError('Please upload an image file');
-        return;
-      }
-
-      // Create object URL for the uploaded image
-      const imageUrl = URL.createObjectURL(file);
-      setCustomSponsorImage(file);
-      setCustomSponsorImageURL(imageUrl);
-      setSponsorLogo('custom'); // Set a special value to indicate custom image
-    }
-  };
-
-  /**
-   * Resets custom sponsor image
-   */
-  const resetCustomSponsorImage = () => {
-    if (customSponsorImageURL) {
-      URL.revokeObjectURL(customSponsorImageURL);
-    }
-    // Clear the custom image file reference
-    if (_customSponsorImage) {
-      console.log('Clearing custom sponsor image:', _customSponsorImage.name);
-    }
-    setCustomSponsorImage(null);
-    setCustomSponsorImageURL(null);
-    setSponsorLogo('/sponsors/aptos.png');
-  };
-
-  /**
-   * Gets the sponsor logo source depending on whether it's a predefined or custom logo
-   * @returns URL of the sponsor logo to display
-   */
-  const getSponsorLogoSrc = (): string => {
-    // Ensure we're returning a valid URL to avoid image loading issues
-    if (sponsorLogo === 'custom' && customSponsorImageURL) {
-      return customSponsorImageURL;
-    }
-    return sponsorLogo === 'custom' ? '/sponsors/aptos.png' : sponsorLogo;
   };
 
   return (
@@ -600,18 +536,14 @@ export default function MemeCreator() {
             {selectedTemplate && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {textInputs.map((input) => {
-                  const _textArea = selectedTemplate.textAreas.find((area) => area.id === input.id);
-                  const labelText = _textArea
-                    ? `${_textArea.id.charAt(0).toUpperCase() + _textArea.id.slice(1)} Text`
-                    : `${input.id.charAt(0).toUpperCase() + input.id.slice(1)} Text`;
-
+                  const textArea = selectedTemplate.textAreas.find((area) => area.id === input.id);
                   return (
                     <div key={input.id}>
                       <label
                         htmlFor={`text-${input.id}`}
                         className="block text-sm font-medium mb-1"
                       >
-                        {labelText}
+                        {input.id.charAt(0).toUpperCase() + input.id.slice(1)} Text
                       </label>
                       <Input
                         id={`text-${input.id}`}
@@ -647,59 +579,14 @@ export default function MemeCreator() {
                       <label htmlFor="sponsorLogo" className="block text-sm font-medium mb-1">
                         Sponsor Logo
                       </label>
-                      <div className="flex flex-col space-y-2">
-                        <Select
-                          id="sponsorLogo"
-                          value={sponsorLogo}
-                          onChange={(e) => {
-                            if (e.target.value !== 'custom') {
-                              resetCustomSponsorImage();
-                            }
-                            setSponsorLogo(e.target.value);
-                          }}
-                          className="w-full"
-                        >
-                          <option value="/sponsors/aptos.png">Aptos</option>
-                          {customSponsorImageURL && <option value="custom">Custom</option>}
-                          <option value="custom">Upload Custom...</option>
-                          {/* Add more logo options here as needed */}
-                        </Select>
-
-                        {sponsorLogo === 'custom' && (
-                          <div className="mt-2 space-y-2">
-                            <div className="flex items-center justify-between">
-                              <Input
-                                type="file"
-                                id="customSponsorImage"
-                                onChange={handleCustomSponsorImageUpload}
-                                accept="image/*"
-                                className="max-w-xs"
-                              />
-                              {customSponsorImageURL && (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={resetCustomSponsorImage}
-                                  className="ml-2"
-                                >
-                                  Reset
-                                </Button>
-                              )}
-                            </div>
-                            {customSponsorImageURL && (
-                              <div className="relative w-16 h-16 border rounded overflow-hidden mt-2">
-                                <Image
-                                  src={customSponsorImageURL}
-                                  alt="Custom sponsor"
-                                  className="object-contain"
-                                  fill
-                                  crossOrigin="anonymous"
-                                />
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
+                      <Select
+                        id="sponsorLogo"
+                        value={sponsorLogo}
+                        onChange={(e) => setSponsorLogo(e.target.value)}
+                      >
+                        <option value="/sponsors/aptos.png">Aptos</option>
+                        {/* Add more logo options here as needed */}
+                      </Select>
                     </div>
 
                     <div>
@@ -745,7 +632,7 @@ export default function MemeCreator() {
                             level="H"
                             style={{ width: '100%', height: '100%' }}
                             imageSettings={{
-                              src: getSponsorLogoSrc(),
+                              src: sponsorLogo,
                               x: undefined,
                               y: undefined,
                               height: 48,
@@ -754,7 +641,7 @@ export default function MemeCreator() {
                             }}
                             bgColor={getSelectedQRStyle().bgColor}
                             fgColor={getSelectedQRStyle().fgColor}
-                            className="rounded-md QRCode"
+                            className="rounded-md"
                           />
                         </div>
                       </div>
@@ -808,39 +695,23 @@ export default function MemeCreator() {
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         priority
-                        crossOrigin="anonymous"
                       />
 
                       {textInputs.map((input) => {
-                        const _textArea = selectedTemplate.textAreas.find(
+                        const textArea = selectedTemplate.textAreas.find(
                           (area) => area.id === input.id
                         );
-                        if (!_textArea) return null;
+                        if (!textArea) return null;
 
                         // Use the custom position if available, otherwise use the default
-                        const x = input.position?.x ?? _textArea.x;
-                        const y = input.position?.y ?? _textArea.y;
+                        const x = input.position?.x ?? textArea.x;
+                        const y = input.position?.y ?? textArea.y;
 
                         return (
                           <div
                             key={input.id}
                             className="absolute text-center cursor-move"
-                            role="button"
-                            tabIndex={0}
-                            aria-label={`Drag ${input.id} text`}
                             onMouseDown={(e) => handleDragStart(e, input.id)}
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter' || e.key === ' ') {
-                                e.preventDefault();
-                                // Simulate a mouse event for keyboard accessibility
-                                const mouseEvent = {
-                                  clientX: 0,
-                                  clientY: 0,
-                                  preventDefault: () => {},
-                                } as React.MouseEvent;
-                                handleDragStart(mouseEvent, input.id);
-                              }
-                            }}
                             onTouchStart={(e) => {
                               if (!e.touches[0]) return;
                               e.preventDefault(); // Prevent default touch behavior
@@ -857,20 +728,20 @@ export default function MemeCreator() {
                               handleDragStart(mouseEvent, input.id);
                             }}
                             style={{
-                              left: `${((x - _textArea.width / 2) / selectedTemplate.width) * 100}%`,
-                              top: `${((y - _textArea.height / 2) / selectedTemplate.height) * 100}%`,
-                              width: `${(_textArea.width / selectedTemplate.width) * 100}%`,
+                              left: `${((x - textArea.width / 2) / selectedTemplate.width) * 100}%`,
+                              top: `${((y - textArea.height / 2) / selectedTemplate.height) * 100}%`,
+                              width: `${(textArea.width / selectedTemplate.width) * 100}%`,
                               height: 'auto',
-                              minHeight: `${(_textArea.height / selectedTemplate.height) * 100}%`,
+                              minHeight: `${(textArea.height / selectedTemplate.height) * 100}%`,
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent:
-                                _textArea.align === 'left'
+                                textArea.align === 'left'
                                   ? 'flex-start'
-                                  : _textArea.align === 'right'
+                                  : textArea.align === 'right'
                                     ? 'flex-end'
                                     : 'center',
-                              textAlign: _textArea.align,
+                              textAlign: textArea.align,
                               transition: 'none',
                               touchAction: 'none',
                               border:
@@ -926,7 +797,7 @@ export default function MemeCreator() {
                             level="H"
                             style={{ width: '100%', height: '100%' }}
                             imageSettings={{
-                              src: getSponsorLogoSrc(),
+                              src: sponsorLogo,
                               x: undefined,
                               y: undefined,
                               height: 40,
@@ -935,7 +806,7 @@ export default function MemeCreator() {
                             }}
                             bgColor={getSelectedQRStyle().bgColor}
                             fgColor={getSelectedQRStyle().fgColor}
-                            className="rounded-md QRCode"
+                            className="rounded-md"
                           />
                         </div>
                       )}
