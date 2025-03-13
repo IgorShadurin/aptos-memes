@@ -11,6 +11,7 @@ import { initializeTextInputs, resetTextPositions } from './utils';
 import TextInputFields from './TextInputFields';
 import QRCodeSection from './QRCodeSection';
 import MemeCanvas from './MemeCanvas';
+import { NewsModal } from './NewsModal';
 
 /**
  * MemeCreator component for creating and saving memes with variable text positions
@@ -22,6 +23,7 @@ export default function MemeCreator() {
   const [textInputs, setTextInputs] = useState<TextInput[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
+  const [newsModalOpen, setNewsModalOpen] = useState(false);
 
   // Sponsor QR code state
   const [addSponsorQR, setAddSponsorQR] = useState(false);
@@ -288,8 +290,9 @@ export default function MemeCreator() {
 
   /**
    * Generate AI text for the meme based on template information
+   * @param newsText - Optional news text to use for generation
    */
-  const generateAiText = async () => {
+  const generateAiText = async (newsText?: string) => {
     if (!selectedTemplate) return;
 
     setIsLoading(true);
@@ -299,6 +302,7 @@ export default function MemeCreator() {
         templateId: selectedTemplate.id,
         templateName: selectedTemplate.name,
         phrases: selectedTemplate.phrases,
+        newsText,
       };
 
       // Send a POST request with template information
@@ -341,6 +345,14 @@ export default function MemeCreator() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  /**
+   * Generate meme from news text
+   * @param newsText - News text to use for generation
+   */
+  const generateFromNews = async (newsText: string) => {
+    await generateAiText(newsText);
   };
 
   /**
@@ -390,7 +402,7 @@ export default function MemeCreator() {
   };
 
   return (
-    <div className="container mx-auto px-6 sm:px-4 py-8">
+    <div className="container py-6 md:py-12 px-4 md:px-6 max-w-6xl">
       <Card className="w-full max-w-3xl mx-auto bg-transparent shadow-lg">
         <CardHeader>
           <CardTitle>Meme Creator</CardTitle>
@@ -445,10 +457,10 @@ export default function MemeCreator() {
                   <div className="flex gap-2">
                     <Button
                       variant="outline"
-                      onClick={generateAiText}
+                      onClick={() => setNewsModalOpen(true)}
                       disabled={isLoading || !selectedTemplate}
                     >
-                      {isLoading ? 'Generating...' : '🪄 Generate with AI'}
+                      {isLoading ? 'Generating...' : '📰 Meme from News'}
                     </Button>
                     <Button
                       variant="secondary"
@@ -502,6 +514,14 @@ export default function MemeCreator() {
           </div>
         </div>
       )}
+
+      {/* Add the NewsModal component */}
+      <NewsModal
+        open={newsModalOpen}
+        onOpenChange={setNewsModalOpen}
+        onGenerate={generateFromNews}
+        isLoading={isLoading}
+      />
     </div>
   );
 }
