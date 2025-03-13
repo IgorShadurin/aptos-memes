@@ -58,6 +58,8 @@ export default function MemeCreator() {
     offsetX: 0,
     offsetY: 0,
   });
+  // Use a ref to immediately track the active drag state without waiting for React state updates
+  const activeDragRef = useRef<DragState | null>(null);
   const memeRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -149,24 +151,27 @@ export default function MemeCreator() {
     const textX = (textInput.position.x / selectedTemplate.width) * containerRect.width;
     const textY = (textInput.position.y / selectedTemplate.height) * containerRect.height;
 
-    // Set drag state with the offset from the text position to the click position
-    setDragState({
+    // Create the new drag state
+    const newDragState = {
       isDragging: true,
       textId,
       startX: e.clientX,
       startY: e.clientY,
       offsetX: textX - clickX,
       offsetY: textY - clickY,
-    });
+    };
+
+    // Store the drag state in the ref for immediate access
+    activeDragRef.current = newDragState;
+
+    // Update the React state for UI updates
+    setDragState(newDragState);
 
     // Add event listeners for drag and end
     window.addEventListener('mousemove', handleDragMove);
     window.addEventListener('mouseup', handleDragEnd);
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
     window.addEventListener('touchend', handleDragEnd);
-
-    // Start handling movement immediately with the current position
-    handleMove(e.clientX, e.clientY);
   };
 
   /**
@@ -174,7 +179,7 @@ export default function MemeCreator() {
    * @param e - Touch event
    */
   const handleTouchMove = (e: TouchEvent) => {
-    if (!dragState.isDragging || !e.touches[0]) return;
+    if (!activeDragRef.current || !e.touches[0]) return;
     e.preventDefault(); // Prevent scrolling while dragging
     const touch = e.touches[0];
     handleMove(touch.clientX, touch.clientY);
@@ -185,7 +190,7 @@ export default function MemeCreator() {
    * @param e - Mouse event
    */
   const handleDragMove = (e: MouseEvent) => {
-    if (!dragState.isDragging) return;
+    if (!activeDragRef.current) return;
     e.preventDefault();
     handleMove(e.clientX, e.clientY);
   };
@@ -196,14 +201,16 @@ export default function MemeCreator() {
    * @param clientY - Client Y coordinate
    */
   const handleMove = (clientX: number, clientY: number) => {
-    if (!containerRef.current || !selectedTemplate || !dragState.textId) return;
+    // Use the ref for immediate access to current drag state
+    const currentDrag = activeDragRef.current;
+    if (!containerRef.current || !selectedTemplate || !currentDrag || !currentDrag.textId) return;
 
     // Get container dimensions
     const containerRect = containerRef.current.getBoundingClientRect();
 
     // Calculate position relative to container, adding the offset
-    const relativeX = clientX - containerRect.left + dragState.offsetX;
-    const relativeY = clientY - containerRect.top + dragState.offsetY;
+    const relativeX = clientX - containerRect.left + currentDrag.offsetX;
+    const relativeY = clientY - containerRect.top + currentDrag.offsetY;
 
     // Convert to template coordinates
     const templateX = (relativeX / containerRect.width) * selectedTemplate.width;
@@ -212,7 +219,7 @@ export default function MemeCreator() {
     // Update the text positions
     setTextInputs((prev) =>
       prev.map((input) => {
-        if (input.id === dragState.textId) {
+        if (input.id === currentDrag.textId) {
           return {
             ...input,
             position: {
@@ -230,7 +237,10 @@ export default function MemeCreator() {
    * Handles the end of dragging a text element
    */
   const handleDragEnd = () => {
-    if (!dragState.isDragging) return;
+    if (!activeDragRef.current) return;
+
+    // Reset the active drag ref
+    activeDragRef.current = null;
 
     setDragState({
       isDragging: false,
@@ -425,6 +435,22 @@ export default function MemeCreator() {
                           <div
                             key={input.id}
                             className="absolute text-center cursor-move"
+                            onMouseDown={(e) => handleDragStart(e, input.id)}
+                            onTouchStart={(e) => {
+                              if (!e.touches[0]) return;
+                              e.preventDefault(); // Prevent default touch behavior
+
+                              const touch = e.touches[0];
+                              // Create a synthetic mouse event to reuse the same handler
+                              const mouseEvent = {
+                                clientX: touch.clientX,
+                                clientY: touch.clientY,
+                                preventDefault: () => {},
+                              } as React.MouseEvent;
+
+                              // Immediately handle drag start
+                              handleDragStart(mouseEvent, input.id);
+                            }}
                             style={{
                               left: `${((x - textArea.width / 2) / selectedTemplate.width) * 100}%`,
                               top: `${((y - textArea.height / 2) / selectedTemplate.height) * 100}%`,
@@ -439,10 +465,7 @@ export default function MemeCreator() {
                                     ? 'flex-end'
                                     : 'center',
                               textAlign: textArea.align,
-                              transition:
-                                dragState.isDragging && dragState.textId === input.id
-                                  ? 'none'
-                                  : 'all 0.1s ease',
+                              transition: 'none', // Remove transition to eliminate any lag
                               touchAction: 'none', // Disable browser handling of touch gestures
                               border:
                                 dragState.isDragging && dragState.textId === input.id
@@ -454,22 +477,6 @@ export default function MemeCreator() {
                                 dragState.isDragging && dragState.textId === input.id
                                   ? 'rgba(51, 153, 255, 0.1)'
                                   : 'transparent',
-                            }}
-                            onMouseDown={(e) => handleDragStart(e, input.id)}
-                            onTouchStart={(e) => {
-                              if (!e.touches[0]) return;
-                              e.preventDefault(); // Prevent scrolling/zooming first
-
-                              const touch = e.touches[0];
-                              // Create a synthetic mouse event to reuse the same handler
-                              const mouseEvent = {
-                                clientX: touch.clientX,
-                                clientY: touch.clientY,
-                                preventDefault: () => {},
-                              } as React.MouseEvent;
-
-                              // Immediately handle drag start
-                              handleDragStart(mouseEvent, input.id);
                             }}
                           >
                             <p
