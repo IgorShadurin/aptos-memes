@@ -73,7 +73,7 @@ export default function MemeCreator() {
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
   // Sponsor QR code state
   const [addSponsorQR, setAddSponsorQR] = useState(false);
-  const [sponsorUrl, setSponsorUrl] = useState('');
+  const [sponsorUrl, setSponsorUrl] = useState('https://aptosfoundation.org/');
   const [sponsorLogo, setSponsorLogo] = useState('/sponsors/aptos.png');
   const [urlError, setUrlError] = useState<string | null>(null);
   const [qrCodeStyle, setQrCodeStyle] = useState<string>('vibrant-orange');
