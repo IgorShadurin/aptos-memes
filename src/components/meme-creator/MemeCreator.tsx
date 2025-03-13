@@ -390,7 +390,7 @@ export default function MemeCreator() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-6 sm:px-4 py-8">
       <Card className="w-full max-w-3xl mx-auto bg-transparent shadow-lg">
         <CardHeader>
           <CardTitle>Meme Creator</CardTitle>

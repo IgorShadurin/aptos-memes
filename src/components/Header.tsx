@@ -16,7 +16,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 w-full shadow-md bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 text-white relative">
       <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-yellow-300 via-white to-yellow-300 shimmer-border"></div>
-      <div className="container flex h-16 items-center justify-between py-4">
+      <div className="container flex h-16 items-center justify-between py-4 px-4 sm:px-4">
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-3 group">
             <div className="relative transition-transform duration-300 group-hover:scale-110">
