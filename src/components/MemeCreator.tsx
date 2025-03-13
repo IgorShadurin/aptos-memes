@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { toPng } from 'html-to-image';
 import { useSearchParams } from 'next/navigation';
+import { QRCodeSVG } from 'qrcode.react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
@@ -60,6 +61,12 @@ export default function MemeCreator() {
   const [textInputs, setTextInputs] = useState<TextInput[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
+  // Sponsor QR code state
+  const [addSponsorQR, setAddSponsorQR] = useState(false);
+  const [sponsorUrl, setSponsorUrl] = useState('');
+  const [sponsorLogo, setSponsorLogo] = useState('/sponsors/aptos.png');
+  const [urlError, setUrlError] = useState<string | null>(null);
+
   const [dragState, setDragState] = useState<DragState>({
     isDragging: false,
     textId: null,
@@ -423,6 +430,55 @@ export default function MemeCreator() {
     }
   };
 
+  /**
+   * Validates the sponsor URL
+   * @param url - URL to validate
+   * @returns Boolean indicating if the URL is valid
+   */
+  const validateUrl = (url: string): boolean => {
+    try {
+      new URL(url);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  /**
+   * Handles changes to the sponsor URL input
+   * @param e - Change event
+   */
+  const handleSponsorUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = e.target.value;
+    setSponsorUrl(url);
+
+    if (url && !validateUrl(url)) {
+      setUrlError('Please enter a valid URL');
+    } else {
+      setUrlError(null);
+    }
+  };
+
+  /**
+   * Encodes a string to Base64
+   * @param str - String to encode
+   * @returns Base64 encoded string
+   */
+  const encodeToBase64 = (str: string): string => {
+    return btoa(str);
+  };
+
+  /**
+   * Gets the encoded URL for the QR code
+   * @returns Encoded URL for the QR code
+   */
+  const getEncodedQrUrl = (): string => {
+    if (!sponsorUrl) return '';
+
+    const encodedUrl = encodeToBase64(sponsorUrl);
+    return `${window.location.origin}/sponsored-meme?url=${encodedUrl}`;
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <Card className="w-full max-w-3xl mx-auto bg-transparent shadow-lg">
@@ -469,6 +525,80 @@ export default function MemeCreator() {
                     </div>
                   );
                 })}
+              </div>
+            )}
+
+            {/* Sponsor QR Code Section */}
+            {selectedTemplate && (
+              <div className="mt-4 border-t pt-4">
+                <div className="flex items-center mb-2">
+                  <input
+                    type="checkbox"
+                    id="addSponsorQR"
+                    checked={addSponsorQR}
+                    onChange={(e) => setAddSponsorQR(e.target.checked)}
+                    className="mr-2 h-4 w-4"
+                  />
+                  <label htmlFor="addSponsorQR" className="text-sm font-medium">
+                    Add Sponsor QR
+                  </label>
+                </div>
+
+                {addSponsorQR && (
+                  <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-md mt-2 space-y-3">
+                    <div>
+                      <label htmlFor="sponsorLogo" className="block text-sm font-medium mb-1">
+                        Sponsor Logo
+                      </label>
+                      <Select
+                        id="sponsorLogo"
+                        value={sponsorLogo}
+                        onChange={(e) => setSponsorLogo(e.target.value)}
+                      >
+                        <option value="/sponsors/aptos.png">Aptos</option>
+                        {/* Add more logo options here as needed */}
+                      </Select>
+                    </div>
+
+                    <div>
+                      <label htmlFor="sponsorUrl" className="block text-sm font-medium mb-1">
+                        Sponsor URL
+                      </label>
+                      <Input
+                        id="sponsorUrl"
+                        value={sponsorUrl}
+                        onChange={handleSponsorUrlChange}
+                        placeholder="https://example.com"
+                        className={urlError ? 'border-red-500' : ''}
+                      />
+                      {urlError && <p className="text-red-500 text-xs mt-1">{urlError}</p>}
+                    </div>
+
+                    {sponsorUrl && !urlError && (
+                      <div className="flex justify-center mt-2">
+                        <div className="bg-white p-2 rounded-md">
+                          <QRCodeSVG
+                            value={getEncodedQrUrl()}
+                            size={120}
+                            level="H"
+                            style={{ width: '100%', height: '100%' }}
+                            imageSettings={{
+                              src: sponsorLogo,
+                              x: undefined,
+                              y: undefined,
+                              height: 48,
+                              width: 48,
+                              excavate: true,
+                            }}
+                            bgColor="#FFFFFF"
+                            fgColor="#FF5733"
+                            className="rounded-md"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
@@ -600,6 +730,36 @@ export default function MemeCreator() {
                           </div>
                         );
                       })}
+
+                      {/* QR Code on the meme */}
+                      {addSponsorQR && sponsorUrl && !urlError && (
+                        <div
+                          className="absolute bottom-4 right-8 bg-white p-1 rounded-md shadow-md"
+                          style={{
+                            width: '15%',
+                            height: 'auto',
+                            aspectRatio: '1 / 1',
+                          }}
+                        >
+                          <QRCodeSVG
+                            value={getEncodedQrUrl()}
+                            size={100}
+                            level="H"
+                            style={{ width: '100%', height: '100%' }}
+                            imageSettings={{
+                              src: sponsorLogo,
+                              x: undefined,
+                              y: undefined,
+                              height: 40,
+                              width: 40,
+                              excavate: true,
+                            }}
+                            bgColor="#FFFFFF"
+                            fgColor="#FF5733"
+                            className="rounded-md"
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
