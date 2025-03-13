@@ -165,13 +165,17 @@ export default function MemeCreator() {
     // Get container dimensions
     const containerRect = containerRef.current.getBoundingClientRect();
 
+    // Get scaling factor for responsive sizing
+    const scaleX = containerRect.width / selectedTemplate.width;
+    const scaleY = containerRect.height / selectedTemplate.height;
+
     // Calculate the click position relative to the container
     const clickX = e.clientX - containerRect.left;
     const clickY = e.clientY - containerRect.top;
 
-    // Calculate the text position in pixels
-    const textX = (textInput.position.x / selectedTemplate.width) * containerRect.width;
-    const textY = (textInput.position.y / selectedTemplate.height) * containerRect.height;
+    // Calculate the text position in pixels, accounting for scaling
+    const textX = textInput.position.x * scaleX;
+    const textY = textInput.position.y * scaleY;
 
     // Create the new drag state
     const newDragState = {
@@ -230,13 +234,21 @@ export default function MemeCreator() {
     // Get container dimensions
     const containerRect = containerRef.current.getBoundingClientRect();
 
-    // Calculate position relative to container, adding the offset
+    // Get scaling factor for responsive sizing
+    const scaleX = selectedTemplate.width / containerRect.width;
+    const scaleY = selectedTemplate.height / containerRect.height;
+
+    // Calculate position relative to container
     const relativeX = clientX - containerRect.left + currentDrag.offsetX;
     const relativeY = clientY - containerRect.top + currentDrag.offsetY;
 
-    // Convert to template coordinates
-    const templateX = (relativeX / containerRect.width) * selectedTemplate.width;
-    const templateY = (relativeY / containerRect.height) * selectedTemplate.height;
+    // Convert to template coordinates, accounting for the scaling
+    const templateX = relativeX * scaleX;
+    const templateY = relativeY * scaleY;
+
+    // Clamp values to prevent text from moving off-screen
+    const clampedX = Math.max(50, Math.min(templateX, selectedTemplate.width - 50));
+    const clampedY = Math.max(50, Math.min(templateY, selectedTemplate.height - 50));
 
     // Update the text positions
     setTextInputs((prev) =>
@@ -245,8 +257,8 @@ export default function MemeCreator() {
           return {
             ...input,
             position: {
-              x: templateX,
-              y: templateY,
+              x: clampedX,
+              y: clampedY,
             },
           };
         }
@@ -467,10 +479,11 @@ export default function MemeCreator() {
                     ref={containerRef}
                     className="relative inline-block"
                     style={{
-                      width: selectedTemplate.width,
-                      height: selectedTemplate.height,
+                      width: '100%',
+                      height: 'auto',
                       maxWidth: '100%',
                       maxHeight: '70vh',
+                      aspectRatio: `${selectedTemplate.width} / ${selectedTemplate.height}`,
                     }}
                   >
                     <div ref={memeRef} className="relative w-full h-full">
@@ -517,7 +530,8 @@ export default function MemeCreator() {
                               left: `${((x - textArea.width / 2) / selectedTemplate.width) * 100}%`,
                               top: `${((y - textArea.height / 2) / selectedTemplate.height) * 100}%`,
                               width: `${(textArea.width / selectedTemplate.width) * 100}%`,
-                              height: `${(textArea.height / selectedTemplate.height) * 100}%`,
+                              height: 'auto',
+                              minHeight: `${(textArea.height / selectedTemplate.height) * 100}%`,
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent:
@@ -527,8 +541,8 @@ export default function MemeCreator() {
                                     ? 'flex-end'
                                     : 'center',
                               textAlign: textArea.align,
-                              transition: 'none', // Remove transition to eliminate any lag
-                              touchAction: 'none', // Disable browser handling of touch gestures
+                              transition: 'none',
+                              touchAction: 'none',
                               border:
                                 dragState.isDragging && dragState.textId === input.id
                                   ? '2px dashed #39f'
@@ -539,6 +553,9 @@ export default function MemeCreator() {
                                 dragState.isDragging && dragState.textId === input.id
                                   ? 'rgba(51, 153, 255, 0.1)'
                                   : 'transparent',
+                              maxWidth: '90%',
+                              wordWrap: 'break-word',
+                              overflowWrap: 'break-word',
                             }}
                           >
                             <p
@@ -546,12 +563,14 @@ export default function MemeCreator() {
                               style={{
                                 fontFamily:
                                   'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
-                                fontSize: 'clamp(16px, 4vw, 32px)',
+                                fontSize: 'clamp(12px, 3.5vw, 32px)',
                                 lineHeight: '1.2',
                                 color: 'white',
                                 textShadow:
                                   '2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0 2px 0 #000, 2px 0 0 #000, 0 -2px 0 #000, -2px 0 0 #000',
                                 pointerEvents: 'none',
+                                wordBreak: 'break-word',
+                                padding: '2px 4px',
                               }}
                             >
                               {input.text}
