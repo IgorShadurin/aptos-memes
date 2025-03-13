@@ -154,3 +154,30 @@
     transform: translateX(100%);
   }
 }
+
+/* Animated gradient for text */
+@keyframes gradient-x {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 8s ease infinite;
+  background-image: linear-gradient(
+    to right,
+    #00ffff,
+    /* Bright Cyan */ #ff00ff,
+    /* Bright Magenta */ #ffff00,
+    /* Bright Yellow */ #ffffff,
+    /* White */ #ff3300,
+    /* Bright Red-Orange */ #00ffff /* Back to Bright Cyan */
+  );
+}
