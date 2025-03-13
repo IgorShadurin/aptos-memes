@@ -81,7 +81,10 @@ export default function Header() {
           <div className="space-y-1 px-4 py-3 border-t border-indigo-500">
             <div className="px-3">
               <Link href="/meme-creator" onClick={() => setMobileMenuOpen(false)}>
-                <Button className="w-full bg-white text-purple-700 hover:bg-yellow-300 hover:text-purple-800 font-bold rounded-full">
+                <Button
+                  size="sm"
+                  className="w-full bg-white text-purple-700 hover:bg-yellow-300 hover:text-purple-800 font-bold transition-all duration-300 shadow-md rounded-full px-4"
+                >
                   🎨 Create Meme
                 </Button>
               </Link>

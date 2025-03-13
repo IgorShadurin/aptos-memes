@@ -18,7 +18,7 @@ export default function Home() {
             Aptos Meme Factory
           </h1>
           <p className="mt-6 max-w-2xl text-xl md:text-2xl font-medium text-white drop-shadow-md">
-            Your one-stop meme shop for all things Aptos & Move!
+            Your one-stop meme shop for all things!
           </p>
 
           {/* Features grid */}
@@ -48,7 +48,7 @@ export default function Home() {
             <Link href="/meme-creator" passHref>
               <Button
                 size="lg"
-                className="bg-white text-purple-700 hover:bg-yellow-300 hover:text-purple-800 transition-all duration-300 transform hover:scale-105 font-bold text-lg px-8"
+                className="bg-white text-purple-700 hover:bg-yellow-300 hover:text-purple-800 font-bold transition-all duration-300 shadow-md rounded-full px-6 py-3 text-lg"
               >
                 🎨 Create Meme
               </Button>
