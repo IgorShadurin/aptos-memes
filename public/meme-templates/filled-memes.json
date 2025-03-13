@@ -1,0 +1,314 @@
+[
+  {
+    "id": "meme1",
+    "name": "Distracted Developer",
+    "templateId": "template1",
+    "path": "/meme-templates/1.png",
+    "texts": [
+      {
+        "id": "girlfriend",
+        "text": "My Current Project"
+      },
+      {
+        "id": "boyfriend",
+        "text": "Me"
+      },
+      {
+        "id": "distraction",
+        "text": "New Framework Released"
+      }
+    ]
+  },
+  {
+    "id": "meme2",
+    "name": "Programmer Thoughts",
+    "templateId": "template2",
+    "path": "/meme-templates/2.png",
+    "texts": [
+      {
+        "id": "girl",
+        "text": "He's probably thinking about other girls"
+      },
+      {
+        "id": "thoughts",
+        "text": "Why is my code working on localhost but not in production?"
+      }
+    ]
+  },
+  {
+    "id": "meme3",
+    "name": "Developer's Dilemma",
+    "templateId": "template3",
+    "path": "/meme-templates/3.png",
+    "texts": [
+      {
+        "id": "leftButton",
+        "text": "Learn one framework deeply"
+      },
+      {
+        "id": "rightButton",
+        "text": "Learn basics of multiple frameworks"
+      },
+      {
+        "id": "person",
+        "text": "Junior Developer"
+      }
+    ]
+  },
+  {
+    "id": "meme4",
+    "name": "Waiting for Deployment",
+    "templateId": "template4",
+    "path": "/meme-templates/4.png",
+    "texts": [
+      {
+        "id": "caption",
+        "text": "Waiting for the build pipeline that was supposed to take 2 minutes but it's been 30 minutes already"
+      }
+    ]
+  },
+  {
+    "id": "meme5",
+    "name": "Coding Preferences",
+    "templateId": "template5",
+    "path": "/meme-templates/5.png",
+    "texts": [
+      {
+        "id": "top",
+        "text": "Writing clean, documented code"
+      },
+      {
+        "id": "bottom",
+        "text": "Copy-pasting from Stack Overflow at 3 AM"
+      }
+    ]
+  },
+  {
+    "id": "meme6",
+    "name": "Legacy Code Victory",
+    "templateId": "template6",
+    "path": "/meme-templates/6.png",
+    "texts": [
+      {
+        "id": "caption",
+        "text": "When you finally understand the legacy code that no one has touched in 5 years"
+      }
+    ]
+  },
+  {
+    "id": "meme7",
+    "name": "Monday Morning",
+    "templateId": "template7",
+    "path": "/meme-templates/7.png",
+    "texts": [
+      {
+        "id": "caption",
+        "text": "Looking at the codebase after the weekend freelancer 'fixed' it"
+      }
+    ]
+  },
+  {
+    "id": "meme8",
+    "name": "Client Requests",
+    "templateId": "template8",
+    "path": "/meme-templates/8.jpg",
+    "texts": [
+      {
+        "id": "top",
+        "text": "When the client says they want just one small change"
+      },
+      {
+        "id": "bottom",
+        "text": "And you have to refactor the entire application"
+      }
+    ]
+  },
+  {
+    "id": "meme9",
+    "name": "Bug Prevention",
+    "templateId": "template9",
+    "path": "/meme-templates/9.jpg",
+    "texts": [
+      {
+        "id": "top",
+        "text": "Can't have merge conflicts"
+      },
+      {
+        "id": "bottom",
+        "text": "If you're the only developer on the project"
+      }
+    ]
+  },
+  {
+    "id": "meme10",
+    "name": "Feature Explanation",
+    "templateId": "template10",
+    "path": "/meme-templates/10.jpg",
+    "texts": [
+      {
+        "id": "woman",
+        "text": "Me explaining why we need to update our dependencies"
+      },
+      {
+        "id": "cat",
+        "text": "The client who just wants the button to be blue"
+      }
+    ]
+  },
+  {
+    "id": "meme11",
+    "name": "Deadline Approach",
+    "templateId": "template1",
+    "path": "/meme-templates/1.png",
+    "texts": [
+      {
+        "id": "girlfriend",
+        "text": "Well-tested code"
+      },
+      {
+        "id": "boyfriend",
+        "text": "Developer"
+      },
+      {
+        "id": "distraction",
+        "text": "Quick hacks before deadline"
+      }
+    ]
+  },
+  {
+    "id": "meme12",
+    "name": "Weekend Plans",
+    "templateId": "template2",
+    "path": "/meme-templates/2.png",
+    "texts": [
+      {
+        "id": "girl",
+        "text": "He must be thinking about other girls"
+      },
+      {
+        "id": "thoughts",
+        "text": "I wonder if I should refactor that ugly function this weekend"
+      }
+    ]
+  },
+  {
+    "id": "meme13",
+    "name": "Code Quality Choices",
+    "templateId": "template3",
+    "path": "/meme-templates/3.png",
+    "texts": [
+      {
+        "id": "leftButton",
+        "text": "Write comments"
+      },
+      {
+        "id": "rightButton",
+        "text": "Write self-documenting code"
+      },
+      {
+        "id": "person",
+        "text": "Senior developer"
+      }
+    ]
+  },
+  {
+    "id": "meme14",
+    "name": "Release Day Blues",
+    "templateId": "template4",
+    "path": "/meme-templates/4.png",
+    "texts": [
+      {
+        "id": "caption",
+        "text": "Sitting alone after deploying to production on Friday afternoon"
+      }
+    ]
+  },
+  {
+    "id": "meme15",
+    "name": "Development Approaches",
+    "templateId": "template5",
+    "path": "/meme-templates/5.png",
+    "texts": [
+      {
+        "id": "top",
+        "text": "Planning everything before coding"
+      },
+      {
+        "id": "bottom",
+        "text": "Figuring it out as I code"
+      }
+    ]
+  },
+  {
+    "id": "meme16",
+    "name": "Pull Request Success",
+    "templateId": "template6",
+    "path": "/meme-templates/6.png",
+    "texts": [
+      {
+        "id": "caption",
+        "text": "When your pull request gets approved with no change requests"
+      }
+    ]
+  },
+  {
+    "id": "meme17",
+    "name": "Database Danger",
+    "templateId": "template7",
+    "path": "/meme-templates/7.png",
+    "texts": [
+      {
+        "id": "caption",
+        "text": "Running DELETE queries without a WHERE clause in production"
+      }
+    ]
+  },
+  {
+    "id": "meme18",
+    "name": "Project Management Reality",
+    "templateId": "template8",
+    "path": "/meme-templates/8.jpg",
+    "texts": [
+      {
+        "id": "top",
+        "text": "Project timeline according to the manager"
+      },
+      {
+        "id": "bottom",
+        "text": "Actual time needed for development"
+      }
+    ]
+  },
+  {
+    "id": "meme19",
+    "name": "Error Prevention",
+    "templateId": "template9",
+    "path": "/meme-templates/9.jpg",
+    "texts": [
+      {
+        "id": "top",
+        "text": "Can't have bugs in production"
+      },
+      {
+        "id": "bottom",
+        "text": "If you never deploy to production"
+      }
+    ]
+  },
+  {
+    "id": "meme20",
+    "name": "Tech Debate",
+    "templateId": "template10",
+    "path": "/meme-templates/10.jpg",
+    "texts": [
+      {
+        "id": "woman",
+        "text": "Me explaining why tabs are better than spaces"
+      },
+      {
+        "id": "cat",
+        "text": "Developer who doesn't care about indentation"
+      }
+    ]
+  }
+]

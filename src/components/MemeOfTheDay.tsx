@@ -1,67 +1,118 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { toPng } from 'html-to-image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { HiDownload, HiThumbUp } from 'react-icons/hi';
 
+interface TextArea {
+  id: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  align: 'left' | 'center' | 'right';
+  defaultText: string;
+}
+
+interface Template {
+  id: string;
+  name: string;
+  path: string;
+  width: number;
+  height: number;
+  textAreas: TextArea[];
+}
+
+interface MemeText {
+  id: string;
+  text: string;
+}
+
 interface MemeOfDay {
   id: string;
   title: string;
+  templateId: string;
   imagePath: string;
   likes: number;
   creator: string;
   date: string;
   joke: string;
+  texts: MemeText[];
 }
 
 /**
  * MemeOfTheDay component displays a featured meme with download functionality
- * Now includes drone-related jokes featured prominently at the top
+ * Includes rendering of text on the meme and proper image download
  */
 export default function MemeOfTheDay() {
   const [meme, setMeme] = useState<MemeOfDay | null>(null);
+  const [template, setTemplate] = useState<Template | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+  const memeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // In a real app, this would fetch from an API
-    // For now we'll use mock data
-    const getMemeOfTheDay = () => {
-      setIsLoading(true);
+    // For now we'll use mock data and the template data
+    const loadMemeOfTheDay = async () => {
+      try {
+        setIsLoading(true);
 
-      // Mock data for the meme of the day with drone jokes
-      const droneJokes = [
-        "Why don't drones ever get invited to parties? They always hover around and buzz everyone off!",
-        'I bought a drone for my kid, but I had to return it. It kept getting grounded!',
-        'My drone and I broke up. It said our relationship was too up in the air!',
-        'What do you call a drone that delivers desserts? A Pie in the Sky!',
-        'Drone photography is looking up these days.',
-      ];
+        // Load templates to get text areas
+        const templatesResponse = await fetch('/meme-templates/templates.json');
+        const templatesData = await templatesResponse.json();
 
-      // Pick a random joke from the array
-      const randomJoke = droneJokes[Math.floor(Math.random() * droneJokes.length)];
+        // Mock data for the meme of the day with drone jokes
+        const droneJokes = [
+          "Why don't drones ever get invited to parties? They always hover around and buzz everyone off!",
+          'I bought a drone for my kid, but I had to return it. It kept getting grounded!',
+          'My drone and I broke up. It said our relationship was too up in the air!',
+          'What do you call a drone that delivers desserts? A Pie in the Sky!',
+          'Drone photography is looking up these days.',
+        ];
 
-      const mockMeme: MemeOfDay = {
-        id: 'drone-1',
-        title: 'Drone Humor Takes Flight',
-        imagePath: '/meme-templates/6.png', // Using an existing template as a placeholder
-        likes: 321,
-        creator: 'DroneEnthusiast',
-        date: new Date().toLocaleDateString(),
-        joke: randomJoke,
-      };
+        // Pick a random joke from the array
+        const randomJoke = droneJokes[Math.floor(Math.random() * droneJokes.length)];
 
-      setTimeout(() => {
-        setMeme(mockMeme);
-        setLikeCount(mockMeme.likes);
+        // Use template6 (Leonardo DiCaprio) for the meme of the day
+        const templateId = 'template6';
+        const selectedTemplate = templatesData.find((t: Template) => t.id === templateId);
+
+        if (selectedTemplate) {
+          setTemplate(selectedTemplate);
+
+          const mockMeme: MemeOfDay = {
+            id: 'drone-1',
+            title: 'Drone Humor Takes Flight',
+            templateId,
+            imagePath: selectedTemplate.path,
+            likes: 321,
+            creator: 'DroneEnthusiast',
+            date: new Date().toLocaleDateString(),
+            joke: randomJoke,
+            texts: [
+              {
+                id: 'caption',
+                text: 'When you finally get your drone footage after battling wind warnings for 20 minutes',
+              },
+            ],
+          };
+
+          setMeme(mockMeme);
+          setLikeCount(mockMeme.likes);
+        }
+      } catch (error) {
+        console.error('Failed to load meme of the day:', error);
+      } finally {
         setIsLoading(false);
-      }, 500); // Simulate loading
+      }
     };
 
-    getMemeOfTheDay();
+    loadMemeOfTheDay();
   }, []);
 
   /**
@@ -78,19 +129,25 @@ export default function MemeOfTheDay() {
   };
 
   /**
-   * Handles downloading the meme image
+   * Handles downloading the meme image with text
    */
-  const handleDownload = () => {
-    if (!meme) return;
+  const handleDownload = async () => {
+    if (!meme || !memeRef.current) return;
 
-    // In a real implementation, this would generate an image with the joke text
-    // For now, we'll just download the template image
-    const link = document.createElement('a');
-    link.href = meme.imagePath;
-    link.download = `drone-meme-of-the-day-${meme.id}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      // Generate image with text using html-to-image
+      const dataUrl = await toPng(memeRef.current, { cacheBust: true });
+
+      // Create and trigger download
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = `drone-meme-of-the-day-${meme.id}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Failed to download meme:', error);
+    }
   };
 
   if (isLoading) {
@@ -111,7 +168,7 @@ export default function MemeOfTheDay() {
     );
   }
 
-  if (!meme) {
+  if (!meme || !template) {
     return (
       <div className="text-center py-8">
         <p className="text-xl text-gray-500">No meme of the day available</p>
@@ -129,7 +186,7 @@ export default function MemeOfTheDay() {
             <p className="font-bold text-lg italic relative z-10">"{meme.joke}"</p>
           </div>
 
-          <div className="relative h-64 md:h-96 w-full">
+          <div ref={memeRef} className="relative h-64 md:h-96 w-full">
             <Image
               src={meme.imagePath}
               alt={meme.title}
@@ -137,6 +194,49 @@ export default function MemeOfTheDay() {
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
+
+            {/* Render text on the meme */}
+            {meme.texts.map((textItem) => {
+              const textArea = template.textAreas.find((area) => area.id === textItem.id);
+              if (!textArea) return null;
+
+              return (
+                <div
+                  key={textItem.id}
+                  className="absolute text-center"
+                  style={{
+                    left: `${((textArea.x - textArea.width / 2) / template.width) * 100}%`,
+                    top: `${((textArea.y - textArea.height / 2) / template.height) * 100}%`,
+                    width: `${(textArea.width / template.width) * 100}%`,
+                    height: `${(textArea.height / template.height) * 100}%`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent:
+                      textArea.align === 'left'
+                        ? 'flex-start'
+                        : textArea.align === 'right'
+                          ? 'flex-end'
+                          : 'center',
+                    textAlign: textArea.align,
+                  }}
+                >
+                  <p
+                    className="w-full uppercase"
+                    style={{
+                      fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
+                      fontSize: 'clamp(16px, 4vw, 32px)',
+                      lineHeight: '1.2',
+                      color: 'white',
+                      textShadow:
+                        '2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0 2px 0 #000, 2px 0 0 #000, 0 -2px 0 #000, -2px 0 0 #000',
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    {textItem.text}
+                  </p>
+                </div>
+              );
+            })}
           </div>
           <div className="p-6 bg-gradient-to-b from-white to-purple-50/50 dark:from-gray-900 dark:to-purple-900/30">
             <h3 className="text-2xl font-bold mb-2 text-gray-800 dark:text-gray-100">

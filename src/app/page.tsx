@@ -1,8 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import MemeGrid from '@/components/MemeGrid';
-import MemeOfTheDay from '@/components/MemeOfTheDay';
-import { HiDownload, HiSparkles } from 'react-icons/hi';
+import { HiSparkles } from 'react-icons/hi';
 
 export default function Home() {
   return (
@@ -33,22 +32,11 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Meme of the Day Section */}
-      <div className="w-full py-16 relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-100/70 to-pink-100/70 dark:from-purple-900/20 dark:to-pink-900/20 -skew-y-1"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <h2 className="text-3xl font-extrabold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-pink-700">
-            Drone Meme of the Day
-          </h2>
-          <MemeOfTheDay />
-        </div>
-      </div>
-
       {/* Popular Meme Templates Section */}
-      <div className="w-full py-16 relative">
+      <div className="w-full py-20 relative">
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-100/50 to-blue-100/50 dark:from-indigo-900/20 dark:to-blue-900/20 skew-y-1"></div>
         <div className="container mx-auto px-4 relative z-10">
-          <h2 className="mb-8 text-3xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-cyan-700">
+          <h2 className="mb-10 text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-pink-700">
             Popular Meme Templates
           </h2>
           <MemeGrid />
