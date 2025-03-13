@@ -14,6 +14,7 @@ interface DialogPortalProps extends DialogPrimitive.DialogPortalProps {
   className?: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 const DialogPortal = ({ className, ...props }: DialogPortalProps) => (
   <DialogPrimitive.Portal {...props} />
 );

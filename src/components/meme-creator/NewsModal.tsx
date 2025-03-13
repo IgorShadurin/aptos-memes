@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import {
   Dialog,
   DialogContent,
@@ -30,6 +31,9 @@ export function NewsModal({ open, onOpenChange, onGenerate, isLoading }: NewsMod
   const [newsText, setNewsText] = useState<string>(
     'Breaking news: Aptos blockchain reaches 1 million users this month, setting a new record for the fastest growing Layer 1 blockchain. Development activity surges as the ecosystem continues to attract new talent from across the Web3 space.'
   );
+  const [newsUrl, setNewsUrl] = useState<string>('');
+  const [fetchLoading, setFetchLoading] = useState<boolean>(false);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   /**
    * Handle the generate button click
@@ -39,16 +43,72 @@ export function NewsModal({ open, onOpenChange, onGenerate, isLoading }: NewsMod
     onOpenChange(false);
   };
 
+  /**
+   * Fetch news text from the provided URL
+   */
+  const fetchNewsText = async () => {
+    if (!newsUrl.trim()) {
+      setFetchError('Please enter a URL');
+      return;
+    }
+
+    setFetchLoading(true);
+    setFetchError(null);
+
+    try {
+      const response = await fetch('/api/fetch-news-text', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url: newsUrl }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch news text');
+      }
+
+      const data = await response.json();
+
+      if (data.newsText) {
+        setNewsText(data.newsText);
+      } else if (data.error) {
+        setFetchError(data.error);
+      }
+    } catch (error) {
+      setFetchError('Error fetching news text. Please try again.');
+      console.error('Error fetching news text:', error);
+    } finally {
+      setFetchLoading(false);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
           <DialogTitle>Generate Meme from News</DialogTitle>
           <DialogDescription>
-            Enter or edit news text below to generate a creative meme.
+            Enter a URL to fetch news text or edit the text directly below.
           </DialogDescription>
         </DialogHeader>
-        <div className="py-4">
+
+        <div className="grid gap-4 py-4">
+          <div className="flex items-center gap-2">
+            <Input
+              value={newsUrl}
+              onChange={(e) => setNewsUrl(e.target.value)}
+              placeholder="Enter news URL (e.g., aptos.dev, coindesk.com)"
+              className="flex-1"
+              disabled={fetchLoading}
+            />
+            <Button onClick={fetchNewsText} disabled={fetchLoading || !newsUrl.trim()}>
+              {fetchLoading ? 'Fetching...' : 'Fetch'}
+            </Button>
+          </div>
+
+          {fetchError && <p className="text-sm text-red-500">{fetchError}</p>}
+
           <Textarea
             value={newsText}
             onChange={(e) => setNewsText(e.target.value)}
@@ -56,6 +116,7 @@ export function NewsModal({ open, onOpenChange, onGenerate, isLoading }: NewsMod
             className="min-h-[150px]"
           />
         </div>
+
         <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
             Cancel
