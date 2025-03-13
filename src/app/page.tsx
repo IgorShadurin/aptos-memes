@@ -62,7 +62,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-100/50 to-blue-100/50 dark:from-indigo-900/20 dark:to-blue-900/20 skew-y-1"></div>
         <div className="container mx-auto px-6 sm:px-4 relative z-10">
           <h2 className="mb-10 text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-pink-700">
-            Popular Meme Templates
+            Popular Memes
           </h2>
           <MemeGrid />
         </div>
