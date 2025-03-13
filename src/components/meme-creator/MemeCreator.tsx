@@ -458,7 +458,11 @@ export default function MemeCreator() {
                       🔄 Reset Positions
                     </Button>
                   </div>
-                  <Button onClick={saveMeme} disabled={!selectedTemplate}>
+                  <Button
+                    onClick={saveMeme}
+                    disabled={!selectedTemplate}
+                    className="w-full sm:w-auto"
+                  >
                     💾 Download
                   </Button>
                 </div>
