@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import Header from '@/components/Header';
 import './globals.css';
 
 const geistSans = Geist({
@@ -37,7 +38,15 @@ export default function RootLayout({
       <head>
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <div className="flex min-h-screen flex-col">
+          <Header />
+          <main className="flex-1">{children}</main>
+          <footer className="w-full py-4 px-4 mt-auto text-center text-sm text-gray-600 dark:text-gray-400 border-t">
+            © {new Date().getFullYear()} Meme My News. All rights reserved.
+          </footer>
+        </div>
+      </body>
     </html>
   );
 }

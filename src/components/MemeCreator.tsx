@@ -8,24 +8,58 @@ import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
+interface TextArea {
+  id: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  align: 'left' | 'center' | 'right';
+  defaultText: string;
+}
+
 interface MemeTemplate {
   id: string;
   name: string;
   path: string;
   width: number;
   height: number;
+  textAreas: TextArea[];
+}
+
+interface TextInput {
+  id: string;
+  text: string;
+  position?: { x: number; y: number };
+}
+
+interface DragState {
+  isDragging: boolean;
+  textId: string | null;
+  startX: number;
+  startY: number;
+  offsetX: number;
+  offsetY: number;
 }
 
 /**
- * MemeCreator component for creating and saving memes
+ * MemeCreator component for creating and saving memes with variable text positions
  */
 export default function MemeCreator() {
   const [templates, setTemplates] = useState<MemeTemplate[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<MemeTemplate | null>(null);
-  const [topText, setTopText] = useState('');
-  const [bottomText, setBottomText] = useState('');
+  const [textInputs, setTextInputs] = useState<TextInput[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [dragState, setDragState] = useState<DragState>({
+    isDragging: false,
+    textId: null,
+    startX: 0,
+    startY: 0,
+    offsetX: 0,
+    offsetY: 0,
+  });
   const memeRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Load templates on component mount
   useEffect(() => {
@@ -36,6 +70,7 @@ export default function MemeCreator() {
         setTemplates(data);
         if (data.length > 0) {
           setSelectedTemplate(data[0]);
+          initializeTextInputs(data[0]);
         }
       } catch (error) {
         console.error('Failed to load meme templates:', error);
@@ -46,6 +81,22 @@ export default function MemeCreator() {
   }, []);
 
   /**
+   * Initializes text inputs based on the selected template
+   * @param template - The selected template
+   */
+  const initializeTextInputs = (template: MemeTemplate) => {
+    if (!template) return;
+
+    const newTextInputs = template.textAreas.map((area) => ({
+      id: area.id,
+      text: area.defaultText || '',
+      position: { x: area.x, y: area.y },
+    }));
+
+    setTextInputs(newTextInputs);
+  };
+
+  /**
    * Handles template selection change
    * @param e - Change event
    */
@@ -53,23 +104,219 @@ export default function MemeCreator() {
     const templateId = e.target.value;
     const template = templates.find((t) => t.id === templateId) || null;
     setSelectedTemplate(template);
+
+    if (template) {
+      initializeTextInputs(template);
+    }
   };
+
+  /**
+   * Updates text input for a specific text area
+   * @param id - Text area ID
+   * @param text - New text value
+   */
+  const updateTextInput = (id: string, text: string) => {
+    setTextInputs((prevInputs) =>
+      prevInputs.map((input) => (input.id === id ? { ...input, text } : input))
+    );
+  };
+
+  /**
+   * Handles the start of dragging a text element
+   * @param e - Mouse event
+   * @param textId - ID of the text being dragged
+   */
+  const handleDragStart = (e: React.MouseEvent, textId: string) => {
+    e.preventDefault(); // Prevent text selection during drag
+    if (!containerRef.current || !selectedTemplate) return;
+
+    // Find the text input being dragged
+    const textInput = textInputs.find((input) => input.id === textId);
+    if (!textInput || !textInput.position) return;
+
+    // Get corresponding text area
+    const textArea = selectedTemplate.textAreas.find((area) => area.id === textId);
+    if (!textArea) return;
+
+    // Get container dimensions
+    const containerRect = containerRef.current.getBoundingClientRect();
+
+    // Calculate the click position relative to the container
+    const clickX = e.clientX - containerRect.left;
+    const clickY = e.clientY - containerRect.top;
+
+    // Calculate the text position in pixels
+    const textX = (textInput.position.x / selectedTemplate.width) * containerRect.width;
+    const textY = (textInput.position.y / selectedTemplate.height) * containerRect.height;
+
+    // Set drag state with the offset from the text position to the click position
+    setDragState({
+      isDragging: true,
+      textId,
+      startX: e.clientX,
+      startY: e.clientY,
+      offsetX: textX - clickX,
+      offsetY: textY - clickY,
+    });
+
+    // Add event listeners for drag and end
+    window.addEventListener('mousemove', handleDragMove);
+    window.addEventListener('mouseup', handleDragEnd);
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('touchend', handleDragEnd);
+
+    // Start handling movement immediately with the current position
+    handleMove(e.clientX, e.clientY);
+  };
+
+  /**
+   * Handles dragging movement of a text element for touch devices
+   * @param e - Touch event
+   */
+  const handleTouchMove = (e: TouchEvent) => {
+    if (!dragState.isDragging || !e.touches[0]) return;
+    e.preventDefault(); // Prevent scrolling while dragging
+    const touch = e.touches[0];
+    handleMove(touch.clientX, touch.clientY);
+  };
+
+  /**
+   * Handles dragging movement of a text element
+   * @param e - Mouse event
+   */
+  const handleDragMove = (e: MouseEvent) => {
+    if (!dragState.isDragging) return;
+    e.preventDefault();
+    handleMove(e.clientX, e.clientY);
+  };
+
+  /**
+   * Common handler for both mouse and touch movement
+   * @param clientX - Client X coordinate
+   * @param clientY - Client Y coordinate
+   */
+  const handleMove = (clientX: number, clientY: number) => {
+    if (!containerRef.current || !selectedTemplate || !dragState.textId) return;
+
+    // Get container dimensions
+    const containerRect = containerRef.current.getBoundingClientRect();
+
+    // Calculate position relative to container, adding the offset
+    const relativeX = clientX - containerRect.left + dragState.offsetX;
+    const relativeY = clientY - containerRect.top + dragState.offsetY;
+
+    // Convert to template coordinates
+    const templateX = (relativeX / containerRect.width) * selectedTemplate.width;
+    const templateY = (relativeY / containerRect.height) * selectedTemplate.height;
+
+    // Update the text positions
+    setTextInputs((prev) =>
+      prev.map((input) => {
+        if (input.id === dragState.textId) {
+          return {
+            ...input,
+            position: {
+              x: templateX,
+              y: templateY,
+            },
+          };
+        }
+        return input;
+      })
+    );
+  };
+
+  /**
+   * Handles the end of dragging a text element
+   */
+  const handleDragEnd = () => {
+    if (!dragState.isDragging) return;
+
+    setDragState({
+      isDragging: false,
+      textId: null,
+      startX: 0,
+      startY: 0,
+      offsetX: 0,
+      offsetY: 0,
+    });
+
+    // Remove event listeners
+    window.removeEventListener('mousemove', handleDragMove);
+    window.removeEventListener('mouseup', handleDragEnd);
+    window.removeEventListener('touchmove', handleTouchMove);
+    window.removeEventListener('touchend', handleDragEnd);
+  };
+
+  // Clean up event listeners when component unmounts
+  useEffect(() => {
+    return () => {
+      window.removeEventListener('mousemove', handleDragMove);
+      window.removeEventListener('mouseup', handleDragEnd);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleDragEnd);
+    };
+  }, []);
 
   /**
    * Generates AI text for the meme
    */
   const generateAiText = async () => {
+    if (!selectedTemplate) return;
+
     setIsLoading(true);
     try {
       const response = await fetch('/api/generate-meme-text');
       const data = await response.json();
-      setTopText(data.topText);
-      setBottomText(data.bottomText);
+
+      // Distribute AI generated text across text areas
+      const newTextInputs = [...textInputs];
+
+      if (newTextInputs.length === 1) {
+        // If there's only one text area, combine both texts
+        newTextInputs[0].text = `${data.topText} ${data.bottomText}`;
+      } else if (newTextInputs.length === 2) {
+        // If there are exactly two text areas
+        newTextInputs[0].text = data.topText;
+        newTextInputs[1].text = data.bottomText;
+      } else if (newTextInputs.length > 2) {
+        // If there are more than two text areas
+        newTextInputs[0].text = data.topText;
+        newTextInputs[1].text = data.bottomText;
+
+        // Distribute additional texts if available
+        if (data.additionalTexts && data.additionalTexts.length > 0) {
+          for (let i = 2; i < newTextInputs.length && i - 2 < data.additionalTexts.length; i++) {
+            newTextInputs[i].text = data.additionalTexts[i - 2];
+          }
+        }
+      }
+
+      setTextInputs(newTextInputs);
     } catch (error) {
       console.error('Failed to generate AI text:', error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  /**
+   * Resets text positions to their default values
+   */
+  const resetPositions = () => {
+    if (!selectedTemplate) return;
+
+    setTextInputs((prev) =>
+      prev.map((input) => {
+        const textArea = selectedTemplate.textAreas.find((area) => area.id === input.id);
+        if (!textArea) return input;
+
+        return {
+          ...input,
+          position: { x: textArea.x, y: textArea.y },
+        };
+      })
+    );
   };
 
   /**
@@ -114,82 +361,155 @@ export default function MemeCreator() {
               </Select>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="topText" className="block text-sm font-medium mb-1">
-                  Top Text
-                </label>
-                <Input
-                  id="topText"
-                  value={topText}
-                  onChange={(e) => setTopText(e.target.value)}
-                  placeholder="Enter top text"
-                />
+            {selectedTemplate && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {textInputs.map((input) => {
+                  const textArea = selectedTemplate.textAreas.find((area) => area.id === input.id);
+                  return (
+                    <div key={input.id}>
+                      <label
+                        htmlFor={`text-${input.id}`}
+                        className="block text-sm font-medium mb-1"
+                      >
+                        {input.id.charAt(0).toUpperCase() + input.id.slice(1)} Text
+                      </label>
+                      <Input
+                        id={`text-${input.id}`}
+                        value={input.text}
+                        onChange={(e) => updateTextInput(input.id, e.target.value)}
+                        placeholder={`Enter ${input.id} text`}
+                      />
+                    </div>
+                  );
+                })}
               </div>
-              <div>
-                <label htmlFor="bottomText" className="block text-sm font-medium mb-1">
-                  Bottom Text
-                </label>
-                <Input
-                  id="bottomText"
-                  value={bottomText}
-                  onChange={(e) => setBottomText(e.target.value)}
-                  placeholder="Enter bottom text"
-                />
-              </div>
-            </div>
+            )}
 
             {selectedTemplate && (
-              <div className="mt-6 flex justify-center">
-                <div
-                  ref={memeRef}
-                  className="relative inline-block"
-                  style={{
-                    width: selectedTemplate.width,
-                    height: selectedTemplate.height,
-                    maxWidth: '100%',
-                    maxHeight: '70vh',
-                  }}
-                >
-                  <div className="relative w-full h-full">
-                    <Image
-                      src={selectedTemplate.path}
-                      alt={selectedTemplate.name}
-                      className="object-contain"
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      priority
-                    />
-                  </div>
+              <>
+                <div className="text-sm text-gray-500 italic text-center">
+                  Drag text elements to reposition them. Double-click to edit.
+                </div>
+                <div className="mt-6 flex justify-center">
                   <div
-                    className="absolute top-0 left-0 right-0 p-4 text-center"
+                    ref={containerRef}
+                    className="relative inline-block"
                     style={{
-                      textShadow:
-                        '2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000',
+                      width: selectedTemplate.width,
+                      height: selectedTemplate.height,
+                      maxWidth: '100%',
+                      maxHeight: '70vh',
                     }}
                   >
-                    <p className="text-white font-bold text-2xl md:text-4xl uppercase">{topText}</p>
-                  </div>
-                  <div
-                    className="absolute bottom-0 left-0 right-0 p-4 text-center"
-                    style={{
-                      textShadow:
-                        '2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000',
-                    }}
-                  >
-                    <p className="text-white font-bold text-2xl md:text-4xl uppercase">
-                      {bottomText}
-                    </p>
+                    <div ref={memeRef} className="relative w-full h-full">
+                      <Image
+                        src={selectedTemplate.path}
+                        alt={selectedTemplate.name}
+                        className="object-contain"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        priority
+                      />
+
+                      {textInputs.map((input) => {
+                        const textArea = selectedTemplate.textAreas.find(
+                          (area) => area.id === input.id
+                        );
+                        if (!textArea) return null;
+
+                        // Use the custom position if available, otherwise use the default
+                        const x = input.position?.x ?? textArea.x;
+                        const y = input.position?.y ?? textArea.y;
+
+                        return (
+                          <div
+                            key={input.id}
+                            className="absolute text-center cursor-move"
+                            style={{
+                              left: `${((x - textArea.width / 2) / selectedTemplate.width) * 100}%`,
+                              top: `${((y - textArea.height / 2) / selectedTemplate.height) * 100}%`,
+                              width: `${(textArea.width / selectedTemplate.width) * 100}%`,
+                              height: `${(textArea.height / selectedTemplate.height) * 100}%`,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent:
+                                textArea.align === 'left'
+                                  ? 'flex-start'
+                                  : textArea.align === 'right'
+                                    ? 'flex-end'
+                                    : 'center',
+                              textAlign: textArea.align,
+                              transition:
+                                dragState.isDragging && dragState.textId === input.id
+                                  ? 'none'
+                                  : 'all 0.1s ease',
+                              touchAction: 'none', // Disable browser handling of touch gestures
+                              border:
+                                dragState.isDragging && dragState.textId === input.id
+                                  ? '2px dashed #39f'
+                                  : 'none',
+                              borderRadius: '4px',
+                              padding: '4px',
+                              backgroundColor:
+                                dragState.isDragging && dragState.textId === input.id
+                                  ? 'rgba(51, 153, 255, 0.1)'
+                                  : 'transparent',
+                            }}
+                            onMouseDown={(e) => handleDragStart(e, input.id)}
+                            onTouchStart={(e) => {
+                              if (!e.touches[0]) return;
+                              e.preventDefault(); // Prevent scrolling/zooming first
+
+                              const touch = e.touches[0];
+                              // Create a synthetic mouse event to reuse the same handler
+                              const mouseEvent = {
+                                clientX: touch.clientX,
+                                clientY: touch.clientY,
+                                preventDefault: () => {},
+                              } as React.MouseEvent;
+
+                              // Immediately handle drag start
+                              handleDragStart(mouseEvent, input.id);
+                            }}
+                          >
+                            <p
+                              className="w-full uppercase"
+                              style={{
+                                fontFamily:
+                                  'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
+                                fontSize: 'clamp(16px, 4vw, 32px)',
+                                lineHeight: '1.2',
+                                color: 'white',
+                                textShadow:
+                                  '2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0 2px 0 #000, 2px 0 0 #000, 0 -2px 0 #000, -2px 0 0 #000',
+                                pointerEvents: 'none',
+                              }}
+                            >
+                              {input.text}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </>
             )}
           </div>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline" onClick={generateAiText} disabled={isLoading}>
-            {isLoading ? 'Generating...' : 'Generate with AI'}
-          </Button>
+        <CardFooter className="flex flex-wrap justify-between gap-2">
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={generateAiText}
+              disabled={isLoading || !selectedTemplate}
+            >
+              {isLoading ? 'Generating...' : 'Generate with AI'}
+            </Button>
+            <Button variant="secondary" onClick={resetPositions} disabled={!selectedTemplate}>
+              Reset Positions
+            </Button>
+          </div>
           <Button onClick={saveMeme} disabled={!selectedTemplate}>
             Save Meme
           </Button>

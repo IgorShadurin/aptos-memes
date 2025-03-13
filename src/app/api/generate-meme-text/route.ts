@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 
 /**
- * Generates dummy meme text for top and bottom of the meme
- * @returns Response with generated text
+ * Generates dummy meme text for different text positions
+ * @returns Response with generated text for top and bottom positions
  */
 export async function GET() {
   // This is a dummy implementation that returns static text
@@ -23,9 +23,20 @@ export async function GET() {
     "But you don't know why",
   ];
 
+  // Additional texts for templates with more than 2 text areas
+  const additionalTexts = ['Plot twist:', 'Meanwhile:', 'Also me:', 'The client:', 'The designer:'];
+
   // Randomly select text for top and bottom
   const topText = topTexts[Math.floor(Math.random() * topTexts.length)];
   const bottomText = bottomTexts[Math.floor(Math.random() * bottomTexts.length)];
 
-  return NextResponse.json({ topText, bottomText });
+  // Return basic text elements that can be used in different ways by the client
+  return NextResponse.json({
+    topText,
+    bottomText,
+    additionalTexts: [
+      additionalTexts[Math.floor(Math.random() * additionalTexts.length)],
+      additionalTexts[Math.floor(Math.random() * additionalTexts.length)],
+    ],
+  });
 }

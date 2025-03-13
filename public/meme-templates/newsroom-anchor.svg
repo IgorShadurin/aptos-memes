@@ -1,8 +1,0 @@
-<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="800" fill="#0a2240"/>
-  <rect x="100" y="100" width="1000" height="600" fill="#1a3a5f"/>
-  <circle cx="600" cy="300" r="150" fill="#555555"/>
-  <rect x="500" y="450" width="200" height="150" fill="#333333"/>
-  <rect x="150" y="650" width="900" height="80" fill="#0a2240"/>
-  <text x="600" y="710" font-family="Arial" font-size="50" text-anchor="middle" fill="white">NEWSROOM ANCHOR</text>
-</svg> 

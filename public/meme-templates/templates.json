@@ -1,65 +1,263 @@
 [
   {
-    "id": "drake",
-    "name": "Drake Hotline Bling",
-    "path": "/meme-templates/drake.jpg",
-    "width": 1200,
-    "height": 1200
-  },
-  {
-    "id": "distracted-boyfriend",
+    "id": "template1",
     "name": "Distracted Boyfriend",
-    "path": "/meme-templates/distracted-boyfriend.jpg",
+    "path": "/meme-templates/1.png",
     "width": 1200,
-    "height": 800
+    "height": 800,
+    "textAreas": [
+      {
+        "id": "girlfriend",
+        "x": 240,
+        "y": 100,
+        "width": 200,
+        "height": 100,
+        "align": "center",
+        "defaultText": "Current Project"
+      },
+      {
+        "id": "boyfriend",
+        "x": 600,
+        "y": 100,
+        "width": 200,
+        "height": 100,
+        "align": "center",
+        "defaultText": "Me"
+      },
+      {
+        "id": "distraction",
+        "x": 940,
+        "y": 100,
+        "width": 200,
+        "height": 100,
+        "align": "center",
+        "defaultText": "New Project Idea"
+      }
+    ]
   },
   {
-    "id": "two-buttons",
+    "id": "template2",
+    "name": "I Wonder What He's Thinking",
+    "path": "/meme-templates/2.png",
+    "width": 800,
+    "height": 800,
+    "textAreas": [
+      {
+        "id": "girl",
+        "x": 400,
+        "y": 100,
+        "width": 700,
+        "height": 100,
+        "align": "center",
+        "defaultText": "She probably thinks about other girls"
+      },
+      {
+        "id": "thoughts",
+        "x": 400,
+        "y": 700,
+        "width": 700,
+        "height": 100,
+        "align": "center",
+        "defaultText": "How to center a div with CSS"
+      }
+    ]
+  },
+  {
+    "id": "template3",
     "name": "Two Buttons",
-    "path": "/meme-templates/two-buttons.jpg",
+    "path": "/meme-templates/3.png",
     "width": 600,
-    "height": 908
+    "height": 908,
+    "textAreas": [
+      {
+        "id": "leftButton",
+        "x": 180,
+        "y": 180,
+        "width": 170,
+        "height": 120,
+        "align": "center",
+        "defaultText": "Fix the bug"
+      },
+      {
+        "id": "rightButton",
+        "x": 420,
+        "y": 180,
+        "width": 170,
+        "height": 120,
+        "align": "center",
+        "defaultText": "Rewrite everything"
+      },
+      {
+        "id": "person",
+        "x": 300,
+        "y": 800,
+        "width": 300,
+        "height": 100,
+        "align": "center",
+        "defaultText": "Developer"
+      }
+    ]
   },
   {
-    "id": "change-my-mind",
-    "name": "Change My Mind",
-    "path": "/meme-templates/change-my-mind.jpg",
-    "width": 1200,
-    "height": 900
+    "id": "template4",
+    "name": "Sad Pablo Escobar",
+    "path": "/meme-templates/4.png",
+    "width": 768,
+    "height": 1024,
+    "textAreas": [
+      {
+        "id": "caption",
+        "x": 384,
+        "y": 100,
+        "width": 700,
+        "height": 150,
+        "align": "center",
+        "defaultText": "When your code finally works but you don't know why"
+      }
+    ]
   },
   {
-    "id": "breaking-news",
-    "name": "Breaking News",
-    "path": "/meme-templates/breaking-news.svg",
+    "id": "template5",
+    "name": "Drake Hotline Bling",
+    "path": "/meme-templates/5.png",
     "width": 1200,
-    "height": 800
+    "height": 1200,
+    "textAreas": [
+      {
+        "id": "top",
+        "x": 800,
+        "y": 300,
+        "width": 400,
+        "height": 200,
+        "align": "center",
+        "defaultText": "Using complicated framework"
+      },
+      {
+        "id": "bottom",
+        "x": 800,
+        "y": 900,
+        "width": 400,
+        "height": 200,
+        "align": "center",
+        "defaultText": "console.log everywhere"
+      }
+    ]
   },
   {
-    "id": "newsroom-anchor",
-    "name": "Newsroom Anchor",
-    "path": "/meme-templates/newsroom-anchor.svg",
-    "width": 1200,
-    "height": 800
+    "id": "template6",
+    "name": "Leonardo DiCaprio Cheers",
+    "path": "/meme-templates/6.png",
+    "width": 900,
+    "height": 900,
+    "textAreas": [
+      {
+        "id": "caption",
+        "x": 450,
+        "y": 100,
+        "width": 850,
+        "height": 150,
+        "align": "center",
+        "defaultText": "When you find a Stack Overflow answer from 10 years ago that solves your problem"
+      }
+    ]
   },
   {
-    "id": "surprised-reporter",
-    "name": "Surprised Reporter",
-    "path": "/meme-templates/surprised-reporter.svg",
-    "width": 1200,
-    "height": 900
+    "id": "template7",
+    "name": "This Is Fine",
+    "path": "/meme-templates/7.png",
+    "width": 800,
+    "height": 600,
+    "textAreas": [
+      {
+        "id": "caption",
+        "x": 200,
+        "y": 500,
+        "width": 300,
+        "height": 100,
+        "align": "center",
+        "defaultText": "Production server is down"
+      }
+    ]
   },
   {
-    "id": "news-interview",
-    "name": "News Interview",
-    "path": "/meme-templates/news-interview.svg",
-    "width": 1200,
-    "height": 800
+    "id": "template8",
+    "name": "Old Man Laptop",
+    "path": "/meme-templates/8.jpg",
+    "width": 900,
+    "height": 900,
+    "textAreas": [
+      {
+        "id": "top",
+        "x": 450,
+        "y": 150,
+        "width": 800,
+        "height": 100,
+        "align": "center",
+        "defaultText": "When the client asks for small changes"
+      },
+      {
+        "id": "bottom",
+        "x": 450,
+        "y": 750,
+        "width": 800,
+        "height": 100,
+        "align": "center",
+        "defaultText": "And the entire codebase breaks"
+      }
+    ]
   },
   {
-    "id": "newspaper-headline",
-    "name": "Newspaper Headline",
-    "path": "/meme-templates/newspaper-headline.svg",
-    "width": 1200,
-    "height": 900
+    "id": "template9",
+    "name": "Roll Safe Think About It",
+    "path": "/meme-templates/9.jpg",
+    "width": 900,
+    "height": 900,
+    "textAreas": [
+      {
+        "id": "top",
+        "x": 450,
+        "y": 150,
+        "width": 800,
+        "height": 100,
+        "align": "center",
+        "defaultText": "Can't have bugs in your code"
+      },
+      {
+        "id": "bottom",
+        "x": 450,
+        "y": 750,
+        "width": 800,
+        "height": 100,
+        "align": "center",
+        "defaultText": "If you don't write any code"
+      }
+    ]
+  },
+  {
+    "id": "template10",
+    "name": "Woman Yelling at Cat",
+    "path": "/meme-templates/10.jpg",
+    "width": 1000,
+    "height": 650,
+    "textAreas": [
+      {
+        "id": "woman",
+        "x": 250,
+        "y": 100,
+        "width": 400,
+        "height": 150,
+        "align": "center",
+        "defaultText": "Me explaining a simple feature"
+      },
+      {
+        "id": "cat",
+        "x": 750,
+        "y": 100,
+        "width": 400,
+        "height": 150,
+        "align": "center",
+        "defaultText": "The client completely misunderstanding"
+      }
+    ]
   }
 ]
