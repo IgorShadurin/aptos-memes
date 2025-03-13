@@ -419,10 +419,29 @@ export default function MemeCreator() {
 
             {selectedTemplate && (
               <>
-                <div className="text-sm text-gray-500 italic text-center">
-                  Drag text elements to reposition them. Double-click to edit.
+                <div className="mt-6 mb-4 flex flex-wrap justify-between gap-2">
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={generateAiText}
+                      disabled={isLoading || !selectedTemplate}
+                    >
+                      {isLoading ? 'Generating...' : 'Generate with AI'}
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      onClick={resetPositions}
+                      disabled={!selectedTemplate}
+                    >
+                      Reset Positions
+                    </Button>
+                  </div>
+                  <Button onClick={saveMeme} disabled={!selectedTemplate}>
+                    Save Meme
+                  </Button>
                 </div>
-                <div className="mt-6 flex justify-center">
+
+                <div className="mt-2 flex justify-center">
                   <div
                     ref={containerRef}
                     className="relative inline-block"
@@ -526,23 +545,6 @@ export default function MemeCreator() {
             )}
           </div>
         </CardContent>
-        <CardFooter className="flex flex-wrap justify-between gap-2">
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              onClick={generateAiText}
-              disabled={isLoading || !selectedTemplate}
-            >
-              {isLoading ? 'Generating...' : 'Generate with AI'}
-            </Button>
-            <Button variant="secondary" onClick={resetPositions} disabled={!selectedTemplate}>
-              Reset Positions
-            </Button>
-          </div>
-          <Button onClick={saveMeme} disabled={!selectedTemplate}>
-            Save Meme
-          </Button>
-        </CardFooter>
       </Card>
 
       {/* Success notification */}
