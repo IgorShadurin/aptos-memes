@@ -87,6 +87,72 @@ export default function MemeGrid() {
    * @param name - Name of the meme for the filename
    */
   const handleDownload = async (memeId: string, name: string) => {
+    // Helper function to wrap text based on rough character count
+    function smartTextWrap(text: string, charsPerLine: number, isLegacyMeme: boolean): string[] {
+      // Special cases with common words that should be kept together
+      const specialPhrases = [
+        'MULTIPLE',
+        'FRAMEWORK',
+        'FRAMEWORKS',
+        'BASICS',
+        'DEEPLY',
+        'LEARN',
+        'LEGACY',
+        'CODE',
+        'UNDERSTAND',
+        'FINALLY',
+        'YEARS',
+      ];
+
+      // Special handling for known phrases in the Legacy Code meme
+      if (isLegacyMeme && text.includes('LEGACY CODE')) {
+        // If we know this is the Legacy Code meme, give special handling
+        // Break at logical points for this specific meme text
+        if (text.includes('UNDERSTAND THE LEGACY CODE')) {
+          return [
+            'WHEN YOU FINALLY UNDERSTAND',
+            'THE LEGACY CODE THAT NO ONE',
+            'HAS TOUCHED IN 5 YEARS',
+          ];
+        }
+      }
+
+      // Split text by spaces
+      const words = text.split(' ');
+      const lines: string[] = [];
+      let currentLine = '';
+
+      // Try to keep special phrases on the same line
+      for (let i = 0; i < words.length; i++) {
+        const word = words[i];
+
+        // Check if adding this word would exceed the line length
+        if ((currentLine + ' ' + word).length > charsPerLine && currentLine !== '') {
+          lines.push(currentLine);
+          currentLine = word;
+        }
+        // Check for special phrases that should be kept on same line if possible
+        else if (
+          specialPhrases.includes(word) &&
+          i > 0 &&
+          (currentLine + ' ' + word).length > charsPerLine * 0.8
+        ) {
+          // If a special phrase and would make line too full, put on new line
+          lines.push(currentLine);
+          currentLine = word;
+        } else {
+          currentLine = currentLine === '' ? word : currentLine + ' ' + word;
+        }
+      }
+
+      // Add the last line
+      if (currentLine !== '') {
+        lines.push(currentLine);
+      }
+
+      return lines;
+    }
+    
     const meme = memes.find((m) => m.id === memeId);
     if (!meme) return;
 
@@ -279,72 +345,6 @@ export default function MemeGrid() {
           ctx.fillStyle = 'white';
           ctx.fillText(line, x, lineY);
         });
-      }
-
-      // Helper function to wrap text based on rough character count
-      function smartTextWrap(text: string, charsPerLine: number, isLegacyMeme: boolean): string[] {
-        // Special cases with common words that should be kept together
-        const specialPhrases = [
-          'MULTIPLE',
-          'FRAMEWORK',
-          'FRAMEWORKS',
-          'BASICS',
-          'DEEPLY',
-          'LEARN',
-          'LEGACY',
-          'CODE',
-          'UNDERSTAND',
-          'FINALLY',
-          'YEARS',
-        ];
-
-        // Special handling for known phrases in the Legacy Code meme
-        if (isLegacyMeme && text.includes('LEGACY CODE')) {
-          // If we know this is the Legacy Code meme, give special handling
-          // Break at logical points for this specific meme text
-          if (text.includes('UNDERSTAND THE LEGACY CODE')) {
-            return [
-              'WHEN YOU FINALLY UNDERSTAND',
-              'THE LEGACY CODE THAT NO ONE',
-              'HAS TOUCHED IN 5 YEARS',
-            ];
-          }
-        }
-
-        // Split text by spaces
-        const words = text.split(' ');
-        const lines: string[] = [];
-        let currentLine = '';
-
-        // Try to keep special phrases on the same line
-        for (let i = 0; i < words.length; i++) {
-          const word = words[i];
-
-          // Check if adding this word would exceed the line length
-          if ((currentLine + ' ' + word).length > charsPerLine && currentLine !== '') {
-            lines.push(currentLine);
-            currentLine = word;
-          }
-          // Check for special phrases that should be kept on same line if possible
-          else if (
-            specialPhrases.includes(word) &&
-            i > 0 &&
-            (currentLine + ' ' + word).length > charsPerLine * 0.8
-          ) {
-            // If a special phrase and would make line too full, put on new line
-            lines.push(currentLine);
-            currentLine = word;
-          } else {
-            currentLine = currentLine === '' ? word : currentLine + ' ' + word;
-          }
-        }
-
-        // Add the last line
-        if (currentLine !== '') {
-          lines.push(currentLine);
-        }
-
-        return lines;
       }
 
       // Convert to data URL and trigger download with high quality

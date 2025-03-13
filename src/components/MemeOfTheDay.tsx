@@ -183,7 +183,7 @@ export default function MemeOfTheDay() {
           {/* Drone joke banner */}
           <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-4 text-center relative overflow-hidden">
             <div className="absolute inset-0 bg-[url('/background-pattern.svg')] opacity-10"></div>
-            <p className="font-bold text-lg italic relative z-10">"{meme.joke}"</p>
+            <p className="font-bold text-lg italic relative z-10">&quot;{meme.joke}&quot;</p>
           </div>
 
           <div ref={memeRef} className="relative h-64 md:h-96 w-full">
