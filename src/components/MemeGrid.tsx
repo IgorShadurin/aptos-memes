@@ -487,8 +487,8 @@ export default function MemeGrid() {
                           className="text-white hover:bg-white/30 border border-white/80 text-sm md:text-base"
                           onClick={() => handleDownload(meme.id, meme.name)}
                         >
-                          <HiDownload className="mr-1" />
-                          <span className="hidden sm:inline">Download</span>
+                          <HiDownload />
+                          <span className="hidden sm:inline ml-1">Download</span>
                         </Button>
                       </div>
                     </div>
