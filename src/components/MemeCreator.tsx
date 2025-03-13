@@ -341,16 +341,6 @@ export default function MemeCreator() {
     };
   }, [handleDragMove, handleDragEnd, handleTouchMove]);
 
-  // Cleanup custom image URL when component unmounts
-  useEffect(() => {
-    return () => {
-      // Cleanup custom image URL when component unmounts
-      if (customSponsorImageURL) {
-        URL.revokeObjectURL(customSponsorImageURL);
-      }
-    };
-  }, [customSponsorImageURL]);
-
   /**
    * Generate AI text for the meme based on template information
    */
@@ -434,22 +424,7 @@ export default function MemeCreator() {
     if (!memeRef.current || !selectedTemplate) return;
 
     try {
-      // Add options to ensure proper image capture including CORS
-      const options = {
-        cacheBust: true,
-        canvasWidth: selectedTemplate.width,
-        canvasHeight: selectedTemplate.height,
-        quality: 0.95,
-        pixelRatio: 2,
-        skipAutoScale: true,
-        imageTimeout: 10000, // Increased timeout for image loading
-        fetchRequestInit: {
-          mode: 'cors',
-          cache: 'no-cache',
-        },
-      };
-
-      const dataUrl = await toPng(memeRef.current, options);
+      const dataUrl = await toPng(memeRef.current, { cacheBust: true });
 
       // Sanitize the template name for use as a filename
       // Replace spaces with hyphens and remove special characters
@@ -561,20 +536,6 @@ export default function MemeCreator() {
         return;
       }
 
-      // Validate file size (max 2MB)
-      if (file.size > 2 * 1024 * 1024) {
-        setUrlError('Image file must be smaller than 2MB');
-        return;
-      }
-
-      // Clear any previous error
-      setUrlError(null);
-
-      // Revoke any existing object URL to prevent memory leaks
-      if (customSponsorImageURL) {
-        URL.revokeObjectURL(customSponsorImageURL);
-      }
-
       // Create object URL for the uploaded image
       const imageUrl = URL.createObjectURL(file);
       setCustomSponsorImage(file);
@@ -606,18 +567,8 @@ export default function MemeCreator() {
   const getSponsorLogoSrc = (): string => {
     // Ensure we're returning a valid URL to avoid image loading issues
     if (sponsorLogo === 'custom' && customSponsorImageURL) {
-      // If we have a custom sponsor image URL, use it
-      try {
-        // Additional validation of the custom URL
-        new URL(customSponsorImageURL);
-        return customSponsorImageURL;
-      } catch (error) {
-        console.error('Invalid custom sponsor image URL:', error);
-        // Fall back to default logo
-        return '/sponsors/aptos.png';
-      }
+      return customSponsorImageURL;
     }
-    // For predefined logos or if custom is selected but no image is uploaded
     return sponsorLogo === 'custom' ? '/sponsors/aptos.png' : sponsorLogo;
   };
 
@@ -800,7 +751,6 @@ export default function MemeCreator() {
                               height: 48,
                               width: 48,
                               excavate: true,
-                              crossOrigin: 'anonymous',
                             }}
                             bgColor={getSelectedQRStyle().bgColor}
                             fgColor={getSelectedQRStyle().fgColor}
@@ -982,7 +932,6 @@ export default function MemeCreator() {
                               height: 40,
                               width: 40,
                               excavate: true,
-                              crossOrigin: 'anonymous',
                             }}
                             bgColor={getSelectedQRStyle().bgColor}
                             fgColor={getSelectedQRStyle().fgColor}
