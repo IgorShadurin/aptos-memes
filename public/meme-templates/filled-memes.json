@@ -1,5 +1,21 @@
 [
   {
+    "id": "meme27",
+    "name": "Aptos TPS",
+    "templateId": "template9",
+    "path": "/meme-templates/9.jpg",
+    "texts": [
+      {
+        "id": "top",
+        "text": "Can't have network congestion"
+      },
+      {
+        "id": "bottom",
+        "text": "If your blockchain can process 100,000+ TPS"
+      }
+    ]
+  },
+  {
     "id": "meme1",
     "name": "Distracted Developer",
     "templateId": "template1",
@@ -20,6 +36,26 @@
     ]
   },
   {
+    "id": "meme23",
+    "name": "Web3 Developer Dilemma",
+    "templateId": "template3",
+    "path": "/meme-templates/3.png",
+    "texts": [
+      {
+        "id": "leftButton",
+        "text": "Build on established blockchain"
+      },
+      {
+        "id": "rightButton",
+        "text": "Build on Aptos with Move"
+      },
+      {
+        "id": "person",
+        "text": "Web3 Developer in 2025"
+      }
+    ]
+  },
+  {
     "id": "meme2",
     "name": "Programmer Thoughts",
     "templateId": "template2",
@@ -32,6 +68,22 @@
       {
         "id": "thoughts",
         "text": "Why is my code working on localhost but not in production?"
+      }
+    ]
+  },
+  {
+    "id": "meme22",
+    "name": "Move Language Benefits",
+    "templateId": "template5",
+    "path": "/meme-templates/5.png",
+    "texts": [
+      {
+        "id": "top",
+        "text": "Writing smart contracts in Solidity"
+      },
+      {
+        "id": "bottom",
+        "text": "Writing smart contracts in Move with safety guarantees"
       }
     ]
   },
@@ -56,6 +108,18 @@
     ]
   },
   {
+    "id": "meme26",
+    "name": "Move Language Victory",
+    "templateId": "template6",
+    "path": "/meme-templates/6.png",
+    "texts": [
+      {
+        "id": "caption",
+        "text": "When your Move module compiles on the first try with no safety errors"
+      }
+    ]
+  },
+  {
     "id": "meme4",
     "name": "Waiting for Deployment",
     "templateId": "template4",
@@ -64,6 +128,26 @@
       {
         "id": "caption",
         "text": "Waiting for the build pipeline that was supposed to take 2 minutes but it's been 30 minutes already"
+      }
+    ]
+  },
+  {
+    "id": "meme33",
+    "name": "Blockchain Dev Distraction",
+    "templateId": "template1",
+    "path": "/meme-templates/1.png",
+    "texts": [
+      {
+        "id": "girlfriend",
+        "text": "Aptos ecosystem and grants"
+      },
+      {
+        "id": "boyfriend",
+        "text": "Developer"
+      },
+      {
+        "id": "distraction",
+        "text": "Current blockchain project"
       }
     ]
   },
@@ -84,6 +168,22 @@
     ]
   },
   {
+    "id": "meme24",
+    "name": "Blockchain Thoughts",
+    "templateId": "template2",
+    "path": "/meme-templates/2.png",
+    "texts": [
+      {
+        "id": "girl",
+        "text": "He's probably thinking about other chains"
+      },
+      {
+        "id": "thoughts",
+        "text": "Why is Aptos transaction throughput so much higher than Ethereum?"
+      }
+    ]
+  },
+  {
     "id": "meme6",
     "name": "Legacy Code Victory",
     "templateId": "template6",
@@ -96,6 +196,22 @@
     ]
   },
   {
+    "id": "meme34",
+    "name": "Move vs Others",
+    "templateId": "template10",
+    "path": "/meme-templates/10.jpg",
+    "texts": [
+      {
+        "id": "woman",
+        "text": "Me explaining why Move's resource model prevents re-entrancy attacks"
+      },
+      {
+        "id": "cat",
+        "text": "Solidity developer who just lost funds in a hack"
+      }
+    ]
+  },
+  {
     "id": "meme7",
     "name": "Monday Morning",
     "templateId": "template7",
@@ -104,6 +220,22 @@
       {
         "id": "caption",
         "text": "Looking at the codebase after the weekend freelancer 'fixed' it"
+      }
+    ]
+  },
+  {
+    "id": "meme38",
+    "name": "Web3 Security",
+    "templateId": "template9",
+    "path": "/meme-templates/9.jpg",
+    "texts": [
+      {
+        "id": "top",
+        "text": "Can't lose funds in a smart contract hack"
+      },
+      {
+        "id": "bottom",
+        "text": "If you use Move language's resource-oriented model"
       }
     ]
   },
@@ -124,6 +256,22 @@
     ]
   },
   {
+    "id": "meme29",
+    "name": "Blockchain Conversations",
+    "templateId": "template10",
+    "path": "/meme-templates/10.jpg",
+    "texts": [
+      {
+        "id": "woman",
+        "text": "Me explaining Aptos' parallel execution engine"
+      },
+      {
+        "id": "cat",
+        "text": "Friend who just wants to know if crypto will go up"
+      }
+    ]
+  },
+  {
     "id": "meme9",
     "name": "Bug Prevention",
     "templateId": "template9",
@@ -140,6 +288,22 @@
     ]
   },
   {
+    "id": "meme42",
+    "name": "Aptos Developer Experience",
+    "templateId": "template9",
+    "path": "/meme-templates/9.jpg",
+    "texts": [
+      {
+        "id": "top",
+        "text": "Can't have deployment anxiety"
+      },
+      {
+        "id": "bottom",
+        "text": "If your smart contract has formal verification in Move"
+      }
+    ]
+  },
+  {
     "id": "meme10",
     "name": "Feature Explanation",
     "templateId": "template10",
@@ -152,6 +316,26 @@
       {
         "id": "cat",
         "text": "The client who just wants the button to be blue"
+      }
+    ]
+  },
+  {
+    "id": "meme25",
+    "name": "NFT Collectors",
+    "templateId": "template1",
+    "path": "/meme-templates/1.png",
+    "texts": [
+      {
+        "id": "girlfriend",
+        "text": "My investment portfolio"
+      },
+      {
+        "id": "boyfriend",
+        "text": "Me"
+      },
+      {
+        "id": "distraction",
+        "text": "New NFT collection drop"
       }
     ]
   },
@@ -176,6 +360,18 @@
     ]
   },
   {
+    "id": "meme41",
+    "name": "Aptos Community Growth",
+    "templateId": "template6",
+    "path": "/meme-templates/6.png",
+    "texts": [
+      {
+        "id": "caption",
+        "text": "When your first contribution to the Aptos ecosystem gets featured in the official Discord"
+      }
+    ]
+  },
+  {
     "id": "meme12",
     "name": "Weekend Plans",
     "templateId": "template2",
@@ -188,6 +384,22 @@
       {
         "id": "thoughts",
         "text": "I wonder if I should refactor that ugly function this weekend"
+      }
+    ]
+  },
+  {
+    "id": "meme36",
+    "name": "Blockchain Thought Process",
+    "templateId": "template2",
+    "path": "/meme-templates/2.png",
+    "texts": [
+      {
+        "id": "girl",
+        "text": "He must be thinking about other blockchains"
+      },
+      {
+        "id": "thoughts",
+        "text": "Is the Aptos tokenomics model truly sustainable long-term?"
       }
     ]
   },
@@ -212,6 +424,18 @@
     ]
   },
   {
+    "id": "meme21",
+    "name": "Crypto Market Volatility",
+    "templateId": "template7",
+    "path": "/meme-templates/7.png",
+    "texts": [
+      {
+        "id": "caption",
+        "text": "Checking portfolio after a crypto market crash"
+      }
+    ]
+  },
+  {
     "id": "meme14",
     "name": "Release Day Blues",
     "templateId": "template4",
@@ -220,6 +444,22 @@
       {
         "id": "caption",
         "text": "Sitting alone after deploying to production on Friday afternoon"
+      }
+    ]
+  },
+  {
+    "id": "meme28",
+    "name": "DeFi Reality",
+    "templateId": "template8",
+    "path": "/meme-templates/8.jpg",
+    "texts": [
+      {
+        "id": "top",
+        "text": "What I expected when entering DeFi"
+      },
+      {
+        "id": "bottom",
+        "text": "What I got: checking gas fees every 5 minutes"
       }
     ]
   },
@@ -240,6 +480,18 @@
     ]
   },
   {
+    "id": "meme30",
+    "name": "Crypto Winter",
+    "templateId": "template4",
+    "path": "/meme-templates/4.png",
+    "texts": [
+      {
+        "id": "caption",
+        "text": "Waiting for the bull market after buying the dip six times already"
+      }
+    ]
+  },
+  {
     "id": "meme16",
     "name": "Pull Request Success",
     "templateId": "template6",
@@ -252,6 +504,26 @@
     ]
   },
   {
+    "id": "meme31",
+    "name": "Smart Contract Development",
+    "templateId": "template3",
+    "path": "/meme-templates/3.png",
+    "texts": [
+      {
+        "id": "leftButton",
+        "text": "Extensive testing and audits"
+      },
+      {
+        "id": "rightButton",
+        "text": "Ship fast and hope for the best"
+      },
+      {
+        "id": "person",
+        "text": "DeFi protocol developer"
+      }
+    ]
+  },
+  {
     "id": "meme17",
     "name": "Database Danger",
     "templateId": "template7",
@@ -260,6 +532,22 @@
       {
         "id": "caption",
         "text": "Running DELETE queries without a WHERE clause in production"
+      }
+    ]
+  },
+  {
+    "id": "meme32",
+    "name": "Web3 Preferences",
+    "templateId": "template5",
+    "path": "/meme-templates/5.png",
+    "texts": [
+      {
+        "id": "top",
+        "text": "Centralized finance with regulations"
+      },
+      {
+        "id": "bottom",
+        "text": "Decentralized finance with APY in four digits"
       }
     ]
   },
@@ -280,6 +568,18 @@
     ]
   },
   {
+    "id": "meme35",
+    "name": "Gas Fee Pain",
+    "templateId": "template7",
+    "path": "/meme-templates/7.png",
+    "texts": [
+      {
+        "id": "caption",
+        "text": "Trying to mint an NFT during peak network congestion"
+      }
+    ]
+  },
+  {
     "id": "meme19",
     "name": "Error Prevention",
     "templateId": "template9",
@@ -296,6 +596,18 @@
     ]
   },
   {
+    "id": "meme37",
+    "name": "Crypto Portfolio",
+    "templateId": "template6",
+    "path": "/meme-templates/6.png",
+    "texts": [
+      {
+        "id": "caption",
+        "text": "When your altcoin finally pumps after you've been holding for two years"
+      }
+    ]
+  },
+  {
     "id": "meme20",
     "name": "Tech Debate",
     "templateId": "template10",
@@ -308,6 +620,34 @@
       {
         "id": "cat",
         "text": "Developer who doesn't care about indentation"
+      }
+    ]
+  },
+  {
+    "id": "meme39",
+    "name": "Layer 1 Wars",
+    "templateId": "template8",
+    "path": "/meme-templates/8.jpg",
+    "texts": [
+      {
+        "id": "top",
+        "text": "What Layer 1 blockchains promise"
+      },
+      {
+        "id": "bottom",
+        "text": "The actual developer experience building cross-chain"
+      }
+    ]
+  },
+  {
+    "id": "meme40",
+    "name": "Diamond Hands",
+    "templateId": "template4",
+    "path": "/meme-templates/4.png",
+    "texts": [
+      {
+        "id": "caption",
+        "text": "HODLing through the third market crash this year while friends panic sell"
       }
     ]
   }

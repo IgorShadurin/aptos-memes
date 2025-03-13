@@ -497,7 +497,7 @@ export default function MemeGrid() {
                             size="sm"
                             className="bg-white text-gray-800 hover:bg-yellow-300 hover:text-purple-800 font-medium transition-colors shadow-md text-sm md:text-base"
                           >
-                            Create Similar
+                            ✨ Create Similar
                           </Button>
                         </Link>
                         <Button
@@ -522,7 +522,7 @@ export default function MemeGrid() {
             size="lg"
             className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-3 px-10 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-105 text-xl"
           >
-            Create Your Own Meme
+            🚀 Create Meme
           </Button>
         </Link>
       </div>

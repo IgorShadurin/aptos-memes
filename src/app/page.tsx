@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import MemeGrid from '@/components/MemeGrid';
 import { HiSparkles } from 'react-icons/hi';
+import { HiCurrencyDollar, HiShare, HiEmojiHappy } from 'react-icons/hi';
 
 export default function Home() {
   return (
@@ -14,18 +15,42 @@ export default function Home() {
             <HiSparkles className="h-12 w-12 text-yellow-300" />
           </div>
           <h1 className="font-extrabold tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 via-white to-yellow-300 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">
-            Welcome to Meme My News
+            Aptos Meme Factory
           </h1>
           <p className="mt-6 max-w-2xl text-xl md:text-2xl font-medium text-white drop-shadow-md">
-            Turn the latest headlines into hilarious memes with our easy-to-use meme generator
+            Your one-stop meme shop for all things Aptos & Move!
           </p>
+
+          {/* Features grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-3xl">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 flex flex-col items-center hover:bg-white/20 transition-all">
+              <HiEmojiHappy className="h-8 w-8 text-yellow-300 mb-2" />
+              <h3 className="font-bold text-lg">Create Hilarious Memes</h3>
+              <p className="text-sm mt-2">
+                Express your Aptos enthusiasm with programmer-friendly memes
+              </p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 flex flex-col items-center hover:bg-white/20 transition-all">
+              <HiShare className="h-8 w-8 text-yellow-300 mb-2" />
+              <h3 className="font-bold text-lg">Share & Go Viral</h3>
+              <p className="text-sm mt-2">Spread the Move-lang love across the crypto community</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 flex flex-col items-center hover:bg-white/20 transition-all">
+              <HiCurrencyDollar className="h-8 w-8 text-yellow-300 mb-2" />
+              <h3 className="font-bold text-lg">NFTify & Earn</h3>
+              <p className="text-sm mt-2">
+                Turn your meme genius into NFTs on the Aptos blockchain
+              </p>
+            </div>
+          </div>
+
           <div className="mt-8 flex flex-wrap gap-4 justify-center">
             <Link href="/meme-creator" passHref>
               <Button
                 size="lg"
                 className="bg-white text-purple-700 hover:bg-yellow-300 hover:text-purple-800 transition-all duration-300 transform hover:scale-105 font-bold text-lg px-8"
               >
-                Create Memes
+                🎨 Create Meme
               </Button>
             </Link>
           </div>

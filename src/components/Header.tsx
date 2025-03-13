@@ -42,7 +42,7 @@ export default function Header() {
               size="sm"
               className="bg-white text-purple-700 hover:bg-yellow-300 hover:text-purple-800 font-bold transition-all duration-300 shadow-md rounded-full px-4"
             >
-              Create Meme
+              🎨 Create Meme
             </Button>
           </Link>
         </nav>
@@ -82,7 +82,7 @@ export default function Header() {
             <div className="px-3">
               <Link href="/meme-creator" onClick={() => setMobileMenuOpen(false)}>
                 <Button className="w-full bg-white text-purple-700 hover:bg-yellow-300 hover:text-purple-800 font-bold rounded-full">
-                  Create Meme
+                  🎨 Create Meme
                 </Button>
               </Link>
             </div>
