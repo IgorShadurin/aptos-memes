@@ -25,6 +25,13 @@ interface MemeTemplate {
   path: string;
   width: number;
   height: number;
+  phrases: {
+    description: string;
+    characters: {
+      name: string;
+      description: string;
+    }[];
+  };
   textAreas: TextArea[];
 }
 
@@ -303,14 +310,29 @@ export default function MemeCreator() {
   }, []);
 
   /**
-   * Generates AI text for the meme
+   * Generate AI text for the meme based on template information
    */
   const generateAiText = async () => {
     if (!selectedTemplate) return;
 
     setIsLoading(true);
     try {
-      const response = await fetch('/api/generate-meme-text');
+      // Extract information about the selected template to send to the server
+      const templateInfo = {
+        templateId: selectedTemplate.id,
+        templateName: selectedTemplate.name,
+        phrases: selectedTemplate.phrases,
+      };
+
+      // Send a POST request with template information
+      const response = await fetch('/api/generate-meme-text', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(templateInfo),
+      });
+
       const data = await response.json();
 
       // Distribute AI generated text across text areas

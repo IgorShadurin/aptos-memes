@@ -5,12 +5,20 @@
     "path": "/meme-templates/1.png",
     "width": 1200,
     "height": 800,
+    "phrases": {
+      "description": "A man looking at another woman while his girlfriend looks at him disapprovingly",
+      "characters": [
+        { "name": "girlfriend", "description": "Disapproving girlfriend" },
+        { "name": "boyfriend", "description": "Distracted boyfriend" },
+        { "name": "distraction", "description": "Object of distraction" }
+      ]
+    },
     "textAreas": [
       {
         "id": "girlfriend",
         "x": 240,
         "y": 150,
-        "width": 200,
+        "width": 300,
         "height": 100,
         "align": "center",
         "defaultText": "Current Project"
@@ -26,9 +34,9 @@
       },
       {
         "id": "distraction",
-        "x": 940,
-        "y": 150,
-        "width": 200,
+        "x": 950,
+        "y": 100,
+        "width": 500,
         "height": 100,
         "align": "center",
         "defaultText": "New Project Idea"
@@ -41,6 +49,13 @@
     "path": "/meme-templates/2.png",
     "width": 800,
     "height": 800,
+    "phrases": {
+      "description": "A woman thinking about what her boyfriend is thinking about",
+      "characters": [
+        { "name": "girl", "description": "Girl wondering what he's thinking" },
+        { "name": "thoughts", "description": "What he's actually thinking about" }
+      ]
+    },
     "textAreas": [
       {
         "id": "girl",
@@ -68,6 +83,14 @@
     "path": "/meme-templates/3.png",
     "width": 600,
     "height": 908,
+    "phrases": {
+      "description": "A sweating person trying to decide between two buttons",
+      "characters": [
+        { "name": "leftButton", "description": "First option (left button)" },
+        { "name": "rightButton", "description": "Second option (right button)" },
+        { "name": "person", "description": "Person making the decision" }
+      ]
+    },
     "textAreas": [
       {
         "id": "leftButton",
@@ -104,6 +127,12 @@
     "path": "/meme-templates/4.png",
     "width": 768,
     "height": 1024,
+    "phrases": {
+      "description": "Pablo Escobar standing alone in different scenes, looking sad",
+      "characters": [
+        { "name": "caption", "description": "Caption describing a sad or lonely situation" }
+      ]
+    },
     "textAreas": [
       {
         "id": "caption",
@@ -122,6 +151,13 @@
     "path": "/meme-templates/5.png",
     "width": 1200,
     "height": 1200,
+    "phrases": {
+      "description": "Drake rejecting one thing and approving another",
+      "characters": [
+        { "name": "top", "description": "Thing being rejected (Drake gesturing 'no')" },
+        { "name": "bottom", "description": "Thing being approved (Drake approving)" }
+      ]
+    },
     "textAreas": [
       {
         "id": "top",
@@ -145,10 +181,14 @@
   },
   {
     "id": "template6",
-    "name": "Leonardo DiCaprio Cheers",
+    "name": "Gatsby",
     "path": "/meme-templates/6.png",
     "width": 900,
     "height": 900,
+    "phrases": {
+      "description": "Leonardo DiCaprio raising a glass in celebration",
+      "characters": [{ "name": "caption", "description": "Celebratory caption or toast" }]
+    },
     "textAreas": [
       {
         "id": "caption",
@@ -167,6 +207,12 @@
     "path": "/meme-templates/7.png",
     "width": 800,
     "height": 600,
+    "phrases": {
+      "description": "Dog sitting in a room on fire saying 'This is fine'",
+      "characters": [
+        { "name": "caption", "description": "Caption describing a chaotic/problematic situation" }
+      ]
+    },
     "textAreas": [
       {
         "id": "caption",
@@ -185,6 +231,13 @@
     "path": "/meme-templates/8.jpg",
     "width": 900,
     "height": 900,
+    "phrases": {
+      "description": "Old man struggling with a laptop",
+      "characters": [
+        { "name": "top", "description": "Setup of a technology situation" },
+        { "name": "bottom", "description": "Punchline or outcome" }
+      ]
+    },
     "textAreas": [
       {
         "id": "top",
@@ -212,6 +265,13 @@
     "path": "/meme-templates/9.jpg",
     "width": 900,
     "height": 900,
+    "phrases": {
+      "description": "Man pointing to his head, suggesting a clever but flawed solution",
+      "characters": [
+        { "name": "top", "description": "Statement of a problem" },
+        { "name": "bottom", "description": "Clever but flawed solution" }
+      ]
+    },
     "textAreas": [
       {
         "id": "top",
@@ -239,11 +299,18 @@
     "path": "/meme-templates/10.jpg",
     "width": 1000,
     "height": 650,
+    "phrases": {
+      "description": "Woman yelling at a confused cat at dinner table",
+      "characters": [
+        { "name": "woman", "description": "Angry/frustrated person" },
+        { "name": "cat", "description": "Confused or unbothered cat" }
+      ]
+    },
     "textAreas": [
       {
         "id": "woman",
         "x": 250,
-        "y": 165,
+        "y": 115,
         "width": 400,
         "height": 150,
         "align": "center",
@@ -252,7 +319,7 @@
       {
         "id": "cat",
         "x": 750,
-        "y": 165,
+        "y": 95,
         "width": 400,
         "height": 150,
         "align": "center",
