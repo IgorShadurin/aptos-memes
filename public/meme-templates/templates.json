@@ -1,0 +1,65 @@
+[
+  {
+    "id": "drake",
+    "name": "Drake Hotline Bling",
+    "path": "/meme-templates/drake.jpg",
+    "width": 1200,
+    "height": 1200
+  },
+  {
+    "id": "distracted-boyfriend",
+    "name": "Distracted Boyfriend",
+    "path": "/meme-templates/distracted-boyfriend.jpg",
+    "width": 1200,
+    "height": 800
+  },
+  {
+    "id": "two-buttons",
+    "name": "Two Buttons",
+    "path": "/meme-templates/two-buttons.jpg",
+    "width": 600,
+    "height": 908
+  },
+  {
+    "id": "change-my-mind",
+    "name": "Change My Mind",
+    "path": "/meme-templates/change-my-mind.jpg",
+    "width": 1200,
+    "height": 900
+  },
+  {
+    "id": "breaking-news",
+    "name": "Breaking News",
+    "path": "/meme-templates/breaking-news.svg",
+    "width": 1200,
+    "height": 800
+  },
+  {
+    "id": "newsroom-anchor",
+    "name": "Newsroom Anchor",
+    "path": "/meme-templates/newsroom-anchor.svg",
+    "width": 1200,
+    "height": 800
+  },
+  {
+    "id": "surprised-reporter",
+    "name": "Surprised Reporter",
+    "path": "/meme-templates/surprised-reporter.svg",
+    "width": 1200,
+    "height": 900
+  },
+  {
+    "id": "news-interview",
+    "name": "News Interview",
+    "path": "/meme-templates/news-interview.svg",
+    "width": 1200,
+    "height": 800
+  },
+  {
+    "id": "newspaper-headline",
+    "name": "Newspaper Headline",
+    "path": "/meme-templates/newspaper-headline.svg",
+    "width": 1200,
+    "height": 900
+  }
+]

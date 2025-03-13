@@ -1,0 +1,11 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#222222"/>
+  <rect x="100" y="100" width="1000" height="600" fill="#444444"/>
+  <circle cx="350" cy="350" r="180" fill="#666666"/>
+  <rect x="50" y="700" width="1100" height="150" fill="#0066cc"/>
+  <text x="600" y="800" font-family="Arial" font-size="70" text-anchor="middle" fill="white">SURPRISED REPORTER</text>
+  <rect x="600" y="150" width="400" height="400" fill="#555555"/>
+  <rect x="650" y="200" width="300" height="50" fill="white"/>
+  <rect x="650" y="300" width="300" height="50" fill="white"/>
+  <rect x="650" y="400" width="300" height="50" fill="white"/>
+</svg> 

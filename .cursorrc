@@ -1,0 +1,59 @@
+{
+  "name": "meme-my-news",
+  "project": {
+    "name": "meme-my-news",
+    "description": "Meme generator application for news headlines with template selection and AI text generation"
+  },
+  "linting": {
+    "enableESLint": true,
+    "eslintIgnorePatterns": ["node_modules", ".next", "public"]
+  },
+  "formatting": {
+    "enablePrettier": true,
+    "useTabs": false,
+    "tabWidth": 2,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "semi": true,
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "arrowParens": "always"
+  },
+  "development": {
+    "rules": [
+      "Develop all UI features with ability to be displayed on mobile correctly",
+      "In TypeScript, use the name 'error' for error variables in catch blocks",
+      "Use Number conversion instead of parseInt for number conversion when needed",
+      "Run 'npm run lint' before committing code",
+      "For every created TypeScript/JS function, create JSDoc documentation",
+      "Use the /backend directory for backend code",
+      "Create knex migrations in the /backend directory using 'npm run migrate:make'",
+      "Default repo for creating issues is dappykit/web4-apps",
+      "Do not include implementation or estimation details when creating GitHub issues",
+      "Never run 'npm run dev'"
+    ]
+  },
+  "memeGenerator": {
+    "templatesPath": "/public/meme-templates",
+    "templateJsonSchema": {
+      "id": "string",
+      "name": "string",
+      "path": "string",
+      "width": "number",
+      "height": "number"
+    }
+  },
+  "aiTools": {
+    "generateTextEndpoint": "/api/generate-meme-text",
+    "aiButton": {
+      "text": "Generate with AI",
+      "loadingText": "Generating..."
+    }
+  },
+  "commands": {
+    "build": "npm run build",
+    "lint": "npm run lint",
+    "test": "npm run test",
+    "format": "npm run format:check"
+  }
+} 
