@@ -52,6 +52,16 @@ interface DragState {
 }
 
 /**
+ * Interface for QR code style with background and foreground colors
+ */
+interface QRCodeStyle {
+  id: string;
+  name: string;
+  bgColor: string;
+  fgColor: string;
+}
+
+/**
  * MemeCreator component for creating and saving memes with variable text positions
  */
 export default function MemeCreator() {
@@ -66,6 +76,17 @@ export default function MemeCreator() {
   const [sponsorUrl, setSponsorUrl] = useState('');
   const [sponsorLogo, setSponsorLogo] = useState('/sponsors/aptos.png');
   const [urlError, setUrlError] = useState<string | null>(null);
+  const [qrCodeStyle, setQrCodeStyle] = useState<string>('vibrant-orange');
+
+  // QR code style options
+  const qrCodeStyles: QRCodeStyle[] = [
+    { id: 'classic', name: 'Classic (Black)', bgColor: '#FFFFFF', fgColor: '#000000' },
+    { id: 'vibrant-orange', name: 'Vibrant Orange', bgColor: '#FFFFFF', fgColor: '#FF5733' },
+    { id: 'neon-green', name: 'Neon Green', bgColor: '#000000', fgColor: '#39FF14' },
+    { id: 'cool-blue', name: 'Cool Blue', bgColor: '#FFFFFF', fgColor: '#0066FF' },
+    { id: 'pink-pop', name: 'Pink Pop', bgColor: '#FFFFFF', fgColor: '#FF69B4' },
+    { id: 'meme-gold', name: 'Meme Gold', bgColor: '#000000', fgColor: '#FFD700' },
+  ];
 
   const [dragState, setDragState] = useState<DragState>({
     isDragging: false,
@@ -479,6 +500,14 @@ export default function MemeCreator() {
     return `${window.location.origin}/sponsored-meme?url=${encodedUrl}`;
   };
 
+  /**
+   * Gets the selected QR code style
+   * @returns Selected QR code style object
+   */
+  const getSelectedQRStyle = (): QRCodeStyle => {
+    return qrCodeStyles.find((style) => style.id === qrCodeStyle) || qrCodeStyles[0];
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <Card className="w-full max-w-3xl mx-auto bg-transparent shadow-lg">
@@ -574,9 +603,29 @@ export default function MemeCreator() {
                       {urlError && <p className="text-red-500 text-xs mt-1">{urlError}</p>}
                     </div>
 
+                    <div>
+                      <label htmlFor="qrCodeStyle" className="block text-sm font-medium mb-1">
+                        QR Code Style
+                      </label>
+                      <Select
+                        id="qrCodeStyle"
+                        value={qrCodeStyle}
+                        onChange={(e) => setQrCodeStyle(e.target.value)}
+                      >
+                        {qrCodeStyles.map((style) => (
+                          <option key={style.id} value={style.id}>
+                            {style.name}
+                          </option>
+                        ))}
+                      </Select>
+                    </div>
+
                     {sponsorUrl && !urlError && (
                       <div className="flex justify-center mt-2">
-                        <div className="bg-white p-2 rounded-md">
+                        <div
+                          className="p-2 rounded-md"
+                          style={{ backgroundColor: getSelectedQRStyle().bgColor }}
+                        >
                           <QRCodeSVG
                             value={getEncodedQrUrl()}
                             size={120}
@@ -590,8 +639,8 @@ export default function MemeCreator() {
                               width: 48,
                               excavate: true,
                             }}
-                            bgColor="#FFFFFF"
-                            fgColor="#FF5733"
+                            bgColor={getSelectedQRStyle().bgColor}
+                            fgColor={getSelectedQRStyle().fgColor}
                             className="rounded-md"
                           />
                         </div>
@@ -734,11 +783,12 @@ export default function MemeCreator() {
                       {/* QR Code on the meme */}
                       {addSponsorQR && sponsorUrl && !urlError && (
                         <div
-                          className="absolute bottom-4 right-8 bg-white p-1 rounded-md shadow-md"
+                          className="absolute bottom-4 right-8 p-1 rounded-md shadow-md"
                           style={{
                             width: '15%',
                             height: 'auto',
                             aspectRatio: '1 / 1',
+                            backgroundColor: getSelectedQRStyle().bgColor,
                           }}
                         >
                           <QRCodeSVG
@@ -754,8 +804,8 @@ export default function MemeCreator() {
                               width: 40,
                               excavate: true,
                             }}
-                            bgColor="#FFFFFF"
-                            fgColor="#FF5733"
+                            bgColor={getSelectedQRStyle().bgColor}
+                            fgColor={getSelectedQRStyle().fgColor}
                             className="rounded-md"
                           />
                         </div>
