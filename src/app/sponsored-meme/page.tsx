@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { decodeBase64, isValidUrl } from '@/lib/utils';
@@ -10,6 +10,18 @@ import { decodeBase64, isValidUrl } from '@/lib/utils';
  * @returns JSX element with sponsored meme information
  */
 export default function SponsoredMemePage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-[70vh]">Loading...</div>}>
+      <SponsoredMemeContent />
+    </Suspense>
+  );
+}
+
+/**
+ * SponsoredMemeContent component contains the actual content of the sponsored meme page
+ * @returns JSX element with sponsored meme content
+ */
+function SponsoredMemeContent() {
   const searchParams = useSearchParams();
   const [decodedUrl, setDecodedUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
