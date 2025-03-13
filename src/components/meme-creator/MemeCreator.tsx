@@ -25,6 +25,9 @@ export default function MemeCreator() {
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
   const [newsModalOpen, setNewsModalOpen] = useState(false);
 
+  // Advanced options toggler state - hidden by default
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+
   // Sponsor QR code state
   const [addSponsorQR, setAddSponsorQR] = useState(false);
   const [sponsorUrl, setSponsorUrl] = useState('https://aptosfoundation.org/');
@@ -401,9 +404,16 @@ export default function MemeCreator() {
     }
   };
 
+  /**
+   * Toggles the visibility of advanced options
+   */
+  const toggleAdvancedOptions = () => {
+    setShowAdvancedOptions(!showAdvancedOptions);
+  };
+
   return (
-    <div className="container py-6 md:py-12 px-4 md:px-6 max-w-6xl">
-      <Card className="w-full max-w-3xl mx-auto bg-transparent shadow-lg">
+    <div className="flex justify-center items-center py-6 md:py-12 px-4 md:px-6">
+      <Card className="w-full max-w-3xl bg-transparent shadow-lg">
         <CardHeader>
           <CardTitle>Meme Creator</CardTitle>
         </CardHeader>
@@ -426,7 +436,49 @@ export default function MemeCreator() {
               </Select>
             </div>
 
+            {/* Main action buttons in a row */}
             {selectedTemplate && (
+              <div className="flex justify-between items-center w-full gap-2 mt-4">
+                <Button
+                  variant="outline"
+                  onClick={toggleAdvancedOptions}
+                  className="flex-1 rounded-md border-gray-200 flex items-center justify-center"
+                >
+                  <span className="flex items-center">
+                    {showAdvancedOptions ? '🔼' : '🔽'}
+                    <span className="hidden sm:inline ml-1">
+                      {showAdvancedOptions ? 'Hide Options' : 'Show Options'}
+                    </span>
+                  </span>
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setNewsModalOpen(true)}
+                  disabled={isLoading || !selectedTemplate}
+                  className="flex-1 rounded-md border-gray-200 flex items-center justify-center"
+                >
+                  <span className="flex items-center">
+                    {isLoading ? '⏳' : '📰'}
+                    <span className="hidden sm:inline ml-1">
+                      {isLoading ? 'Generating...' : 'Meme from News'}
+                    </span>
+                  </span>
+                </Button>
+                <Button
+                  onClick={saveMeme}
+                  disabled={!selectedTemplate}
+                  className="flex-1 rounded-md bg-black text-white hover:bg-gray-800 flex items-center justify-center"
+                >
+                  <span className="flex items-center">
+                    💾
+                    <span className="hidden sm:inline ml-1">Download</span>
+                  </span>
+                </Button>
+              </div>
+            )}
+
+            {/* Text Input Fields - Only shown when advanced options are visible */}
+            {selectedTemplate && showAdvancedOptions && (
               <TextInputFields
                 textInputs={textInputs}
                 selectedTemplate={selectedTemplate}
@@ -434,8 +486,8 @@ export default function MemeCreator() {
               />
             )}
 
-            {/* Sponsor QR Code Section */}
-            {selectedTemplate && (
+            {/* Sponsor QR Code Section - Only shown when advanced options are visible */}
+            {selectedTemplate && showAdvancedOptions && (
               <QRCodeSection
                 addSponsorQR={addSponsorQR}
                 setAddSponsorQR={setAddSponsorQR}
@@ -453,31 +505,22 @@ export default function MemeCreator() {
 
             {selectedTemplate && (
               <>
-                <div className="mt-6 mb-4 flex flex-wrap justify-between gap-2">
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => setNewsModalOpen(true)}
-                      disabled={isLoading || !selectedTemplate}
-                    >
-                      {isLoading ? 'Generating...' : '📰 Meme from News'}
-                    </Button>
+                {/* Reset positions button - Only visible when advanced options are enabled */}
+                {showAdvancedOptions && (
+                  <div className="mt-4 mb-4">
                     <Button
                       variant="secondary"
                       onClick={handleResetPositions}
                       disabled={!selectedTemplate}
+                      className="flex items-center justify-center"
                     >
-                      🔄 Reset Positions
+                      <span className="flex items-center">
+                        🔄
+                        <span className="hidden sm:inline ml-1">Reset Positions</span>
+                      </span>
                     </Button>
                   </div>
-                  <Button
-                    onClick={saveMeme}
-                    disabled={!selectedTemplate}
-                    className="w-full sm:w-auto"
-                  >
-                    💾 Download
-                  </Button>
-                </div>
+                )}
 
                 <MemeCanvas
                   selectedTemplate={selectedTemplate}
