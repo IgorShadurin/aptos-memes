@@ -50,6 +50,7 @@ export default function MemeCreator() {
   const [selectedTemplate, setSelectedTemplate] = useState<MemeTemplate | null>(null);
   const [textInputs, setTextInputs] = useState<TextInput[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
   const [dragState, setDragState] = useState<DragState>({
     isDragging: false,
     textId: null,
@@ -333,14 +334,35 @@ export default function MemeCreator() {
    * Saves the meme as a PNG image
    */
   const saveMeme = async () => {
-    if (!memeRef.current) return;
+    if (!memeRef.current || !selectedTemplate) return;
 
     try {
       const dataUrl = await toPng(memeRef.current, { cacheBust: true });
+
+      // Sanitize the template name for use as a filename
+      // Replace spaces with hyphens and remove special characters
+      const sanitizedName = selectedTemplate.name
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w-]/g, '')
+        .trim();
+
+      // Create a unique filename using the template name
+      const filename = `meme-${sanitizedName}-${Date.now()}.png`;
+
+      // Create and trigger download
       const link = document.createElement('a');
-      link.download = `meme-${selectedTemplate?.id || 'custom'}.png`;
+      link.download = filename;
       link.href = dataUrl;
       link.click();
+
+      // Show success message
+      setSaveSuccess(`Meme saved as "${filename}"`);
+
+      // Clear success message after 3 seconds
+      setTimeout(() => {
+        setSaveSuccess(null);
+      }, 3000);
     } catch (error) {
       console.error('Failed to save meme:', error);
     }
@@ -522,6 +544,22 @@ export default function MemeCreator() {
           </Button>
         </CardFooter>
       </Card>
+
+      {/* Success notification */}
+      {saveSuccess && (
+        <div className="fixed bottom-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded shadow-md z-50">
+          <div className="flex items-center">
+            <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span>{saveSuccess}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
