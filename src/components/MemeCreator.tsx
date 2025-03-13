@@ -391,7 +391,7 @@ export default function MemeCreator() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Card className="w-full max-w-3xl mx-auto">
+      <Card className="w-full max-w-3xl mx-auto bg-transparent shadow-lg">
         <CardHeader>
           <CardTitle>Meme Creator</CardTitle>
         </CardHeader>
@@ -447,18 +447,18 @@ export default function MemeCreator() {
                       onClick={generateAiText}
                       disabled={isLoading || !selectedTemplate}
                     >
-                      {isLoading ? 'Generating...' : 'Generate with AI'}
+                      {isLoading ? 'Generating...' : '🪄 Generate with AI'}
                     </Button>
                     <Button
                       variant="secondary"
                       onClick={resetPositions}
                       disabled={!selectedTemplate}
                     >
-                      Reset Positions
+                      🔄 Reset Positions
                     </Button>
                   </div>
                   <Button onClick={saveMeme} disabled={!selectedTemplate}>
-                    Save Meme
+                    💾 Download
                   </Button>
                 </div>
 
