@@ -9,7 +9,7 @@ const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended
+  recommendedConfig: js.configs.recommended,
 });
 
 // Import plugins and configs through the compatibility layer
@@ -22,9 +22,7 @@ const compatConfigs = compat.extends(
 );
 
 // TypeScript config
-const typescriptConfig = tseslint.config(
-  ...tseslint.configs.recommended
-);
+const typescriptConfig = tseslint.config(...tseslint.configs.recommended);
 
 // Define ignore patterns (files that should not be linted)
 const ignores = [
