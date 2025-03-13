@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
 import { QRCodeStyle } from './types';
 import { validateUrl, getEncodedQrUrl } from './utils';
 
@@ -37,6 +38,13 @@ const QRCodeSection: React.FC<QRCodeSectionProps> = ({
   setUrlError,
   qrCodeStyles,
 }) => {
+  // Track dropdown selection separately from the actual logo
+  const [logoSelection, setLogoSelection] = useState<string>(
+    sponsorLogo?.startsWith('data:') ? 'custom' : sponsorLogo
+  );
+  const [isLoading, setIsLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   /**
    * Handles changes to the sponsor URL input
    * @param e - Change event
@@ -60,6 +68,71 @@ const QRCodeSection: React.FC<QRCodeSectionProps> = ({
     return qrCodeStyles.find((style) => style.id === qrCodeStyle) || qrCodeStyles[0];
   };
 
+  /**
+   * Handles the sponsor logo selection change
+   * @param e - Change event
+   */
+  const handleSponsorLogoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setLogoSelection(value);
+
+    // If it's not the custom option, directly update the logo
+    if (value !== 'custom') {
+      setSponsorLogo(value);
+    }
+    // Otherwise, we'll keep the existing custom logo until a new one is uploaded
+  };
+
+  /**
+   * Converts a file to a data URL
+   * @param file - The file to convert
+   * @returns A promise that resolves with the data URL
+   */
+  const fileToDataUrl = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+  /**
+   * Handles file upload for custom logo
+   * @param e - Change event
+   */
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check if file is an image
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload an image file');
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      // Convert file to data URL for reliable storage and rendering
+      const dataUrl = await fileToDataUrl(file);
+      setSponsorLogo(dataUrl);
+      // Ensure logo selection remains as 'custom'
+      setLogoSelection('custom');
+    } catch (error) {
+      console.error('Error processing image:', error);
+      alert('Failed to process the image. Please try another one.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  /**
+   * Triggers file input click
+   */
+  const triggerFileUpload = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
     <div className="mt-4 border-t pt-4">
       <div className="flex items-center mb-2">
@@ -81,14 +154,36 @@ const QRCodeSection: React.FC<QRCodeSectionProps> = ({
             <label htmlFor="sponsorLogo" className="block text-sm font-medium mb-1">
               Sponsor Logo
             </label>
-            <Select
-              id="sponsorLogo"
-              value={sponsorLogo}
-              onChange={(e) => setSponsorLogo(e.target.value)}
-            >
+            <Select id="sponsorLogo" value={logoSelection} onChange={handleSponsorLogoChange}>
               <option value="/sponsors/aptos.png">Aptos</option>
+              <option value="custom">Upload my logo</option>
               {/* Add more logo options here as needed */}
             </Select>
+            {logoSelection === 'custom' && (
+              <div className="mt-2">
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileUpload}
+                  accept="image/*"
+                  className="hidden"
+                />
+                <Button
+                  onClick={triggerFileUpload}
+                  variant="outline"
+                  className="w-full"
+                  size="sm"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Processing...' : 'Choose Logo File'}
+                </Button>
+                {sponsorLogo?.startsWith('data:') && (
+                  <div className="mt-2 text-xs text-green-600 dark:text-green-400">
+                    Custom logo uploaded successfully
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <div>
