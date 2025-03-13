@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { toPng } from 'html-to-image';
+import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
@@ -46,6 +47,7 @@ interface DragState {
  * MemeCreator component for creating and saving memes with variable text positions
  */
 export default function MemeCreator() {
+  const searchParams = useSearchParams();
   const [templates, setTemplates] = useState<MemeTemplate[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<MemeTemplate | null>(null);
   const [textInputs, setTextInputs] = useState<TextInput[]>([]);
@@ -71,6 +73,25 @@ export default function MemeCreator() {
         const response = await fetch('/meme-templates/templates.json');
         const data = await response.json();
         setTemplates(data);
+
+        // Get template ID from URL parameters
+        const templateId = searchParams.get('template');
+
+        if (templateId && data.length > 0) {
+          // Find the template that matches the ID from URL
+          const selectedTemplate = data.find(
+            (template: MemeTemplate) => template.id === templateId
+          );
+
+          if (selectedTemplate) {
+            // Set the selected template and initialize text inputs
+            setSelectedTemplate(selectedTemplate);
+            initializeTextInputs(selectedTemplate);
+            return;
+          }
+        }
+
+        // Default to first template if no template ID is provided or if the template ID is invalid
         if (data.length > 0) {
           setSelectedTemplate(data[0]);
           initializeTextInputs(data[0]);
@@ -81,7 +102,7 @@ export default function MemeCreator() {
     };
 
     loadTemplates();
-  }, []);
+  }, [searchParams]);
 
   /**
    * Initializes text inputs based on the selected template
