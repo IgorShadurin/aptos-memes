@@ -154,3 +154,31 @@
     transform: translateX(100%);
   }
 }
+
+/* Animated moving gradient for title */
+.animated-gradient-text {
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  animation: moveGradient 3s infinite alternate linear;
+  -webkit-animation: moveGradient 3s infinite alternate linear; /* For iOS Safari */
+  -webkit-background-clip: text; /* Ensure the text is properly clipped on all browsers */
+  background-clip: text;
+}
+
+@keyframes moveGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+@-webkit-keyframes moveGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}

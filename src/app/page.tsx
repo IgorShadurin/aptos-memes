@@ -14,7 +14,7 @@ export default function Home() {
           <div className="animate-bounce-slow mb-6">
             <HiSparkles className="h-12 w-12 text-yellow-300" />
           </div>
-          <h1 className="font-extrabold tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 via-white to-yellow-300 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">
+          <h1 className="font-extrabold tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 via-white to-yellow-300 animated-gradient-text drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">
             Aptos Meme Factory
           </h1>
           <p className="mt-6 max-w-2xl text-xl md:text-2xl font-medium text-white drop-shadow-md">
