@@ -94,16 +94,28 @@ export default function MemeGrid() {
     if (!template) return;
 
     try {
-      // Create a canvas element with the exact dimensions of the template
+      // Use a higher resolution canvas for better quality output
+      // Apply pixel density multiplier for better quality
+      const pixelDensity = 2; // Higher value = better quality but larger file size
+
+      // Create a canvas element with the exact dimensions of the template, multiplied by pixel density
       const canvas = document.createElement('canvas');
-      canvas.width = template.width;
-      canvas.height = template.height;
+      canvas.width = template.width * pixelDensity;
+      canvas.height = template.height * pixelDensity;
+
       const ctx = canvas.getContext('2d');
 
       if (!ctx) {
         console.error('Failed to get canvas context');
         return;
       }
+
+      // Scale the context to match the pixel density for higher quality rendering
+      ctx.scale(pixelDensity, pixelDensity);
+
+      // Enable image smoothing for better quality
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
 
       // Create a new image to load the template
       // Use the global window.Image constructor to avoid conflict with the Next.js Image component
@@ -125,43 +137,218 @@ export default function MemeGrid() {
         img.src = `${baseUrl}/${path}`;
       });
 
-      // Draw the image on the canvas
-      ctx.drawImage(img, 0, 0, template.width, template.height);
+      // Draw the image on the canvas with correct proportions
+      // First clear the canvas
+      ctx.clearRect(0, 0, template.width, template.height);
+
+      // Draw the image maintaining aspect ratio
+      // Calculate aspect ratio to ensure proper fit
+      const imgAspectRatio = img.width / img.height;
+      const templateAspectRatio = template.width / template.height;
+
+      let drawWidth = template.width;
+      let drawHeight = template.height;
+
+      // Ensure the image fills the canvas completely while maintaining aspect ratio
+      if (imgAspectRatio > templateAspectRatio) {
+        // Image is wider than template proportionally
+        drawHeight = template.width / imgAspectRatio;
+        // Center vertically
+        const yOffset = (template.height - drawHeight) / 2;
+        ctx.drawImage(img, 0, yOffset, template.width, drawHeight);
+      } else {
+        // Image is taller than template proportionally
+        drawWidth = template.height * imgAspectRatio;
+        // Center horizontally
+        const xOffset = (template.width - drawWidth) / 2;
+        ctx.drawImage(img, xOffset, 0, drawWidth, template.height);
+      }
+
+      // Special case handling for "Legacy Code Victory" meme - adjust if needed
+      const isLegacyCodeMeme = meme.name === 'Legacy Code Victory';
 
       // Draw each text element
       for (const textItem of meme.texts) {
         const textArea = template.textAreas.find((area) => area.id === textItem.id);
         if (!textArea) continue;
 
-        // Configure text style
-        ctx.font = '28px Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif';
-        ctx.textAlign = textArea.align;
-        ctx.textBaseline = 'middle';
-
-        // Position calculation
-        const x =
-          textArea.align === 'left'
-            ? textArea.x - textArea.width / 2
-            : textArea.align === 'right'
-              ? textArea.x + textArea.width / 2
-              : textArea.x;
-        const y = textArea.y;
-
         // Text needs to be uppercased
         const text = textItem.text.toUpperCase();
 
-        // Draw text outline first for the stroke effect
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = 'black';
-        ctx.strokeText(text, x, y);
+        // Calculate the maximum width available for the text
+        // Use a slightly higher value for the Legacy Code meme to prevent unwanted wrapping
+        const maxTextWidth = isLegacyCodeMeme
+          ? textArea.width * 0.95 // Give more space for this specific meme
+          : textArea.width * 0.9; // Standard margin for other memes
 
-        // Then fill with white
-        ctx.fillStyle = 'white';
-        ctx.fillText(text, x, y);
+        // Adjust base font size based on template type and dimensions
+        const baseFontSize = isLegacyCodeMeme
+          ? Math.min(template.width * 0.075, 44) // Slightly larger for legacy code meme
+          : Math.min(template.width * 0.065, 40); // Standard size for other memes
+
+        // Ensure text fits within boundaries by adjusting font size if needed
+        let fontSize = baseFontSize;
+        let lines = [text];
+
+        // Determine if text should be wrapped based on length and meme type
+        const wrapThreshold = isLegacyCodeMeme ? 25 : 20;
+
+        // Check if text is too long - if so, try to wrap it first
+        if (text.length > wrapThreshold) {
+          // Try to split into lines at logical breaks
+          const charsPerLine = textArea.width / (isLegacyCodeMeme ? 10 : 13); // Adjust per meme
+          lines = smartTextWrap(text, charsPerLine, isLegacyCodeMeme);
+        }
+
+        // Configure text style with improved quality settings
+        ctx.font = `bold ${fontSize}px Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif`;
+
+        // Measure text to ensure it fits within boundaries
+        let textWidth = lines.reduce((max, line) => Math.max(max, ctx.measureText(line).width), 0);
+
+        // If text is still too wide, reduce font size to fit
+        if (textWidth > maxTextWidth) {
+          // Calculate scaling factor to fit text
+          const scaleFactor = maxTextWidth / textWidth;
+          fontSize = Math.max(20, Math.floor(fontSize * scaleFactor)); // Increased min font size
+          ctx.font = `bold ${fontSize}px Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif`;
+
+          // Re-measure with new font size
+          textWidth = lines.reduce((max, line) => Math.max(max, ctx.measureText(line).width), 0);
+        }
+
+        ctx.textAlign = textArea.align;
+        ctx.textBaseline = 'middle';
+        ctx.lineJoin = 'round'; // Smoother corners for text
+        ctx.miterLimit = 2; // Helps with sharp corners
+
+        // Calculate line height based on font size
+        const lineHeight = fontSize * (isLegacyCodeMeme ? 1.2 : 1.1); // More space for Legacy Code meme
+
+        // Calculate total text height
+        const totalTextHeight = lineHeight * lines.length;
+
+        // Position calculation - ensure text is centered vertically in its area
+        let startY = textArea.y - totalTextHeight / 2 + lineHeight / 2;
+        if (lines.length === 1) {
+          startY = textArea.y; // Center single line
+        }
+
+        // Adjust positioning for Legacy Code Victory meme specifically if needed
+        if (isLegacyCodeMeme) {
+          startY = textArea.y - totalTextHeight / 2 + lineHeight / 2 - 10; // Shift text up by 10px
+        }
+
+        // Create multiple strokes for a better outline
+        // Slightly thicker for better visibility
+        const strokeWidth = Math.max(4, Math.round(fontSize * 0.12));
+        ctx.lineWidth = strokeWidth;
+        ctx.strokeStyle = 'black';
+
+        // Draw each line of text
+        lines.forEach((line, lineIndex) => {
+          const lineY = startY + lineIndex * lineHeight;
+
+          // Position calculation for X coordinate
+          const x =
+            textArea.align === 'left'
+              ? textArea.x - textArea.width / 2 + 8 // Increased padding for left-aligned text
+              : textArea.align === 'right'
+                ? textArea.x + textArea.width / 2 - 8 // Increased padding for right-aligned text
+                : textArea.x;
+
+          // Apply multiple strokes for a thicker outline
+          const shadowOffset = Math.max(1.5, Math.floor(strokeWidth / 3));
+
+          // Draw outlines first - use more positions for a better, thicker outline
+          [
+            [x - shadowOffset, lineY - shadowOffset], // top-left
+            [x + shadowOffset, lineY - shadowOffset], // top-right
+            [x - shadowOffset, lineY + shadowOffset], // bottom-left
+            [x + shadowOffset, lineY + shadowOffset], // bottom-right
+            [x, lineY - shadowOffset], // top
+            [x, lineY + shadowOffset], // bottom
+            [x - shadowOffset, lineY], // left
+            [x + shadowOffset, lineY], // right
+            [x, lineY], // center
+          ].forEach(([offsetX, offsetY]) => {
+            ctx.strokeText(line, offsetX, offsetY);
+          });
+
+          // Then fill with white for the text itself
+          ctx.fillStyle = 'white';
+          ctx.fillText(line, x, lineY);
+        });
       }
 
-      // Convert to data URL and trigger download
-      const dataUrl = canvas.toDataURL('image/png');
+      // Helper function to wrap text based on rough character count
+      function smartTextWrap(text: string, charsPerLine: number, isLegacyMeme: boolean): string[] {
+        // Special cases with common words that should be kept together
+        const specialPhrases = [
+          'MULTIPLE',
+          'FRAMEWORK',
+          'FRAMEWORKS',
+          'BASICS',
+          'DEEPLY',
+          'LEARN',
+          'LEGACY',
+          'CODE',
+          'UNDERSTAND',
+          'FINALLY',
+          'YEARS',
+        ];
+
+        // Special handling for known phrases in the Legacy Code meme
+        if (isLegacyMeme && text.includes('LEGACY CODE')) {
+          // If we know this is the Legacy Code meme, give special handling
+          // Break at logical points for this specific meme text
+          if (text.includes('UNDERSTAND THE LEGACY CODE')) {
+            return [
+              'WHEN YOU FINALLY UNDERSTAND',
+              'THE LEGACY CODE THAT NO ONE',
+              'HAS TOUCHED IN 5 YEARS',
+            ];
+          }
+        }
+
+        // Split text by spaces
+        const words = text.split(' ');
+        const lines: string[] = [];
+        let currentLine = '';
+
+        // Try to keep special phrases on the same line
+        for (let i = 0; i < words.length; i++) {
+          const word = words[i];
+
+          // Check if adding this word would exceed the line length
+          if ((currentLine + ' ' + word).length > charsPerLine && currentLine !== '') {
+            lines.push(currentLine);
+            currentLine = word;
+          }
+          // Check for special phrases that should be kept on same line if possible
+          else if (
+            specialPhrases.includes(word) &&
+            i > 0 &&
+            (currentLine + ' ' + word).length > charsPerLine * 0.8
+          ) {
+            // If a special phrase and would make line too full, put on new line
+            lines.push(currentLine);
+            currentLine = word;
+          } else {
+            currentLine = currentLine === '' ? word : currentLine + ' ' + word;
+          }
+        }
+
+        // Add the last line
+        if (currentLine !== '') {
+          lines.push(currentLine);
+        }
+
+        return lines;
+      }
+
+      // Convert to data URL and trigger download with high quality
+      const dataUrl = canvas.toDataURL('image/png', 1.0); // Maximum quality
       const sanitizedName = name
         .toLowerCase()
         .replace(/\s+/g, '-')
