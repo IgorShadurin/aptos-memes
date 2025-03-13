@@ -124,3 +124,33 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Shimmer effect for the header border */
+.shimmer-border {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-border::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translateX(-100%);
+  animation: shimmer 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

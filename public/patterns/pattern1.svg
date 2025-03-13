@@ -1,0 +1,7 @@
+<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+  <pattern id="p1" viewBox="0 0 60 60" width="60" height="60" patternUnits="userSpaceOnUse">
+    <path d="M30 5 L55 30 L30 55 L5 30 Z" stroke="white" stroke-width="1" fill="none"/>
+    <circle cx="30" cy="30" r="3" fill="white"/>
+  </pattern>
+  <rect x="0" y="0" width="100%" height="100%" fill="url(#p1)"/>
+</svg> 

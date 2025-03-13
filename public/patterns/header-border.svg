@@ -1,0 +1,17 @@
+<svg width="100" height="4" viewBox="0 0 100 4" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="headerGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FACC15" />
+      <stop offset="50%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#FACC15" />
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="100%" height="1" fill="url(#headerGradient)" opacity="0.7" />
+  <path d="M0,2.5 L5,1 L10,2.5 L15,1 L20,2.5 L25,1 L30,2.5 L35,1 L40,2.5 L45,1 L50,2.5 L55,1 L60,2.5 L65,1 L70,2.5 L75,1 L80,2.5 L85,1 L90,2.5 L95,1 L100,2.5" 
+        stroke="url(#headerGradient)" stroke-width="0.5" fill="none" />
+  <circle cx="8" cy="2" r="0.5" fill="#FFFFFF" opacity="0.8" />
+  <circle cx="28" cy="2" r="0.5" fill="#FFFFFF" opacity="0.8" />
+  <circle cx="48" cy="2" r="0.5" fill="#FFFFFF" opacity="0.8" />
+  <circle cx="68" cy="2" r="0.5" fill="#FFFFFF" opacity="0.8" />
+  <circle cx="88" cy="2" r="0.5" fill="#FFFFFF" opacity="0.8" />
+</svg> 

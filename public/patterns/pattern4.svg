@@ -1,0 +1,8 @@
+<svg width="70" height="70" viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg">
+  <pattern id="p4" viewBox="0 0 70 70" width="70" height="70" patternUnits="userSpaceOnUse">
+    <path d="M17.5 0 L35 30 L52.5 0 M0 17.5 L30 35 L0 52.5 M17.5 70 L35 40 L52.5 70 M70 17.5 L40 35 L70 52.5" 
+          stroke="white" stroke-width="1" fill="none"/>
+    <circle cx="35" cy="35" r="5" stroke="white" stroke-width="1" fill="none"/>
+  </pattern>
+  <rect x="0" y="0" width="100%" height="100%" fill="url(#p4)"/>
+</svg> 
