@@ -62,8 +62,8 @@ const MemeCanvas: React.FC<MemeCanvasProps> = ({
       >
         <div ref={memeRef} className="relative w-full h-full">
           <Image
-            src={selectedTemplate?.path}
-            alt={selectedTemplate?.name}
+            src={selectedTemplate?.path || '/default-placeholder.jpg'}
+            alt={selectedTemplate?.name || 'Meme Template'}
             className="object-contain"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -102,11 +102,11 @@ const MemeCanvas: React.FC<MemeCanvasProps> = ({
                 tabIndex={0}
                 aria-label={`Drag ${input.id} text`}
                 style={{
-                  left: `${((x - textArea.width / 2) / selectedTemplate?.width) * 100}%`,
-                  top: `${((y - textArea.height / 2) / selectedTemplate?.height) * 100}%`,
-                  width: `${(textArea.width / selectedTemplate?.width) * 100}%`,
+                  left: `${((x - textArea.width / 2) / (selectedTemplate?.width || 1)) * 100}%`,
+                  top: `${((y - textArea.height / 2) / (selectedTemplate?.height || 1)) * 100}%`,
+                  width: `${(textArea.width / (selectedTemplate?.width || 1)) * 100}%`,
                   height: 'auto',
-                  minHeight: `${(textArea.height / selectedTemplate?.height) * 100}%`,
+                  minHeight: `${(textArea.height / (selectedTemplate?.height || 1)) * 100}%`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent:

@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
 
     // Extract template information from the request
     // Note: We're not using user-entered phrases, just template info
-    const { templateId, templateName, phrases } = body;
+    const { templateId, templateName } = body;
 
     console.log(`Generating text for template: ${templateName} (${templateId})`);
 

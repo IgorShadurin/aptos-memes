@@ -223,7 +223,7 @@ export default function MemeCreator() {
    * @param e - Mouse event
    * @param textId - ID of the text being dragged
    */
-  const handleDragStart = (e: React.MouseEvent, textId: string) => {
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent, textId: string) => {
     e.preventDefault(); // Prevent text selection during drag
     if (!containerRef.current || !selectedTemplate) return;
 
@@ -243,19 +243,22 @@ export default function MemeCreator() {
     const scaleY = containerRect.height / selectedTemplate.height;
 
     // Calculate the click position relative to the container
-    const clickX = e.clientX - containerRect.left;
-    const clickY = e.clientY - containerRect.top;
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+
+    const clickX = clientX - containerRect.left;
+    const clickY = clientY - containerRect.top;
 
     // Calculate the text position in pixels, accounting for scaling
     const textX = textInput.position.x * scaleX;
     const textY = textInput.position.y * scaleY;
 
-    // Create the new drag state
+    // Create a new drag state object
     const newDragState = {
       isDragging: true,
       textId,
-      startX: e.clientX,
-      startY: e.clientY,
+      startX: clientX,
+      startY: clientY,
       offsetX: textX - clickX,
       offsetY: textY - clickY,
     };
@@ -465,8 +468,8 @@ export default function MemeCreator() {
                   textInputs={textInputs}
                   dragState={dragState}
                   handleDragStart={handleDragStart}
-                  containerRef={containerRef}
-                  memeRef={memeRef}
+                  containerRef={containerRef as React.RefObject<HTMLDivElement>}
+                  memeRef={memeRef as React.RefObject<HTMLDivElement>}
                   addSponsorQR={addSponsorQR}
                   sponsorUrl={sponsorUrl}
                   sponsorLogo={sponsorLogo}
