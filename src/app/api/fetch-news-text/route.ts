@@ -17,38 +17,51 @@ export async function POST(request: NextRequest) {
 
     console.log(`Fetching news from URL: ${url}`);
 
-    // In a real implementation, we would fetch real content from the URL
-    // For now, we'll generate dummy news text based on the URL domain
+    // Fetch content from the URL
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Meme-My-News/1.0 News Content Extractor',
+      },
+    });
 
-    // Extract domain from URL
-    let domain = '';
-    try {
-      const urlObj = new URL(url);
-      domain = urlObj.hostname.replace('www.', '');
-    } catch (error) {
-      // If URL parsing fails, use the input as is
-      domain = url.includes('/') ? url.split('/')[2] : url;
+    if (!response.ok) {
+      throw new Error(`Failed to fetch content: ${response.status} ${response.statusText}`);
     }
 
-    // Generate dummy news text based on domain
-    const newsTexts = {
-      'aptos.dev':
-        'Breaking news: Aptos blockchain reaches 1 million users this month, setting a new record for the fastest growing Layer 1 blockchain. Development activity surges as the ecosystem continues to attract new talent from across the Web3 space.',
-      'aptoslabs.com':
-        'Aptos Labs announces a $200 million ecosystem fund to support developers building decentralized applications on the Aptos blockchain. The fund will focus on DeFi, NFT, and gaming projects that leverage the Move programming language.',
-      'coindesk.com':
-        'Crypto market sees record-breaking volume as Bitcoin surges past $80,000 for the first time. Analysts attribute the rally to increased institutional adoption and reduced selling pressure following the halving event.',
-      'cointelegraph.com':
-        'New regulatory framework for cryptocurrencies announced by global financial authorities. The proposed guidelines aim to protect consumers while fostering innovation in the blockchain industry.',
-      default: `Latest news from ${domain}: A groundbreaking development has been announced today that could transform the industry. Experts are calling it a "game-changer" as adoption rates soar and new use cases emerge daily.`,
-    };
+    // Get the text content from the response
+    const htmlContent = await response.text();
 
-    // Return text based on domain or default text
-    const newsText = newsTexts[domain as keyof typeof newsTexts] || newsTexts.default;
+    // Extract text content and remove HTML tags
+    const textContent = stripHtmlTags(htmlContent);
 
-    return NextResponse.json({ newsText });
+    // Trim and clean up the text
+    const cleanText = textContent
+      .replace(/\s+/g, ' ') // Replace multiple whitespaces with a single space
+      .trim();
+
+    return NextResponse.json({ newsText: cleanText });
   } catch (error) {
     console.error('Error fetching news text:', error);
     return NextResponse.json({ error: 'Failed to fetch news text' }, { status: 400 });
   }
+}
+
+/**
+ * Strips HTML tags from the provided HTML content
+ * @param html - The HTML content to strip tags from
+ * @returns Clean text without HTML tags
+ */
+function stripHtmlTags(html: string): string {
+  // Create a fallback implementation that works in Node.js environment
+  // This is a simple regex-based approach to strip HTML tags
+  return html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove script tags
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '') // Remove style tags
+    .replace(/<[^>]*>/g, '') // Remove all HTML tags
+    .replace(/&nbsp;/g, ' ') // Replace &nbsp; with space
+    .replace(/&amp;/g, '&') // Replace &amp; with &
+    .replace(/&lt;/g, '<') // Replace &lt; with <
+    .replace(/&gt;/g, '>') // Replace &gt; with >
+    .replace(/&quot;/g, '"') // Replace &quot; with "
+    .replace(/&#39;/g, "'"); // Replace &#39; with '
 }
