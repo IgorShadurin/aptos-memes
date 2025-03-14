@@ -1,7 +1,7 @@
 # 🚀 Meme News Factory
 
 <div align="center">
-  <img src="public/logo.png" alt="Meme News Factory Logo" width="250px"/>
+  <img src="public/meme.png" alt="Meme News Factory Logo"/>
 </div>
 
 ## Why Meme News Factory Transforms Digital Content Creation
