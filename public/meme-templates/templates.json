@@ -5,6 +5,7 @@
     "path": "/meme-templates/1.png",
     "width": 1200,
     "height": 800,
+    "maxCharacters": 20,
     "phrases": {
       "description": "A man looking at another woman while his girlfriend looks at him disapprovingly",
       "characters": [
@@ -101,6 +102,7 @@
     "path": "/meme-templates/2.png",
     "width": 800,
     "height": 800,
+    "maxCharacters": 40,
     "phrases": {
       "description": "A woman thinking about what her boyfriend is thinking about",
       "characters": [
@@ -177,6 +179,7 @@
     "path": "/meme-templates/3.png",
     "width": 600,
     "height": 908,
+    "maxCharacters": 20,
     "phrases": {
       "description": "A sweating person trying to decide between two buttons",
       "characters": [
@@ -273,6 +276,7 @@
     "path": "/meme-templates/4.png",
     "width": 768,
     "height": 1024,
+    "maxCharacters": 40,
     "phrases": {
       "description": "Pablo Escobar standing alone in different scenes, looking sad",
       "characters": [
@@ -329,6 +333,7 @@
     "path": "/meme-templates/5.png",
     "width": 1200,
     "height": 1200,
+    "maxCharacters": 40,
     "phrases": {
       "description": "Drake rejecting one thing and approving another",
       "characters": [
@@ -405,6 +410,7 @@
     "path": "/meme-templates/6.png",
     "width": 900,
     "height": 900,
+    "maxCharacters": 40,
     "phrases": {
       "description": "Leonardo DiCaprio raising a glass in celebration",
       "characters": [{ "name": "caption", "description": "Celebratory caption or toast" }]
@@ -459,6 +465,7 @@
     "path": "/meme-templates/7.png",
     "width": 800,
     "height": 600,
+    "maxCharacters": 40,
     "phrases": {
       "description": "Dog sitting in a room on fire saying 'This is fine'",
       "characters": [
@@ -515,6 +522,7 @@
     "path": "/meme-templates/8.jpg",
     "width": 900,
     "height": 900,
+    "maxCharacters": 40,
     "phrases": {
       "description": "Old man struggling with a laptop",
       "characters": [
@@ -591,6 +599,7 @@
     "path": "/meme-templates/9.jpg",
     "width": 900,
     "height": 900,
+    "maxCharacters": 40,
     "phrases": {
       "description": "Man pointing to his head, suggesting a clever but flawed solution",
       "characters": [
@@ -667,6 +676,7 @@
     "path": "/meme-templates/10.jpg",
     "width": 1000,
     "height": 650,
+    "maxCharacters": 40,
     "phrases": {
       "description": "Woman yelling at a confused cat at dinner table",
       "characters": [
