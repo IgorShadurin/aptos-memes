@@ -15,7 +15,7 @@ export default function Home() {
             <HiSparkles className="h-12 w-12 text-yellow-300" />
           </div>
           <h1 className="font-extrabold tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 animate-gradient-x drop-shadow-[0_3px_3px_rgba(0,0,0,0.8)]">
-            Aptos Meme Factory
+            Meme News Factory
           </h1>
           <p className="mt-6 max-w-2xl text-xl md:text-2xl font-medium text-white drop-shadow-md">
             Where blockchain meets meme-magic! 🚀

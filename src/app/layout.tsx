@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Meme My News - Create and Share News Memes',
+  title: 'Meme News Factory - Create and Share News Memes',
   description:
     'Create, customize, and share hilarious memes from news headlines with our easy-to-use meme generator',
   icons: {
@@ -50,7 +50,7 @@ export default function RootLayout({
           </main>
           <footer className="w-full py-4 px-6 mt-auto text-center text-gray-600 dark:text-gray-400 border-t border-gray-300/50">
             <div className="flex flex-col items-center gap-1">
-              <p>© {new Date().getFullYear()} Meme My News. All rights reserved.</p>
+              <p>© {new Date().getFullYear()} Meme News Factory. All rights reserved.</p>
               <p className="flex items-center gap-1 text-pink-600 dark:text-pink-400 font-medium text-sm">
                 Made with <span className="text-red-500 animate-pulse">❤️</span> by meme lovers
               </p>

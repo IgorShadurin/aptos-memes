@@ -1,6 +1,6 @@
-# Development Guidelines for Meme My News
+# Development Guidelines for Meme News Factor
 
-This document outlines the development rules and standards for the Meme My News project.
+This document outlines the development rules and standards for the Meme News Factor project.
 
 ## Code Style and Standards
 

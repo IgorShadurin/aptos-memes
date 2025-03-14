@@ -22,7 +22,7 @@ export default function Header() {
             <div className="relative transition-transform duration-300 group-hover:scale-110">
               <Image
                 src="/logo.png"
-                alt="Meme My News Logo"
+                alt="Meme News Factory Logo"
                 width={32}
                 height={32}
                 priority
@@ -30,7 +30,7 @@ export default function Header() {
               />
             </div>
             <span className="font-extrabold text-lg text-white hidden sm:inline-block drop-shadow-sm">
-              Meme My News
+              Meme News Factory
             </span>
           </Link>
         </div>

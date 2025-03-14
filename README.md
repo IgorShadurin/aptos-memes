@@ -1,6 +1,6 @@
-# Meme My News
+# Meme News Factory
 
-A web application for creating and sharing memes based on news headlines. Meme My News provides an easy-to-use meme generator with template selection and AI-assisted text generation.
+A web application for creating and sharing memes based on news headlines. Meme News Factory provides an easy-to-use meme generator with template selection and AI-assisted text generation.
 
 ## Features
 
@@ -43,4 +43,4 @@ The application can be deployed on [Vercel](https://vercel.com) or any other hos
 
 ## License
 
-© 2024 Meme My News. All rights reserved.
+© 2024 Meme News Factory. All rights reserved.
