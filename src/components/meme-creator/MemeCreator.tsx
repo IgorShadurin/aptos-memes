@@ -444,18 +444,6 @@ export default function MemeCreator() {
               <div className="flex justify-between items-center w-full gap-2 mt-4">
                 <Button
                   variant="outline"
-                  onClick={toggleAdvancedOptions}
-                  className="flex-1 rounded-md border-gray-200 flex items-center justify-center"
-                >
-                  <span className="flex items-center">
-                    {showAdvancedOptions ? '🔼' : '🔽'}
-                    <span className="hidden sm:inline ml-1">
-                      {showAdvancedOptions ? 'Hide Options' : 'Show Options'}
-                    </span>
-                  </span>
-                </Button>
-                <Button
-                  variant="outline"
                   onClick={() => setNewsModalOpen(true)}
                   disabled={isLoading || !selectedTemplate}
                   className="flex-1 rounded-md border-gray-200 flex items-center justify-center"
@@ -475,6 +463,18 @@ export default function MemeCreator() {
                   <span className="flex items-center">
                     💾
                     <span className="hidden sm:inline ml-1">Download</span>
+                  </span>
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={toggleAdvancedOptions}
+                  className="flex-1 rounded-md border-gray-200 flex items-center justify-center"
+                >
+                  <span className="flex items-center">
+                    {showAdvancedOptions ? '🔼' : '🔽'}
+                    <span className="hidden sm:inline ml-1">
+                      {showAdvancedOptions ? 'Hide Options' : 'Show Options'}
+                    </span>
                   </span>
                 </Button>
               </div>
