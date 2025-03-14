@@ -465,7 +465,7 @@
     "path": "/meme-templates/7.png",
     "width": 800,
     "height": 600,
-    "maxCharacters": 50,
+    "maxCharacters": 30,
     "phrases": {
       "description": "Dog sitting in a room on fire saying 'This is fine'",
       "characters": [
