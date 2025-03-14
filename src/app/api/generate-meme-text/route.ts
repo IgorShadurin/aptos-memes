@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
       return createErrorResponse(
         'Missing required fields',
         'templateName and newsText are required',
-        400,
+        400
       );
     }
 
@@ -31,13 +31,18 @@ export async function POST(request: NextRequest) {
       return createErrorResponse(
         'OpenAI API key is not configured',
         'Please add OPENAI_API_KEY to your environment variables',
-        500,
+        500
       );
     }
 
     aiService.setApiKey(openAIApiKey);
     // Generate meme text using AI
-    const generatedText = await aiService.generateMemeText(newsText, templateName, Number(maxCharacters), 'Follow the style of these amazing examples: ' + JSON.stringify(examples));
+    const generatedText = await aiService.generateMemeText(
+      newsText,
+      templateName,
+      Number(maxCharacters),
+      'Follow the style of these amazing examples: ' + JSON.stringify(examples)
+    );
 
     // If generation failed, return error
     if (!generatedText.success) {

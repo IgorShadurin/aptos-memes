@@ -125,7 +125,7 @@ export class AiService {
     newsText: string,
     templateName: string,
     maxCharacters = 20,
-    templateContext?: string,
+    templateContext?: string
   ): Promise<MemeGenerationResponse> {
     // Default error response
     const errorResponse: MemeGenerationResponse = {

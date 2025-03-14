@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import MemeGrid from '@/components/MemeGrid';
 import { HiSparkles } from 'react-icons/hi';
-import { HiCurrencyDollar, HiShare, HiEmojiHappy } from 'react-icons/hi';
+import { HiCurrencyDollar, HiNewspaper, HiQrcode } from 'react-icons/hi';
 
 export default function Home() {
   return (
@@ -18,39 +18,43 @@ export default function Home() {
             Aptos Meme Factory
           </h1>
           <p className="mt-6 max-w-2xl text-xl md:text-2xl font-medium text-white drop-shadow-md">
-            Your one-stop meme shop for all things!
+            Where blockchain meets meme-magic! 🚀
           </p>
 
           {/* Features grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-3xl">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 flex flex-col items-center hover:bg-white/20 transition-all">
-              <HiEmojiHappy className="h-8 w-8 text-yellow-300 mb-2" />
-              <h3 className="font-bold text-lg">Create Hilarious Memes</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-4xl">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-5 flex flex-col items-center hover:bg-white/20 transition-all transform hover:scale-105">
+              <HiNewspaper className="h-10 w-10 text-yellow-300 mb-3" />
+              <h3 className="font-bold text-xl">Memeify the News</h3>
               <p className="text-sm mt-2">
-                Express your Aptos enthusiasm with programmer-friendly memes
+                Turn boring headlines into LOL-worthy memes! Why read news when you can laugh at it?
+                😂
               </p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 flex flex-col items-center hover:bg-white/20 transition-all">
-              <HiShare className="h-8 w-8 text-yellow-300 mb-2" />
-              <h3 className="font-bold text-lg">Share & Go Viral</h3>
-              <p className="text-sm mt-2">Spread the Move-lang love across the crypto community</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 flex flex-col items-center hover:bg-white/20 transition-all">
-              <HiCurrencyDollar className="h-8 w-8 text-yellow-300 mb-2" />
-              <h3 className="font-bold text-lg">NFTify & Earn</h3>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-5 flex flex-col items-center hover:bg-white/20 transition-all transform hover:scale-105">
+              <HiCurrencyDollar className="h-10 w-10 text-yellow-300 mb-3" />
+              <h3 className="font-bold text-xl">NFTify & Earn</h3>
               <p className="text-sm mt-2">
-                Turn your meme genius into NFTs on the Aptos blockchain
+                Your meme genius → Aptos NFTs → Actual money! Who said being funny doesn&apos;t pay?
+                💰
+              </p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-5 flex flex-col items-center hover:bg-white/20 transition-all transform hover:scale-105">
+              <HiQrcode className="h-10 w-10 text-yellow-300 mb-3" />
+              <h3 className="font-bold text-xl">Sponsor QR Cha-Ching!</h3>
+              <p className="text-sm mt-2">
+                Slap sponsor QR codes on your viral memes and watch the coins roll in! Ka-ching! 🤑
               </p>
             </div>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-4 justify-center">
+          <div className="mt-10 flex flex-wrap gap-4 justify-center">
             <Link href="/meme-creator" passHref>
               <Button
                 size="lg"
-                className="bg-white text-purple-700 hover:bg-yellow-300 hover:text-purple-800 font-bold transition-all duration-300 shadow-md rounded-full px-6 py-3 text-lg"
+                className="bg-white text-purple-700 hover:bg-yellow-300 hover:text-purple-800 font-bold transition-all duration-300 shadow-md rounded-full px-8 py-4 text-lg"
               >
-                🎨 Create Meme
+                🎨 Create Meme Magic Now!
               </Button>
             </Link>
           </div>
