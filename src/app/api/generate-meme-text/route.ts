@@ -13,38 +13,39 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Extract template information and news from the request
-    const { templateName, newsText, templateContext } = body;
+    const { templateName, newsText, templateContext, phrases, examples, maxCharacters } = body;
+    console.log('templateName, templateContext', JSON.stringify({ templateName, phrases, templateContext, examples }, null, 2));
 
     // Ensure we have the required fields
     if (!templateName || !newsText) {
       return createErrorResponse(
         'Missing required fields',
         'templateName and newsText are required',
-        400
+        400,
       );
     }
 
     // Initialize AI service with API key from environment variable
     const openAIApiKey = process.env.OPENAI_API_KEY;
-    console.log('openAIApiKey', openAIApiKey);
 
     if (!openAIApiKey) {
       return createErrorResponse(
         'OpenAI API key is not configured',
         'Please add OPENAI_API_KEY to your environment variables',
-        500
+        500,
       );
     }
 
     aiService.setApiKey(openAIApiKey);
-
     // Generate meme text using AI
-    const generatedText = await aiService.generateMemeText(newsText, templateName, templateContext);
+    const generatedText = await aiService.generateMemeText(newsText, templateName, Number(maxCharacters), 'Follow the style of these amazing examples: ' + examples);
 
     // If generation failed, return error
     if (!generatedText.success) {
       return createErrorResponse('Failed to generate meme text', generatedText.error, 500);
     }
+
+    console.log('generatedText', generatedText);
 
     // Return the generated text
     return NextResponse.json({

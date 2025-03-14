@@ -41,6 +41,58 @@
         "align": "center",
         "defaultText": "New Project Idea"
       }
+    ],
+    "examples": [
+      {
+        "topText": "Aptos's 100k TPS capabilities",
+        "bottomText": "Web3 developer",
+        "additionalTexts": "Finishing current blockchain integration"
+      },
+      {
+        "topText": "Latest Aptos Move features",
+        "bottomText": "Smart contract developer",
+        "additionalTexts": "Debugging production code"
+      },
+      {
+        "topText": "New dApp trending on Twitter",
+        "bottomText": "Crypto investor",
+        "additionalTexts": "Current investment portfolio"
+      },
+      {
+        "topText": "Brand new AI framework",
+        "bottomText": "Software engineer",
+        "additionalTexts": "Existing codebase that needs maintenance"
+      },
+      {
+        "topText": "Shiny Move module template",
+        "bottomText": "Aptos developer",
+        "additionalTexts": "Current module that needs unit tests"
+      },
+      {
+        "topText": "The dessert menu",
+        "bottomText": "Me",
+        "additionalTexts": "The healthy meal I just ordered"
+      },
+      {
+        "topText": "New TV show everyone's talking about",
+        "bottomText": "Me",
+        "additionalTexts": "My growing watchlist I haven't started"
+      },
+      {
+        "topText": "Shopping sale",
+        "bottomText": "Me",
+        "additionalTexts": "My bank account"
+      },
+      {
+        "topText": "New restaurant in town",
+        "bottomText": "Me",
+        "additionalTexts": "Leftover food in my fridge"
+      },
+      {
+        "topText": "Weekend plans",
+        "bottomText": "Me",
+        "additionalTexts": "Work I should be doing"
+      }
     ]
   },
   {
@@ -74,6 +126,48 @@
         "height": 100,
         "align": "center",
         "defaultText": "How to center a div with CSS"
+      }
+    ],
+    "examples": [
+      {
+        "girlText": "He must be thinking about other blockchains",
+        "thoughtsText": "Why is Aptos's parallel execution so much faster than anything else?"
+      },
+      {
+        "girlText": "He's probably thinking about his ex",
+        "thoughtsText": "Why won't my Move module compile without resource ownership errors?"
+      },
+      {
+        "girlText": "I bet he's texting someone else right now",
+        "thoughtsText": "If I optimize this transaction batching, I could reduce gas fees by 15%"
+      },
+      {
+        "girlText": "He never pays attention to me when we're together",
+        "thoughtsText": "Is my validator node configuration optimal for maximum staking rewards?"
+      },
+      {
+        "girlText": "He must be thinking about the party last weekend",
+        "thoughtsText": "Can I implement a better resource account pattern for my dApp treasury?"
+      },
+      {
+        "girlText": "He must be thinking about something romantic",
+        "thoughtsText": "Did I leave the oven on at home?"
+      },
+      {
+        "girlText": "I bet he's thinking about our future together",
+        "thoughtsText": "I wonder who would win in a fight between a grizzly bear and a gorilla"
+      },
+      {
+        "girlText": "He's probably planning our next date",
+        "thoughtsText": "Why do they call it a building when it's already built?"
+      },
+      {
+        "girlText": "He must be thinking about what I just said",
+        "thoughtsText": "That song from earlier is still stuck in my head"
+      },
+      {
+        "girlText": "He looks so deep in thought about us",
+        "thoughtsText": "I should've ordered the burger instead of the salad"
       }
     ]
   },
@@ -119,6 +213,58 @@
         "align": "center",
         "defaultText": "Developer"
       }
+    ],
+    "examples": [
+      {
+        "leftButton": "Build on established blockchain",
+        "rightButton": "Build on Aptos with Move",
+        "person": "Web3 Developer"
+      },
+      {
+        "leftButton": "Optimize existing code",
+        "rightButton": "Rewrite in Move language",
+        "person": "Smart Contract Developer"
+      },
+      {
+        "leftButton": "Extensive testing in testnet",
+        "rightButton": "Deploy to mainnet faster",
+        "person": "dApp founder"
+      },
+      {
+        "leftButton": "Stick with sequential execution",
+        "rightButton": "Refactor for parallel execution",
+        "person": "Blockchain architect"
+      },
+      {
+        "leftButton": "Document the code properly",
+        "rightButton": "Add more features",
+        "person": "Move module developer"
+      },
+      {
+        "leftButton": "Save money",
+        "rightButton": "Order takeout again",
+        "person": "Me at 9pm"
+      },
+      {
+        "leftButton": "Go to bed early",
+        "rightButton": "Start a new show at midnight",
+        "person": "Me on a work night"
+      },
+      {
+        "leftButton": "Healthy home-cooked meal",
+        "rightButton": "Fast food drive-thru",
+        "person": "Anyone after a long day"
+      },
+      {
+        "leftButton": "Exercise",
+        "rightButton": "Netflix marathon",
+        "person": "Me on Saturday morning"
+      },
+      {
+        "leftButton": "Do laundry",
+        "rightButton": "Turn underwear inside-out",
+        "person": "College student"
+      }
     ]
   },
   {
@@ -142,6 +288,38 @@
         "height": 150,
         "align": "center",
         "defaultText": "When your code finally works but you don't know why"
+      }
+    ],
+    "examples": [
+      {
+        "caption": "Waiting for your Move module to compile after the tenth syntax error"
+      },
+      {
+        "caption": "When you deploy your dApp and nobody uses it in the first week"
+      },
+      {
+        "caption": "Staring at the validator dashboard waiting for your first staking reward"
+      },
+      {
+        "caption": "When your friend sold their Aptos at the peak but you're still holding"
+      },
+      {
+        "caption": "Watching the testnet transaction confirming while production users are waiting"
+      },
+      {
+        "caption": "Waiting for your food delivery while watching everyone else get theirs first"
+      },
+      {
+        "caption": "When you finish a great TV series and don't know what to do with your life now"
+      },
+      {
+        "caption": "When your friends cancel plans last minute and you're already dressed up"
+      },
+      {
+        "caption": "Sitting alone after everyone leaves the party early"
+      },
+      {
+        "caption": "When you text 'lol' but inside you're not laughing at all"
       }
     ]
   },
@@ -177,6 +355,48 @@
         "align": "center",
         "defaultText": "console.log everywhere"
       }
+    ],
+    "examples": [
+      {
+        "top": "Writing smart contracts in Solidity",
+        "bottom": "Writing smart contracts in Move with safety guarantees"
+      },
+      {
+        "top": "Sequential transaction execution",
+        "bottom": "Aptos parallel execution engine"
+      },
+      {
+        "top": "Managing complex ownership in other languages",
+        "bottom": "Using Move's built-in resource management"
+      },
+      {
+        "top": "Debugging complex bugs in production",
+        "bottom": "Catching errors at compile time with Move"
+      },
+      {
+        "top": "Building web2 applications",
+        "bottom": "Building on Aptos with 100k+ TPS"
+      },
+      {
+        "top": "Reading the book",
+        "bottom": "Watching the movie adaptation"
+      },
+      {
+        "top": "Folding laundry right away",
+        "bottom": "Living out of the clean laundry basket for a week"
+      },
+      {
+        "top": "Cooking a balanced meal",
+        "bottom": "Cereal for dinner"
+      },
+      {
+        "top": "Going to bed at a reasonable hour",
+        "bottom": "Scrolling on phone until 2am"
+      },
+      {
+        "top": "Using a shopping list",
+        "bottom": "Buying whatever looks good at the grocery store"
+      }
     ]
   },
   {
@@ -198,6 +418,38 @@
         "height": 150,
         "align": "center",
         "defaultText": "When you find a Stack Overflow answer from 10 years ago that solves your problem"
+      }
+    ],
+    "examples": [
+      {
+        "caption": "When your Move module compiles on the first try with no safety errors"
+      },
+      {
+        "caption": "When your Aptos validator gets selected for proposal creation"
+      },
+      {
+        "caption": "When your dApp gets featured in the official Aptos ecosystem showcase"
+      },
+      {
+        "caption": "When a whale buys your entire NFT collection on launch day"
+      },
+      {
+        "caption": "When your transaction confirms in less than 1 second on Aptos mainnet"
+      },
+      {
+        "caption": "When you find the perfect parking spot right in front of the store"
+      },
+      {
+        "caption": "When your favorite shirt that you thought was ruined comes clean in the wash"
+      },
+      {
+        "caption": "When you remember a password on the first try"
+      },
+      {
+        "caption": "When you get to the microwave with 1 second left before it beeps"
+      },
+      {
+        "caption": "When you find money in your old jacket pocket"
       }
     ]
   },
@@ -222,6 +474,38 @@
         "height": 100,
         "align": "center",
         "defaultText": "Production server is down"
+      }
+    ],
+    "examples": [
+      {
+        "caption": "Deploying untested smart contract to mainnet"
+      },
+      {
+        "caption": "Trying to mint an NFT during network congestion"
+      },
+      {
+        "caption": "Watching crypto prices crash while being fully invested"
+      },
+      {
+        "caption": "Forgetting to save your private key backup"
+      },
+      {
+        "caption": "When your Move module has a critical vulnerability but users keep using it"
+      },
+      {
+        "caption": "Checking bank account after vacation"
+      },
+      {
+        "caption": "My apartment an hour before guests arrive"
+      },
+      {
+        "caption": "Week 3 of a diet"
+      },
+      {
+        "caption": "Me with 8 unread emails from my boss"
+      },
+      {
+        "caption": "Living with roommates who never clean"
       }
     ]
   },
@@ -257,6 +541,48 @@
         "align": "center",
         "defaultText": "And the entire codebase breaks"
       }
+    ],
+    "examples": [
+      {
+        "top": "What Layer 1 blockchains promise",
+        "bottom": "The actual developer experience building cross-chain"
+      },
+      {
+        "top": "My plan to build a simple DeFi app",
+        "bottom": "The 20 integrations and security audits actually needed"
+      },
+      {
+        "top": "How I explain crypto to my parents",
+        "bottom": "Their understanding after the explanation"
+      },
+      {
+        "top": "Estimated time to develop a dApp MVP",
+        "bottom": "Actual time including blockchain integration issues"
+      },
+      {
+        "top": "Reading Move documentation",
+        "bottom": "Trying to implement a complex resource with generics"
+      },
+      {
+        "top": "What I think I look like in online shopping photos",
+        "bottom": "What I actually look like when the clothes arrive"
+      },
+      {
+        "top": "Recipe: 'Quick and easy, 15-minute meal'",
+        "bottom": "Me 90 minutes later with a kitchen disaster"
+      },
+      {
+        "top": "My plan for a productive weekend",
+        "bottom": "Me binge-watching an entire series instead"
+      },
+      {
+        "top": "New Year's resolutions on January 1st",
+        "bottom": "Abandoned resolutions by January 15th"
+      },
+      {
+        "top": "The diet I planned",
+        "bottom": "Me ordering pizza at midnight"
+      }
     ]
   },
   {
@@ -291,6 +617,48 @@
         "align": "center",
         "defaultText": "If you don't write any code"
       }
+    ],
+    "examples": [
+      {
+        "top": "Can't have network congestion",
+        "bottom": "If your blockchain can process 100,000+ TPS"
+      },
+      {
+        "top": "Can't have smart contract hacks",
+        "bottom": "If you use Move's resource-oriented model"
+      },
+      {
+        "top": "Can't have governance issues",
+        "bottom": "If you never delegate your voting power"
+      },
+      {
+        "top": "Can't lose your crypto in a crash",
+        "bottom": "If you never check the prices"
+      },
+      {
+        "top": "Can't have deployment anxiety",
+        "bottom": "If your smart contract has formal verification in Move"
+      },
+      {
+        "top": "Can't be late for work",
+        "bottom": "If you don't go to work"
+      },
+      {
+        "top": "Can't have a bad hair day",
+        "bottom": "If you wear a hat every day"
+      },
+      {
+        "top": "Can't argue with your spouse",
+        "bottom": "If you always agree they're right"
+      },
+      {
+        "top": "Can't spend too much money shopping",
+        "bottom": "If you leave your wallet at home"
+      },
+      {
+        "top": "Can't get rejected",
+        "bottom": "If you never ask anyone out"
+      }
     ]
   },
   {
@@ -324,6 +692,48 @@
         "height": 150,
         "align": "center",
         "defaultText": "The client completely misunderstanding"
+      }
+    ],
+    "examples": [
+      {
+        "woman": "Me explaining why Move's resource model prevents re-entrancy attacks",
+        "cat": "Solidity developer who just lost funds in a hack"
+      },
+      {
+        "woman": "Me explaining Aptos's parallel execution engine",
+        "cat": "Friend who just wants to know if crypto will go up"
+      },
+      {
+        "woman": "Developer explaining transaction batching optimization",
+        "cat": "User complaining about a 1-second confirmation time"
+      },
+      {
+        "woman": "Crypto enthusiast explaining blockchain fundamentals",
+        "cat": "Relative who thinks it's all a scam"
+      },
+      {
+        "woman": "Me explaining the benefits of decentralization",
+        "cat": "Friend who just wants to know which NFT to buy"
+      },
+      {
+        "woman": "Me explaining why we need to follow the recipe exactly",
+        "cat": "My partner already adding random ingredients"
+      },
+      {
+        "woman": "Me explaining why we need to leave now to be on time",
+        "cat": "My friend who's still getting ready"
+      },
+      {
+        "woman": "Parents explaining the importance of vegetables",
+        "cat": "5-year-old who only wants chicken nuggets"
+      },
+      {
+        "woman": "Me explaining my elaborate vacation itinerary",
+        "cat": "Friend who just wants to relax at the beach"
+      },
+      {
+        "woman": "Me giving detailed assembly instructions",
+        "cat": "My dad who 'doesn't need the manual'"
       }
     ]
   }

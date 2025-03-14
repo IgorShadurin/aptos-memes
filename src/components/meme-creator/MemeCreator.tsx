@@ -300,11 +300,14 @@ export default function MemeCreator() {
 
     setIsLoading(true);
     try {
+      console.log('selectedTemplate', selectedTemplate);
       // Extract information about the selected template to send to the server
       const templateInfo = {
         templateId: selectedTemplate.id,
         templateName: selectedTemplate.name,
         phrases: selectedTemplate.phrases,
+        examples: selectedTemplate.examples,
+        maxCharacters: selectedTemplate.maxCharacters,
         newsText,
       };
 

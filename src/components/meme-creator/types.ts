@@ -32,6 +32,8 @@ export interface MemeTemplate {
     }[];
   };
   textAreas: TextArea[];
+  examples: string[];
+  maxCharacters: number;
 }
 
 /**

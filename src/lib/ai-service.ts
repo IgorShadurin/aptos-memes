@@ -117,13 +117,15 @@ export class AiService {
    * Generate meme text based on news content and template context
    * @param newsText - The news article text or headline
    * @param templateName - Name of the meme template being used
+   * @param maxCharacters - Maximum number of characters for each text (default: 20)
    * @param templateContext - Optional additional context about the template
    * @returns Generated meme text content
    */
   async generateMemeText(
     newsText: string,
     templateName: string,
-    templateContext?: string
+    maxCharacters = 20,
+    templateContext?: string,
   ): Promise<MemeGenerationResponse> {
     // Default error response
     const errorResponse: MemeGenerationResponse = {
@@ -142,9 +144,9 @@ export class AiService {
 
     try {
       // Create system prompt to guide the AI
-      const systemPrompt = `You are an expert meme creator. 
+      const systemPrompt = `You are an expert fun meme creator. 
 Your task is to create funny and witty text for a meme based on a news headline or article.
-The meme will use the "${templateName}" template${templateContext ? ` which ${templateContext}` : ''}.
+The meme will use the "${templateName}" ${templateContext}.
 
 You should generate:
 1. A top text (caption that appears at the top of the meme)
@@ -153,14 +155,18 @@ You should generate:
 
 Guidelines:
 - Be clever, witty, and humorous
-- Keep text concise and impactful (under 100 characters per text)
+- CRITICAL: ALL text must be MAXIMUM ${maxCharacters} CHARACTERS. This is a hard limit.
+- Make every character count with abbreviations if needed
 - Avoid offensive, inappropriate, or political content
 - Reference internet culture, tech trends, and meme formats when relevant
 - The text should clearly relate to the news content provided
 - Focus on making the meme both funny and relevant to the news
+- Don't use emojis or special characters
 
 Format your response as a JSON object with these exact keys: topText, bottomText, additionalTexts (an array of 2 strings).
-Do not include any explanation or additional content outside the JSON object.`;
+Do not include any explanation or additional content outside the JSON object.
+
+REMINDER: Each text string MUST BE ${maxCharacters} CHARACTERS OR LESS. Longer responses will be rejected.`;
 
       // User prompt is simply the news text
       const userPrompt = `Create a meme based on this news: "${newsText}"`;
@@ -192,6 +198,22 @@ Do not include any explanation or additional content outside the JSON object.`;
         if (!parsed.topText || !parsed.bottomText || !Array.isArray(parsed.additionalTexts)) {
           errorResponse.error = 'Invalid response format from AI service';
           return errorResponse;
+        }
+
+        // Enforce the 20-character limit for each piece of text
+        const MAX_LENGTH = 20;
+        if (
+          parsed.topText.length > MAX_LENGTH ||
+          parsed.bottomText.length > MAX_LENGTH ||
+          parsed.additionalTexts.some((text) => text.length > MAX_LENGTH)
+        ) {
+          // Truncate all texts to the maximum length
+          return {
+            topText: parsed.topText.substring(0, MAX_LENGTH),
+            bottomText: parsed.bottomText.substring(0, MAX_LENGTH),
+            additionalTexts: parsed.additionalTexts.map((text) => text.substring(0, MAX_LENGTH)),
+            success: true,
+          };
         }
 
         // Return the successful response
