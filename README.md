@@ -47,6 +47,7 @@ Here's what we're building toward:
 - Meme Minting: Turn any meme into an NFT with minimal steps
 - Creator Royalties: Earn when your meme template is used or resold
 - Batch Meme Brewery: Cook up multiple memes at once from different news sources
+- Farcaster Frame: Building a bridge for Ethereum users to hop into the Aptos meme universe with just a Frame interaction
 
 ### Mid-term
 - Meme Marketplace: Buy, sell, and trade digital meme assets
