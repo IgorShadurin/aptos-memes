@@ -13,8 +13,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Extract template information and news from the request
-    const { templateName, newsText, templateContext, phrases, examples, maxCharacters } = body;
-    console.log('templateName, templateContext', JSON.stringify({ templateName, phrases, templateContext, examples }, null, 2));
+    const { templateName, newsText, examples, maxCharacters } = body;
 
     // Ensure we have the required fields
     if (!templateName || !newsText) {
@@ -38,7 +37,7 @@ export async function POST(request: NextRequest) {
 
     aiService.setApiKey(openAIApiKey);
     // Generate meme text using AI
-    const generatedText = await aiService.generateMemeText(newsText, templateName, Number(maxCharacters), 'Follow the style of these amazing examples: ' + examples);
+    const generatedText = await aiService.generateMemeText(newsText, templateName, Number(maxCharacters), 'Follow the style of these amazing examples: ' + JSON.stringify(examples));
 
     // If generation failed, return error
     if (!generatedText.success) {

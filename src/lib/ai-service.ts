@@ -155,7 +155,7 @@ You should generate:
 
 Guidelines:
 - Be clever, witty, and humorous
-- CRITICAL: ALL text must be MAXIMUM ${maxCharacters} CHARACTERS. This is a hard limit.
+- CRITICAL: ALL text must be MAXIMUM ${maxCharacters} CHARACTERS for each phrase. This is a hard limit.
 - Make every character count with abbreviations if needed
 - Avoid offensive, inappropriate, or political content
 - Reference internet culture, tech trends, and meme formats when relevant
@@ -200,18 +200,17 @@ REMINDER: Each text string MUST BE ${maxCharacters} CHARACTERS OR LESS. Longer r
           return errorResponse;
         }
 
-        // Enforce the 20-character limit for each piece of text
-        const MAX_LENGTH = 20;
+        // Enforce the character limit using the maxCharacters parameter
         if (
-          parsed.topText.length > MAX_LENGTH ||
-          parsed.bottomText.length > MAX_LENGTH ||
-          parsed.additionalTexts.some((text) => text.length > MAX_LENGTH)
+          parsed.topText.length > maxCharacters ||
+          parsed.bottomText.length > maxCharacters ||
+          parsed.additionalTexts.some((text) => text.length > maxCharacters)
         ) {
-          // Truncate all texts to the maximum length
+          // Truncate all texts to the maximum length specified by maxCharacters
           return {
-            topText: parsed.topText.substring(0, MAX_LENGTH),
-            bottomText: parsed.bottomText.substring(0, MAX_LENGTH),
-            additionalTexts: parsed.additionalTexts.map((text) => text.substring(0, MAX_LENGTH)),
+            topText: parsed.topText.substring(0, maxCharacters),
+            bottomText: parsed.bottomText.substring(0, maxCharacters),
+            additionalTexts: parsed.additionalTexts.map((text) => text.substring(0, maxCharacters)),
             success: true,
           };
         }
