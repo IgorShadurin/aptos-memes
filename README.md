@@ -24,7 +24,6 @@ Create your first blockchain meme now at [aptos-memes.vercel.app](https://aptos-
 - 🎨 Template Library: Browse popular templates
 - 🧠 AI Meme Assistant: Get caption suggestions based on your chosen template
 - ✏️ Human-Drawn Templates: Our artists' hand-crafted templates let AI go wild without lawyers getting grumpy about copyright!
-- 🔄 Easy Sharing: Share directly to social platforms with minimal clicks
 - 📱 Sponsor QR Magic: Sprinkle some sponsor QR dust on your meme and watch the traffic (and payouts) roll in like magic!
 - ✨ QR Fashionista: Dress up your boring QR codes with stylish designs and logos - because even QR codes deserve to look fabulous!
 - 🔍 Discover Trending Memes: Find what's popular in real-time
