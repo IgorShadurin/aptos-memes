@@ -610,6 +610,7 @@ export default function MemeCreator() {
                   qrCodeStyles={qrCodeStyles}
                   urlError={urlError}
                   qrCodePosition={qrCodePosition}
+                  saveMeme={saveMeme}
                 />
               </>
             )}

@@ -21,6 +21,7 @@ interface MemeCanvasProps {
   qrCodeStyles: QRCodeStyle[];
   urlError: string | null;
   qrCodePosition: { x: number; y: number };
+  saveMeme: () => Promise<void>;
 }
 
 /**
@@ -40,6 +41,7 @@ const MemeCanvas: React.FC<MemeCanvasProps> = ({
   qrCodeStyles,
   urlError,
   qrCodePosition,
+  saveMeme,
 }) => {
   /**
    * Gets the selected QR code style
@@ -50,7 +52,7 @@ const MemeCanvas: React.FC<MemeCanvasProps> = ({
   };
 
   return (
-    <div className="mt-2 flex justify-center">
+    <div className="mt-2 flex justify-center flex-col items-center">
       <div
         ref={containerRef}
         className="relative inline-block"
@@ -219,6 +221,16 @@ const MemeCanvas: React.FC<MemeCanvasProps> = ({
           )}
         </div>
       </div>
+
+      {/* Download button at the bottom of the meme */}
+      <button
+        onClick={saveMeme}
+        className="mt-4 py-2 px-6 bg-black text-white rounded-md hover:bg-gray-800 flex items-center justify-center shadow-md transition-colors"
+        aria-label="Download meme"
+      >
+        <span className="mr-2">💾</span>
+        <span>Download</span>
+      </button>
     </div>
   );
 };
