@@ -19,6 +19,7 @@ Create your first blockchain meme now at [memezzz.com](https://memezzz.com)!
 ### Features
 
 - 📰 News-to-Meme Magic: Just paste a news URL and watch as we transform headlines into meme-worthy content instantly
+- 🤪 Custom Meme Creation: Type whatever wild ideas pop into your head and turn them into hilarious memes instantly
 - ⚡ Fast Meme Generation: Create memes in seconds with AI-powered joke suggestions
 - 🌐 Mobile-Ready: Create memes on any device with our responsive design
 - 🎨 Template Library: Browse popular templates
