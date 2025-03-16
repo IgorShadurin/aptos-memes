@@ -29,7 +29,7 @@ interface NewsModalProps {
  */
 export function NewsModal({ open, onOpenChange, onGenerate, isLoading }: NewsModalProps) {
   const [newsText, setNewsText] = useState<string>(
-    'Breaking news: Aptos blockchain reaches 1 million users this month, setting a new record for the fastest growing Layer 1 blockchain. Development activity surges as the ecosystem continues to attract new talent from across the Web3 space.'
+    'When your code finally works but you have no idea why 🤔'
   );
   const [newsUrl, setNewsUrl] = useState<string>('');
   const [fetchLoading, setFetchLoading] = useState<boolean>(false);
@@ -108,6 +108,10 @@ export function NewsModal({ open, onOpenChange, onGenerate, isLoading }: NewsMod
           </div>
 
           {fetchError && <p className="text-sm text-red-500">{fetchError}</p>}
+
+          <div className="text-center text-sm font-medium text-indigo-500">
+            ✨ OR type whatever you want to see on your meme! 🤪
+          </div>
 
           <Textarea
             value={newsText}
