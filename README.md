@@ -27,6 +27,7 @@ Create your first blockchain meme now at [memezzz.com](https://memezzz.com)!
 - ✏️ Human-Drawn Templates: Our artists' hand-crafted templates let AI go wild without lawyers getting grumpy about copyright!
 - 📱 Sponsor QR Magic: Sprinkle some sponsor QR dust on your meme and watch the traffic (and payouts) roll in like magic!
 - ✨ QR Fashionista: Dress up your boring QR codes with stylish designs and logos - because even QR codes deserve to look fabulous!
+- 💰 Crypto Tip Jar: Add your Aptos address with a stylish Tip QR code that lets fans support your meme-making genius directly
 - 🔍 Discover Trending Memes: Find what's popular in real-time
 - ✋ Drag & Drop Precision: Fine-tune your meme's text and QR code placement with intuitive drag and drop controls that work seamlessly on both mobile and desktop
 - 💾 Easy Download: Save your masterpiece directly from the meme canvas with a convenient download button

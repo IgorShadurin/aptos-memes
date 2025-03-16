@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { QRCodeSVG } from 'qrcode.react';
 import { MemeTemplate, TextInput, DragState, QRCodeStyle } from './types';
@@ -22,6 +22,9 @@ interface MemeCanvasProps {
   urlError: string | null;
   qrCodePosition: { x: number; y: number };
   saveMeme: () => Promise<void>;
+  aptosAddress: string;
+  addTipQR: boolean;
+  addressError: string | null;
 }
 
 /**
@@ -42,7 +45,29 @@ const MemeCanvas: React.FC<MemeCanvasProps> = ({
   urlError,
   qrCodePosition,
   saveMeme,
+  aptosAddress,
+  addTipQR,
+  addressError,
 }) => {
+  // Track mobile status
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect window size changes
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    // Check on mount
+    checkMobile();
+
+    // Set up event listener
+    window.addEventListener('resize', checkMobile);
+
+    // Clean up
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   /**
    * Gets the selected QR code style
    * @returns Selected QR code style object
@@ -50,6 +75,33 @@ const MemeCanvas: React.FC<MemeCanvasProps> = ({
   const getSelectedQRStyle = (): QRCodeStyle => {
     return qrCodeStyles.find((style) => style.id === qrCodeStyle) || qrCodeStyles[0];
   };
+
+  /**
+   * Gets the appropriate QR code value based on type
+   * @returns URL for QR code
+   */
+  const getQrValue = () => {
+    if (addSponsorQR) {
+      return sponsorUrl ? getEncodedQrUrl(sponsorUrl) : '';
+    } else if (addTipQR) {
+      return aptosAddress || '';
+    }
+    return '';
+  };
+
+  /**
+   * Formats Aptos address for display
+   * @param address - Full Aptos address
+   * @returns Shortened address with ellipsis
+   */
+  const formatAptosAddress = (address: string) => {
+    if (!address) return '';
+    return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+  };
+
+  // Calculate QR size based on device
+  const qrCodeWidth = isMobile ? '17%' : '18%';
+  const qrCodeMinWidth = isMobile ? '60px' : '80px';
 
   return (
     <div className="mt-2 flex justify-center flex-col items-center">
@@ -158,9 +210,10 @@ const MemeCanvas: React.FC<MemeCanvasProps> = ({
           })}
 
           {/* QR Code on the meme */}
-          {addSponsorQR && sponsorUrl && !urlError && (
+          {((addSponsorQR && sponsorUrl && !urlError) ||
+            (addTipQR && aptosAddress && !addressError)) && (
             <div
-              className="absolute p-1 rounded-md shadow-md cursor-move"
+              className="absolute p-1 shadow-md cursor-move flex flex-col items-center"
               onMouseDown={(e) => handleDragStart(e, 'qrcode')}
               onTouchStart={(e) => {
                 if (!e.touches[0]) return;
@@ -181,9 +234,9 @@ const MemeCanvas: React.FC<MemeCanvasProps> = ({
               tabIndex={0}
               aria-label="Drag QR code"
               style={{
-                width: '15%',
+                width: qrCodeWidth,
                 height: 'auto',
-                aspectRatio: '1 / 1',
+                minWidth: qrCodeMinWidth,
                 left: `${(qrCodePosition.x / (selectedTemplate?.width || 1)) * 100}%`,
                 top: `${(qrCodePosition.y / (selectedTemplate?.height || 1)) * 100}%`,
                 transform: 'translate(-50%, -50%)',
@@ -193,30 +246,67 @@ const MemeCanvas: React.FC<MemeCanvasProps> = ({
                   dragState?.isDragging && dragState.textId === 'qrcode'
                     ? '2px dashed #39f'
                     : 'none',
-                borderRadius: '4px',
                 backgroundColor:
                   dragState?.isDragging && dragState.textId === 'qrcode'
                     ? 'rgba(51, 153, 255, 0.1)'
-                    : getSelectedQRStyle().bgColor,
+                    : 'transparent',
+                zIndex: 10, // Ensure QR is above other elements
               }}
             >
-              <QRCodeSVG
-                value={getEncodedQrUrl(sponsorUrl)}
-                size={100}
-                level="H"
-                style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
-                imageSettings={{
-                  src: sponsorLogo,
-                  x: undefined,
-                  y: undefined,
-                  height: 40,
-                  width: 40,
-                  excavate: true,
+              <div
+                className="rounded-md w-full shadow-md"
+                style={{
+                  backgroundColor: getSelectedQRStyle().bgColor,
+                  padding: isMobile ? '0' : '10px',
+                  aspectRatio: '1 / 1',
+                  border: isMobile ? '1px solid white' : '2px solid white',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
                 }}
-                bgColor={getSelectedQRStyle().bgColor}
-                fgColor={getSelectedQRStyle().fgColor}
-                className="rounded-md"
-              />
+              >
+                <QRCodeSVG
+                  value={getQrValue()}
+                  size={100}
+                  level="M"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    pointerEvents: 'none',
+                  }}
+                  imageSettings={
+                    addSponsorQR
+                      ? {
+                          src: sponsorLogo,
+                          x: undefined,
+                          y: undefined,
+                          height: isMobile ? 18 : 40,
+                          width: isMobile ? 18 : 40,
+                          excavate: true,
+                        }
+                      : undefined
+                  }
+                  bgColor={getSelectedQRStyle().bgColor}
+                  fgColor={getSelectedQRStyle().fgColor}
+                  className="rounded-md"
+                />
+              </div>
+
+              {/* Display Aptos address text for Tip QR below the QR code */}
+              {addTipQR && aptosAddress && (
+                <div
+                  className="text-center bg-black text-white py-0.5 px-1 rounded-md w-full font-medium shadow-md"
+                  style={{
+                    fontSize: isMobile ? '0.45rem' : 'clamp(0.6rem, 2vw, 0.8rem)',
+                    letterSpacing: isMobile ? '0' : '0.02em',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    marginTop: isMobile ? '1px' : '4px',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  Tip {formatAptosAddress(aptosAddress)}
+                </div>
+              )}
             </div>
           )}
         </div>

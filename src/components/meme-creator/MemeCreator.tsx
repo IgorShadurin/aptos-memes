@@ -30,14 +30,18 @@ export default function MemeCreator() {
   // Advanced options toggler state - hidden by default
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
 
-  // Sponsor QR code state
-  const [addSponsorQR, setAddSponsorQR] = useState(false);
+  // QR code state
+  const [addQR, setAddQR] = useState(false);
+  const [qrType, setQrType] = useState<'sponsor' | 'tip'>('sponsor');
   const [sponsorUrl, setSponsorUrl] = useState('https://aptosfoundation.org/');
   const [sponsorLogo, setSponsorLogo] = useState('/sponsors/aptos.png');
   const [urlError, setUrlError] = useState<string | null>(null);
   const [qrCodeStyle, setQrCodeStyle] = useState<string>('vibrant-orange');
   // QR code position state
   const [qrCodePosition, setQrCodePosition] = useState({ x: 0, y: 0 });
+  // Aptos address for tip QR
+  const [aptosAddress, setAptosAddress] = useState('');
+  const [addressError, setAddressError] = useState<string | null>(null);
 
   // QR code style options
   const qrCodeStyles: QRCodeStyle[] = [
@@ -563,8 +567,10 @@ export default function MemeCreator() {
             {/* Sponsor QR Code Section - Only shown when advanced options are visible */}
             {selectedTemplate && showAdvancedOptions && (
               <QRCodeSection
-                addSponsorQR={addSponsorQR}
-                setAddSponsorQR={setAddSponsorQR}
+                addQR={addQR}
+                setAddQR={setAddQR}
+                qrType={qrType}
+                setQrType={setQrType}
                 sponsorUrl={sponsorUrl}
                 setSponsorUrl={setSponsorUrl}
                 sponsorLogo={sponsorLogo}
@@ -574,6 +580,10 @@ export default function MemeCreator() {
                 urlError={urlError}
                 setUrlError={setUrlError}
                 qrCodeStyles={qrCodeStyles}
+                aptosAddress={aptosAddress}
+                setAptosAddress={setAptosAddress}
+                addressError={addressError}
+                setAddressError={setAddressError}
               />
             )}
 
@@ -603,7 +613,7 @@ export default function MemeCreator() {
                   handleDragStart={handleDragStart}
                   containerRef={containerRef as React.RefObject<HTMLDivElement>}
                   memeRef={memeRef as React.RefObject<HTMLDivElement>}
-                  addSponsorQR={addSponsorQR}
+                  addSponsorQR={addQR && qrType === 'sponsor'}
                   sponsorUrl={sponsorUrl}
                   sponsorLogo={sponsorLogo}
                   qrCodeStyle={qrCodeStyle}
@@ -611,6 +621,9 @@ export default function MemeCreator() {
                   urlError={urlError}
                   qrCodePosition={qrCodePosition}
                   saveMeme={saveMeme}
+                  aptosAddress={aptosAddress}
+                  addTipQR={addQR && qrType === 'tip'}
+                  addressError={addressError}
                 />
               </>
             )}
