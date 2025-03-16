@@ -20,6 +20,7 @@ interface MemeCanvasProps {
   sponsorLogo: string;
   qrCodeStyles: QRCodeStyle[];
   urlError: string | null;
+  qrCodePosition: { x: number; y: number };
 }
 
 /**
@@ -38,6 +39,7 @@ const MemeCanvas: React.FC<MemeCanvasProps> = ({
   sponsorLogo,
   qrCodeStyles,
   urlError,
+  qrCodePosition,
 }) => {
   /**
    * Gets the selected QR code style
@@ -156,19 +158,51 @@ const MemeCanvas: React.FC<MemeCanvasProps> = ({
           {/* QR Code on the meme */}
           {addSponsorQR && sponsorUrl && !urlError && (
             <div
-              className="absolute bottom-4 right-8 p-1 rounded-md shadow-md"
+              className="absolute p-1 rounded-md shadow-md cursor-move"
+              onMouseDown={(e) => handleDragStart(e, 'qrcode')}
+              onTouchStart={(e) => {
+                if (!e.touches[0]) return;
+                e.preventDefault(); // Prevent default touch behavior
+
+                const touch = e.touches[0];
+                // Create a synthetic mouse event to reuse the same handler
+                const mouseEvent = {
+                  clientX: touch.clientX,
+                  clientY: touch.clientY,
+                  preventDefault: () => {},
+                } as React.MouseEvent;
+
+                // Immediately handle drag start
+                handleDragStart(mouseEvent, 'qrcode');
+              }}
+              role="button"
+              tabIndex={0}
+              aria-label="Drag QR code"
               style={{
                 width: '15%',
                 height: 'auto',
                 aspectRatio: '1 / 1',
-                backgroundColor: getSelectedQRStyle().bgColor,
+                left: `${(qrCodePosition.x / (selectedTemplate?.width || 1)) * 100}%`,
+                top: `${(qrCodePosition.y / (selectedTemplate?.height || 1)) * 100}%`,
+                transform: 'translate(-50%, -50%)',
+                touchAction: 'none',
+                transition: 'none',
+                border:
+                  dragState?.isDragging && dragState.textId === 'qrcode'
+                    ? '2px dashed #39f'
+                    : 'none',
+                borderRadius: '4px',
+                backgroundColor:
+                  dragState?.isDragging && dragState.textId === 'qrcode'
+                    ? 'rgba(51, 153, 255, 0.1)'
+                    : getSelectedQRStyle().bgColor,
               }}
             >
               <QRCodeSVG
                 value={getEncodedQrUrl(sponsorUrl)}
                 size={100}
                 level="H"
-                style={{ width: '100%', height: '100%' }}
+                style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
                 imageSettings={{
                   src: sponsorLogo,
                   x: undefined,

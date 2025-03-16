@@ -36,6 +36,8 @@ export default function MemeCreator() {
   const [sponsorLogo, setSponsorLogo] = useState('/sponsors/aptos.png');
   const [urlError, setUrlError] = useState<string | null>(null);
   const [qrCodeStyle, setQrCodeStyle] = useState<string>('vibrant-orange');
+  // QR code position state
+  const [qrCodePosition, setQrCodePosition] = useState({ x: 0, y: 0 });
 
   // QR code style options
   const qrCodeStyles: QRCodeStyle[] = [
@@ -70,7 +72,7 @@ export default function MemeCreator() {
     (clientX: number, clientY: number) => {
       // Use the ref for immediate access to current drag state
       const currentDrag = activeDragRef.current;
-      if (!containerRef.current || !selectedTemplate || !currentDrag || !currentDrag.textId) return;
+      if (!containerRef.current || !selectedTemplate || !currentDrag) return;
 
       // Get container dimensions
       const containerRect = containerRef.current.getBoundingClientRect();
@@ -91,21 +93,30 @@ export default function MemeCreator() {
       const clampedX = Math.max(50, Math.min(templateX, selectedTemplate.width - 50));
       const clampedY = Math.max(50, Math.min(templateY, selectedTemplate.height - 50));
 
-      // Update the text positions
-      setTextInputs((prev) =>
-        prev.map((input) => {
-          if (input.id === currentDrag.textId) {
-            return {
-              ...input,
-              position: {
-                x: clampedX,
-                y: clampedY,
-              },
-            };
-          }
-          return input;
-        })
-      );
+      // Check if we're dragging the QR code
+      if (currentDrag.textId === 'qrcode') {
+        // Update QR code position
+        setQrCodePosition({
+          x: clampedX,
+          y: clampedY,
+        });
+      } else if (currentDrag.textId) {
+        // Update the text positions
+        setTextInputs((prev) =>
+          prev.map((input) => {
+            if (input.id === currentDrag.textId) {
+              return {
+                ...input,
+                position: {
+                  x: clampedX,
+                  y: clampedY,
+                },
+              };
+            }
+            return input;
+          })
+        );
+      }
     },
     [selectedTemplate]
   );
@@ -183,6 +194,11 @@ export default function MemeCreator() {
             // Set the selected template and initialize text inputs
             setSelectedTemplate(selectedTemplate);
             setTextInputs(initializeTextInputs(selectedTemplate));
+            // Initialize QR code position to bottom-right
+            setQrCodePosition({
+              x: selectedTemplate.width * 0.85, // 85% from left (15% from right)
+              y: selectedTemplate.height * 0.85, // 85% from top (15% from bottom)
+            });
             return;
           }
         }
@@ -191,6 +207,11 @@ export default function MemeCreator() {
         if (data.length > 0) {
           setSelectedTemplate(data[0]);
           setTextInputs(initializeTextInputs(data[0]));
+          // Initialize QR code position to bottom-right
+          setQrCodePosition({
+            x: data[0].width * 0.85, // 85% from left (15% from right)
+            y: data[0].height * 0.85, // 85% from top (15% from bottom)
+          });
         }
       } catch (error) {
         console.error('Failed to load meme templates:', error);
@@ -211,6 +232,11 @@ export default function MemeCreator() {
 
     if (template) {
       setTextInputs(initializeTextInputs(template));
+      // Update QR code position for the new template dimensions
+      setQrCodePosition({
+        x: template.width * 0.85, // 85% from left (15% from right)
+        y: template.height * 0.85, // 85% from top (15% from bottom)
+      });
     }
   };
 
@@ -226,21 +252,34 @@ export default function MemeCreator() {
   };
 
   /**
-   * Handles the start of dragging a text element
-   * @param e - Mouse event
-   * @param textId - ID of the text being dragged
+   * Handles the start of dragging a text element or QR code
+   * @param e - Mouse event or touch event
+   * @param id - ID of the element being dragged
    */
-  const handleDragStart = (e: React.MouseEvent | React.TouchEvent, textId: string) => {
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent, id: string) => {
     e.preventDefault(); // Prevent text selection during drag
     if (!containerRef.current || !selectedTemplate) return;
 
-    // Find the text input being dragged
-    const textInput = textInputs.find((input) => input.id === textId);
-    if (!textInput || !textInput.position) return;
+    let elementX: number;
+    let elementY: number;
 
-    // Get corresponding text area
-    const textArea = selectedTemplate.textAreas.find((area) => area.id === textId);
-    if (!textArea) return;
+    if (id === 'qrcode') {
+      // We're dragging the QR code
+      elementX = qrCodePosition.x;
+      elementY = qrCodePosition.y;
+    } else {
+      // We're dragging a text input
+      // Find the text input being dragged
+      const textInput = textInputs.find((input) => input.id === id);
+      if (!textInput || !textInput.position) return;
+
+      // Get corresponding text area
+      const textArea = selectedTemplate.textAreas.find((area) => area.id === id);
+      if (!textArea) return;
+
+      elementX = textInput.position.x;
+      elementY = textInput.position.y;
+    }
 
     // Get container dimensions
     const containerRect = containerRef.current.getBoundingClientRect();
@@ -256,18 +295,18 @@ export default function MemeCreator() {
     const clickX = clientX - containerRect.left;
     const clickY = clientY - containerRect.top;
 
-    // Calculate the text position in pixels, accounting for scaling
-    const textX = textInput.position.x * scaleX;
-    const textY = textInput.position.y * scaleY;
+    // Calculate the element position in pixels, accounting for scaling
+    const elementPosX = elementX * scaleX;
+    const elementPosY = elementY * scaleY;
 
     // Create a new drag state object
     const newDragState = {
       isDragging: true,
-      textId,
+      textId: id,
       startX: clientX,
       startY: clientY,
-      offsetX: textX - clickX,
-      offsetY: textY - clickY,
+      offsetX: elementPosX - clickX,
+      offsetY: elementPosY - clickY,
     };
 
     // Store the drag state in the ref for immediate access
@@ -370,6 +409,11 @@ export default function MemeCreator() {
   const handleResetPositions = () => {
     if (!selectedTemplate) return;
     setTextInputs(resetTextPositions(selectedTemplate, textInputs));
+    // Reset QR code position to default (bottom right)
+    setQrCodePosition({
+      x: selectedTemplate.width * 0.85, // 85% from left (15% from right)
+      y: selectedTemplate.height * 0.85, // 85% from top (15% from bottom)
+    });
   };
 
   /**
@@ -565,6 +609,7 @@ export default function MemeCreator() {
                   qrCodeStyle={qrCodeStyle}
                   qrCodeStyles={qrCodeStyles}
                   urlError={urlError}
+                  qrCodePosition={qrCodePosition}
                 />
               </>
             )}
