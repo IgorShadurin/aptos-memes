@@ -24,6 +24,8 @@ export default function MemeCreator() {
   const [isLoading, setIsLoading] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
   const [newsModalOpen, setNewsModalOpen] = useState(false);
+  const [isFromNews, setIsFromNews] = useState(false);
+  const [currentNewsText, setCurrentNewsText] = useState<string | undefined>(undefined);
 
   // Advanced options toggler state - hidden by default
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
@@ -300,7 +302,6 @@ export default function MemeCreator() {
 
     setIsLoading(true);
     try {
-      console.log('selectedTemplate', selectedTemplate);
       // Extract information about the selected template to send to the server
       const templateInfo = {
         templateId: selectedTemplate.id,
@@ -358,6 +359,8 @@ export default function MemeCreator() {
    * @param newsText - News text to use for generation
    */
   const generateFromNews = async (newsText: string) => {
+    setIsFromNews(true);
+    setCurrentNewsText(newsText);
     await generateAiText(newsText);
   };
 
@@ -414,6 +417,15 @@ export default function MemeCreator() {
     setShowAdvancedOptions(!showAdvancedOptions);
   };
 
+  /**
+   * Handles the More button click to generate another meme from the same news text
+   */
+  const handleMoreClick = async () => {
+    if (currentNewsText) {
+      await generateAiText(currentNewsText);
+    }
+  };
+
   return (
     <div className="flex justify-center items-center py-6 md:py-12 px-4 md:px-6">
       <Card className="w-full max-w-3xl bg-transparent shadow-lg">
@@ -442,6 +454,21 @@ export default function MemeCreator() {
             {/* Main action buttons in a row */}
             {selectedTemplate && (
               <div className="flex justify-between items-center w-full gap-2 mt-4">
+                {isFromNews && (
+                  <Button
+                    variant="outline"
+                    onClick={handleMoreClick}
+                    disabled={isLoading || !currentNewsText}
+                    className="flex-1 rounded-md border-gray-200 flex items-center justify-center"
+                  >
+                    <span className="flex items-center">
+                      {isLoading ? '⏳' : '🔄'}
+                      <span className="hidden sm:inline ml-1">
+                        {isLoading ? 'Generating...' : 'More'}
+                      </span>
+                    </span>
+                  </Button>
+                )}
                 <Button
                   variant="outline"
                   onClick={() => setNewsModalOpen(true)}

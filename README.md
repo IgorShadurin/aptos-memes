@@ -6,7 +6,7 @@
 
 ## Why Meme News Factory Transforms Digital Content Creation
 
-Ever wanted to own your memes? To earn from your creativity? To participate in the evolution of internet culture? Say hello to Meme News Factory - a meme platform built on the fast and secure Aptos blockchain.
+Ever wanted to own your memes? To earn from your creativity? To participate in the evolution of internet culture? Say hello to Meme News Factory - a meme platform built on the fast and secure blockchain.
 
 ## What Makes Us Stand Out
 
@@ -14,7 +14,7 @@ We've created something special here. Our team has dedicated countless hours to 
 
 ## Try It Yourself
 
-Create your first blockchain meme now at [aptos-memes.vercel.app](https://aptos-memes.vercel.app/)!
+Create your first blockchain meme now at [memezzz.com](https://memezzz.com)!
 
 ### Features
 
@@ -33,8 +33,8 @@ Create your first blockchain meme now at [aptos-memes.vercel.app](https://aptos-
 - Next.js 15: React framework with server components for optimal performance
 - TypeScript: Type safety for reliable code
 - Tailwind + Shadcn UI: Modern, responsive design system
-- Aptos Blockchain
-- OpenAI Integration: AI-powered caption generation 
+- Blockchain integration
+- OpenAI Integration: AI-powered caption generation
 - HTML-to-Image: High-quality meme exports
 
 ## Future Roadmap
@@ -42,19 +42,22 @@ Create your first blockchain meme now at [aptos-memes.vercel.app](https://aptos-
 Here's what we're building toward:
 
 ### Near-term
+
 - Move Agent Kit Integration: AI-managed NFTs for seamless blockchain interaction
 - Meme Minting: Turn any meme into an NFT with minimal steps
 - Creator Royalties: Earn when your meme template is used or resold
 - Batch Meme Brewery: Cook up multiple memes at once from different news sources
-- Farcaster Frame: Building a bridge for Ethereum users to hop into the Aptos meme universe with just a Frame interaction
+- Farcaster Frame: Building a bridge for Farcaster users to hop into the crypto meme universe with just a Frame interaction
 
 ### Mid-term
+
 - Meme Marketplace: Buy, sell, and trade digital meme assets
 - Community Governance: User input on features and platform direction
 - Themed Collections: Create and sell collections around specific topics
 - News-to-Memes Feed Transformer: Subscribe to news sources and get a personalized feed of auto-generated memes daily
 
 ### Long-term
+
 - Create-to-Earn Model: Rewards for creating and engaging with content
 - Brand Collaborations: Monetization opportunities with partners
 - Advanced AI Management: Using Move Agent Kit to create intelligent, autonomous NFTs that can respond to market conditions
