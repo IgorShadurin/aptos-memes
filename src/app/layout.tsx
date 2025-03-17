@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import { FeedbackButton } from '@/components/FeedbackButton';
 import './globals.css';
 import React from 'react';
+import { Analytics } from '@vercel/analytics/react';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -58,6 +59,7 @@ export default function RootLayout({
             </div>
           </footer>
           <FeedbackButton />
+          <Analytics />
         </div>
       </body>
     </html>
