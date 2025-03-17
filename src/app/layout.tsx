@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { FeedbackButton } from '@/components/FeedbackButton';
 import './globals.css';
 import React from 'react';
@@ -50,14 +51,7 @@ export default function RootLayout({
             <div className="absolute inset-0 bg-[url('/background-pattern.svg')] opacity-10 pointer-events-none"></div>
             {children}
           </main>
-          <footer className="w-full py-4 px-6 mt-auto text-center text-gray-600 dark:text-gray-400 border-t border-gray-300/50">
-            <div className="flex flex-col items-center gap-1">
-              <p>© {new Date().getFullYear()} Meme News Factory. All rights reserved.</p>
-              <p className="flex items-center gap-1 text-pink-600 dark:text-pink-400 font-medium text-sm">
-                Made with <span className="text-red-500 animate-pulse">❤️</span> by meme lovers
-              </p>
-            </div>
-          </footer>
+          <Footer />
           <FeedbackButton />
           <Analytics />
         </div>
